@@ -1,5 +1,6 @@
 package com.sdk.ads.utils
 
+import android.util.Log
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.ParametersBuilder
 import com.google.firebase.analytics.ktx.analytics
@@ -47,11 +48,13 @@ fun logAdImpression(adTag: String) {
 
 fun logEvent(evenName: String) {
     val result = evenName.trim().replace("-", "_")
+    Log.e("logEvent::", evenName)
     tracker.logEvent(result, null)
 }
 
 fun logScreen(screenName: String) {
     val result = screenName.trim().replace("-", "_")
+    Log.e("logScreen::", result)
     tracker.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW) {
         param(FirebaseAnalytics.Param.SCREEN_NAME, result)
     }
