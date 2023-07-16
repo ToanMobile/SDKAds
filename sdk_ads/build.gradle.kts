@@ -9,7 +9,7 @@ plugins {
 
 android {
     namespace = "com.sdk.ads"
-    compileSdk = 34
+    compileSdk = 33
     buildFeatures.dataBinding = true
     defaultConfig {
         minSdk = 24
@@ -18,9 +18,7 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
-            consumerProguardFile(
-                "proguard-rules.pro",
-            )
+            consumerProguardFile("proguard-rules.pro")
         }
     }
     compileOptions {
