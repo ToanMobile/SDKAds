@@ -2,15 +2,16 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.googleService)
+    alias(libs.plugins.crashlytics)
 }
 
 android {
-    namespace = "com.sdk.ads.demo"
+    namespace = "com.sdk.ads"
     compileSdk = 33
-
     buildFeatures.dataBinding = true
     defaultConfig {
-        applicationId = "com.sdk.ads.demo"
+        applicationId = "com.sdk.ads"
         minSdk = 24
         targetSdk = 33
         versionCode = 1
@@ -41,6 +42,14 @@ dependencies {
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
     implementation(libs.material)
-    implementation(libs.constraintlayout)
-    implementation(project(":sdk_ads"))
+    implementation(platform("com.google.firebase:firebase-bom:32.1.1"))
+    implementation("com.google.firebase:firebase-analytics-ktx")
+    implementation("com.google.firebase:firebase-crashlytics-ktx")
+    implementation("com.google.android.gms:play-services-ads-identifier:18.0.1")
+    implementation("com.google.android.gms:play-services-ads:22.2.0")
+    implementation("com.google.firebase:firebase-ads:22.2.0")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.6.0")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.1")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
+    implementation("androidx.lifecycle:lifecycle-process:2.6.1")
 }

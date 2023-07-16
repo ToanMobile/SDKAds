@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "SDK_Ads"
 include(":app")
+include(":sdk_ads")
