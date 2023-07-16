@@ -1,30 +1,24 @@
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
-    alias(libs.plugins.androidApplication)
+    alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.googleService)
     alias(libs.plugins.crashlytics)
+    id("maven-publish")
 }
 
 android {
     namespace = "com.sdk.ads"
-    compileSdk = 33
+    compileSdk = 34
     buildFeatures.dataBinding = true
     defaultConfig {
-        applicationId = "com.sdk.ads"
         minSdk = 24
-        targetSdk = 33
-        versionCode = 1
-        versionName = "1.0"
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
             isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
+            consumerProguardFile(
                 "proguard-rules.pro",
             )
         }
@@ -34,7 +28,25 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+}
+
+afterEvaluate {
+    publishing {
+        repositories {
+            mavenLocal()
+        }
+        publications {
+            create<MavenPublication>("maven") {
+                val variantName = project.name
+                //from(components[variantName])
+                from(components.findByName("release"))
+                groupId = "com.magic.sdk"
+                artifactId = "AdsSdk"
+                version = "v1.0.0"
+            }
+        }
     }
 }
 
@@ -53,3 +65,4 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
     implementation("androidx.lifecycle:lifecycle-process:2.6.1")
 }
+
