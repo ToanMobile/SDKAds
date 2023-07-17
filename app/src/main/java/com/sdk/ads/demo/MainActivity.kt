@@ -3,6 +3,7 @@ package com.sdk.ads.demo
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.sdk.ads.utils.AdType
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,6 +24,18 @@ class MainActivity : AppCompatActivity() {
 
                 override fun onAdClicked(adUnit: String, adType: com.sdk.ads.utils.AdType) {
                     super.onAdClicked(adUnit, adType)
+                }
+
+                override fun onAdFailedToShowFullScreenContent(adUnit: String, adType: AdType) {
+                    super.onAdFailedToShowFullScreenContent(adUnit, adType)
+                }
+
+                override fun onAdClosed(adUnit: String, adType: AdType) {
+                    super.onAdClosed(adUnit, adType)
+                }
+
+                override fun onAdFailedToLoad(adUnit: String, adType: AdType, error: com.google.android.gms.ads.LoadAdError) {
+                    super.onAdFailedToLoad(adUnit, adType, error)
                 }
             },
         )

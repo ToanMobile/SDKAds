@@ -22,9 +22,9 @@ object AdmobOpenSplash {
      */
     fun show(
         adUnitId: String,
-        timeout: Long,
+        timeout: Long = 15000,
         onAdLoaded: () -> Unit = {},
-        nextAction: () -> Unit,
+        nextAction: () -> Unit = {},
     ) {
         if (!AdsSDK.isEnableOpenAds) {
             onAdLoaded.invoke()
