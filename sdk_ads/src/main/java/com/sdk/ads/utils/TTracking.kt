@@ -7,7 +7,6 @@ import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.analytics.ktx.logEvent
 import com.google.firebase.ktx.Firebase
 import com.sdk.ads.ads.AdsSDK
-import com.sdk.ads.ads.open.AdmobOpenResume
 
 private val tracker get() = Firebase.analytics
 
@@ -27,6 +26,7 @@ fun logAdClicked(adType: AdType, adID: String? = null) {
                         "ad_open_ads"
                     }
                 }
+
                 com.sdk.ads.utils.AdType.Inter -> "ad_interstitial"
                 com.sdk.ads.utils.AdType.Banner -> "ad_banner"
                 com.sdk.ads.utils.AdType.Native -> "ad_native"
@@ -64,5 +64,11 @@ fun logParams(eventName: String, block: ParametersBuilder.() -> Unit) {
     runCatching {
         val result = eventName.trim().replace("-", "_")
         tracker.logEvent(result) { block() }
+    }
+}
+
+fun logNote(eventName: String, noteTitle: String, note: String) {
+    logParams(eventName) {
+        param(noteTitle, note)
     }
 }

@@ -12,7 +12,6 @@ import com.google.android.gms.ads.LoadAdError
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.sdk.ads.ads.AdsSDK
 import com.sdk.ads.ads.AdsSDK.isEnableBanner
-import com.sdk.ads.utils.AdType
 import com.sdk.ads.utils.TAdCallback
 import com.sdk.ads.utils.adaptiveBannerSize
 import com.sdk.ads.utils.addLoadingView
