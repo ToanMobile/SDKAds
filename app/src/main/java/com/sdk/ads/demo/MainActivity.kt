@@ -3,6 +3,8 @@ package com.sdk.ads.demo
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.sdk.ads.ads.interstitial.AdmobInter
+import com.sdk.ads.ads.interstitial.AdmobInterSplash
 import com.sdk.ads.utils.AdType
 
 class MainActivity : AppCompatActivity() {
@@ -12,7 +14,9 @@ class MainActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.txtText).setOnClickListener {
             com.sdk.ads.utils.logEvent("txtTextClick")
         }
-        com.sdk.ads.ads.banner.AdmobBanner.show300x250(
+        AdmobInterSplash.show(adUnitId = "ca-app-pub-2428922951355303/8012376174", timeout = 15000, nextAction = {})
+
+        /*com.sdk.ads.ads.banner.AdmobBanner.show300x250(
             findViewById(R.id.viewBottom),
             adUnitId = "ca-app-pub-3940256099942544/2014213617",
             forceRefresh = true,
@@ -38,6 +42,6 @@ class MainActivity : AppCompatActivity() {
                     super.onAdFailedToLoad(adUnit, adType, error)
                 }
             },
-        )
+        )*/
     }
 }

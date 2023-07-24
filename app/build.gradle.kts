@@ -2,6 +2,8 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
 
 android {
@@ -22,10 +24,14 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
+            manifestPlaceholders["crashlyticsCollectionEnabled"] = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
             )
+        }
+        debug {
+            manifestPlaceholders["crashlyticsCollectionEnabled"] = false
         }
     }
     compileOptions {

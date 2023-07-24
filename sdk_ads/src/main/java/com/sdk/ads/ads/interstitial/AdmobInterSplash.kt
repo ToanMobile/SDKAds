@@ -20,7 +20,7 @@ object AdmobInterSplash {
      */
     fun show(
         adUnitId: String,
-        timeout: Long,
+        timeout: Long = 15000,
         nextAction: () -> Unit,
     ) {
         if (!AdsSDK.isEnableInter) {
