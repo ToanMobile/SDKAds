@@ -20,6 +20,9 @@ object AdmobInterSplash {
      */
     fun show(
         adUnitId: String,
+        isForceShowNow: Boolean = false,
+        isDelayNextAds: Boolean = true,
+        isShowLoading: Boolean = false,
         timeout: Long = 15000,
         nextAction: () -> Unit,
     ) {
@@ -29,6 +32,13 @@ object AdmobInterSplash {
         }
 
         val callback = object : TAdCallback {
+            override fun onAdLoaded(adUnit: String, adType: AdType) {
+                super.onAdLoaded(adUnit, adType)
+                if (isForceShowNow) {
+                    showAds(adUnitId, isShowLoading, isDelayNextAds, this, nextAction)
+                }
+            }
+
             override fun onAdFailedToLoad(adUnit: String, adType: AdType, error: LoadAdError) {
                 super.onAdFailedToLoad(adUnit, adType, error)
                 timer?.cancel()
@@ -43,38 +53,47 @@ object AdmobInterSplash {
         }
 
         AdmobInter.load(adUnitId, callback)
-
-        timer?.cancel()
-        timer = object : CountDownTimer(timeout, 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-                if (!AdsSDK.isEnableInter) {
-                    timer?.cancel()
-                    nextAction.invoke()
-                    return
+        if (!isForceShowNow) {
+            timer?.cancel()
+            timer = object : CountDownTimer(timeout, 1000) {
+                override fun onTick(millisUntilFinished: Long) {
+                    showAds(adUnitId, isShowLoading, isDelayNextAds, callback, nextAction)
                 }
 
-                if (AdmobInter.checkShowInterCondition(adUnitId, false)) {
+                override fun onFinish() {
                     timer?.cancel()
-                    onNextActionWhenResume {
-                        AdsSDK.getAppCompatActivityOnTop()?.waitActivityResumed {
-                            AdmobInter.show(
-                                adUnitId = adUnitId,
-                                showLoadingInter = false,
-                                forceShow = true,
-                                loadAfterDismiss = false,
-                                loadIfNotAvailable = false,
-                                callback = callback,
-                                nextAction = nextAction,
-                            )
-                        }
+                    onNextActionWhenResume(nextAction)
+                }
+            }.start()
+        }
+    }
+
+    private fun showAds(adUnitId: String, isShowLoading: Boolean = false, isDelayNextAds: Boolean = true, callback: TAdCallback, nextAction: () -> Unit) {
+        try {
+            if (!AdsSDK.isEnableInter) {
+                timer?.cancel()
+                nextAction.invoke()
+                return
+            }
+            if (AdmobInter.checkShowInterCondition(adUnitId, !isDelayNextAds)) {
+                timer?.cancel()
+                onNextActionWhenResume {
+                    AdsSDK.getAppCompatActivityOnTop()?.waitActivityResumed {
+                        AdmobInter.show(
+                            adUnitId = adUnitId,
+                            showLoadingInter = isShowLoading,
+                            forceShow = true,
+                            loadAfterDismiss = false,
+                            loadIfNotAvailable = false,
+                            callback = callback,
+                            nextAction = nextAction,
+                        )
                     }
                 }
             }
-
-            override fun onFinish() {
-                timer?.cancel()
-                onNextActionWhenResume(nextAction)
-            }
-        }.start()
+        } catch (e: Exception) {
+            timer?.cancel()
+            onNextActionWhenResume(nextAction)
+        }
     }
 }

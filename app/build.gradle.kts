@@ -49,4 +49,5 @@ dependencies {
     implementation(libs.material)
     implementation(libs.constraintlayout)
     implementation(project(":sdk_ads"))
+    implementation(libs.shimmer)
 }

@@ -7,12 +7,14 @@ core-ktx = "1.10.1"
 appcompat = "1.6.1"
 material = "1.9.0"
 constraintlayout = "2.1.4"
+shimmer = "0.5.0"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+shimmer = { module = "com.facebook.shimmer:shimmer", version.ref = "shimmer" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

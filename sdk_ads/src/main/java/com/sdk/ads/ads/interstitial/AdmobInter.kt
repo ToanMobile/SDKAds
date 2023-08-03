@@ -92,10 +92,10 @@ object AdmobInter {
                 }
 
                 override fun onAdLoaded(interstitialAd: InterstitialAd) {
+                    inters[adUnitId] = interstitialAd
                     AdsSDK.adCallback.onAdLoaded(adUnitId, AdType.Inter)
                     callback?.onAdLoaded(adUnitId, AdType.Inter)
                     intersLoading.remove(adUnitId)
-                    inters[adUnitId] = interstitialAd
                 }
             },
         )

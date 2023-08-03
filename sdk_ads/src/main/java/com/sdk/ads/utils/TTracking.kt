@@ -13,13 +13,13 @@ private val tracker get() = Firebase.analytics
 // Todo bốc ra ngoài app, ko để trong module
 fun logAdClicked(adType: AdType, adID: String? = null) {
     logParams("ad_click_custom") {
-        val clazz = com.sdk.ads.ads.AdsSDK.getClazzOnTop()
+        val clazz = AdsSDK.getClazzOnTop()
 
         if (clazz != null) {
             runCatching { param("screen", clazz::class.java.simpleName) }
 
             val adFormat = when (adType) {
-                com.sdk.ads.utils.AdType.OpenApp -> {
+                AdType.OpenApp -> {
                     if (adID != null && adID == com.sdk.ads.ads.open.AdmobOpenResume.adUnitId) {
                         "ad_open_ads_resume"
                     } else {
@@ -27,10 +27,10 @@ fun logAdClicked(adType: AdType, adID: String? = null) {
                     }
                 }
 
-                com.sdk.ads.utils.AdType.Inter -> "ad_interstitial"
-                com.sdk.ads.utils.AdType.Banner -> "ad_banner"
-                com.sdk.ads.utils.AdType.Native -> "ad_native"
-                com.sdk.ads.utils.AdType.Rewarded -> "ad_rewarded"
+                AdType.Inter -> "ad_interstitial"
+                AdType.Banner -> "ad_banner"
+                AdType.Native -> "ad_native"
+                AdType.Rewarded -> "ad_rewarded"
             }
 
             runCatching { param("ad_format", adFormat) }

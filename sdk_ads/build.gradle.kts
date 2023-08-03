@@ -38,7 +38,7 @@ afterEvaluate {
         publications {
             create<MavenPublication>("maven") {
                 val variantName = project.name
-                //from(components[variantName])
+                // from(components[variantName])
                 from(components.findByName("release"))
                 groupId = "com.magic.sdk"
                 artifactId = "AdsSdk"
@@ -64,4 +64,3 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
     implementation("androidx.lifecycle:lifecycle-process:2.6.1")
 }
-
