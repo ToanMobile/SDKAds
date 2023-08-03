@@ -20,9 +20,9 @@ object AdmobInterSplash {
      */
     fun show(
         adUnitId: String,
-        isForceShowNow: Boolean = false,
+        isForceShowNow: Boolean = true,
         isDelayNextAds: Boolean = true,
-        isShowLoading: Boolean = false,
+        isShowLoading: Boolean = true,
         timeout: Long = 15000,
         nextAction: () -> Unit,
     ) {
