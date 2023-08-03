@@ -39,6 +39,9 @@ object AdsSDK {
     var isEnableRewarded = true
         private set
 
+    var interTimeDelayMs = 15_000
+        private set
+
     private var autoLogPaidValueTrackingInSdk = false
 
     private var outsideAdCallback: TAdCallback? = null
@@ -202,8 +205,13 @@ object AdsSDK {
     fun setEnableOpenAds(isEnable: Boolean) {
         isEnableOpenAds = isEnable
     }
+
     fun setEnableRewarded(isEnable: Boolean) {
         isEnableRewarded = isEnable
+    }
+
+    fun setTimeInterDelayMs(timeDelayMs: Int) {
+        interTimeDelayMs = timeDelayMs
     }
 
     fun setAutoTrackingPaidValueInSdk(useInSDK: Boolean) {

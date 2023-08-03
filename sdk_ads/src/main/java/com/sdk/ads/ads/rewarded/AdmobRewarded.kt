@@ -2,7 +2,7 @@ package com.sdk.ads.ads.rewarded
 
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import com.admob.ui.dialogs.DialogShowLoadingAds
+import com.sdk.ads.ui.dialogs.DialogShowLoadingAds
 import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError

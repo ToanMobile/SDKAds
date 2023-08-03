@@ -2,7 +2,7 @@ package com.sdk.ads.ads.interstitial
 
 import android.app.Activity
 import androidx.lifecycle.Lifecycle
-import com.admob.ui.dialogs.DialogShowLoadingAds
+import com.sdk.ads.ui.dialogs.DialogShowLoadingAds
 import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.FullScreenContentCallback
@@ -26,13 +26,6 @@ object AdmobInter {
     private val inters = mutableMapOf<String, InterstitialAd?>()
     private val interTimeShown = mutableMapOf<String, Long>()
     private val intersLoading = mutableListOf<String>()
-
-    private val interTimeDelayMs: Long
-        get() {
-            // val remoteTime = Firebase.remoteConfig.getLong("interTimeDelayMs")
-            return 15_000
-        }
-
     private var timeShowLoading = 1_000
 
     private var nextActionDuringInterShow = false
@@ -191,7 +184,7 @@ object AdmobInter {
 
         val lastTimeShow = interTimeShown[adUnitId] ?: 0
 
-        return System.currentTimeMillis() - lastTimeShow > interTimeDelayMs
+        return System.currentTimeMillis() - lastTimeShow > AdsSDK.interTimeDelayMs
     }
 
     private fun invokeShowInter(

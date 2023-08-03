@@ -3,7 +3,7 @@
   "component": {
     "group": "com.magic.sdk",
     "module": "AdsSdk",
-    "version": "v1.0.2",
+    "version": "v1.0.3",
     "attributes": {
       "org.gradle.status": "release"
     }
@@ -67,8 +67,8 @@
       ],
       "files": [
         {
-          "name": "AdsSdk-v1.0.2.aar",
-          "url": "AdsSdk-v1.0.2.aar",
+          "name": "AdsSdk-v1.0.3.aar",
+          "url": "AdsSdk-v1.0.3.aar",
           "size": 747709,
           "sha512": "de373b59efb32ffd05823bcc4342bbc96dd7d7985b16fd47638e16c2d71045bff0677c9948cfe0362955f8335e834b829307bc4fd58dbdca22e48e3e6c02e90e",
           "sha256": "2133e8538c6fec0307390b58bacd91718c8bd22f4912ba456b7360472877b458",
@@ -219,8 +219,8 @@
       ],
       "files": [
         {
-          "name": "AdsSdk-v1.0.2.aar",
-          "url": "AdsSdk-v1.0.2.aar",
+          "name": "AdsSdk-v1.0.3.aar",
+          "url": "AdsSdk-v1.0.3.aar",
           "size": 747709,
           "sha512": "de373b59efb32ffd05823bcc4342bbc96dd7d7985b16fd47638e16c2d71045bff0677c9948cfe0362955f8335e834b829307bc4fd58dbdca22e48e3e6c02e90e",
           "sha256": "2133e8538c6fec0307390b58bacd91718c8bd22f4912ba456b7360472877b458",
@@ -241,8 +241,8 @@
       },
       "files": [
         {
-          "name": "AdsSdk-v1.0.2-sources.jar",
-          "url": "AdsSdk-v1.0.2-sources.jar",
+          "name": "AdsSdk-v1.0.3-sources.jar",
+          "url": "AdsSdk-v1.0.3-sources.jar",
           "size": 44131,
           "sha512": "412c666c60e3fc6ab32c88257df34d3fc2b4933c421a9397173b629baf20cc1a6229fa3a1a0e0d7e38e939edf44c253ad4392dce51f53e9831fb01dc75a4f0d8",
           "sha256": "9125ad2593e8b6f9d8a83b55101a7524c22579f1b7678ffa92ba77b75a3f73e3",

@@ -1,4 +1,4 @@
-package com.admob.ui.dialogs
+package com.sdk.ads.ui.dialogs
 
 import android.content.Context
 import android.view.Gravity
