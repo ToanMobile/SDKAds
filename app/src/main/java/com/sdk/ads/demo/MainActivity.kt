@@ -13,7 +13,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         findViewById<TextView>(R.id.txtText).setOnClickListener {
             com.sdk.ads.utils.logEvent("txtTextClick")
-            AdmobInterSplash.show(adUnitId = "ca-app-pub-2428922951355303/8012376174", showLoadingInter = true, isForceShowNow = true, isDelayNextAds = true, nextAction = {})
+            AdmobInterSplash.show(adUnitId = "ca-app-pub-2428922951355303/8012376174", isShowLoading = true, isForceShowNow = true, isDelayNextAds = true, nextAction = {})
         }
         com.sdk.ads.ads.banner.AdmobBanner.showAdaptive(
             findViewById(R.id.viewBottom),
