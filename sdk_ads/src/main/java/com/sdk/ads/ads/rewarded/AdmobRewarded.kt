@@ -2,13 +2,13 @@ package com.sdk.ads.ads.rewarded
 
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import com.sdk.ads.ui.dialogs.DialogShowLoadingAds
 import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.rewarded.RewardedAd
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import com.sdk.ads.ads.AdsSDK
+import com.sdk.ads.ui.dialogs.DialogShowLoadingAds
 import com.sdk.ads.utils.AdType
 import com.sdk.ads.utils.TAdCallback
 import com.sdk.ads.utils.getPaidTrackingBundle

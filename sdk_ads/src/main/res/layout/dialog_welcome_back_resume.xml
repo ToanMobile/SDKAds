@@ -16,17 +16,17 @@
 
 
         <ImageView
-            android:layout_width="@dimen/_120sdp"
-            android:layout_height="@dimen/_120sdp"
+            android:layout_width="@dimen/dp_120"
+            android:layout_height="@dimen/dp_120"
             android:src="@mipmap/ic_launcher" />
 
 
         <TextView
             android:id="@+id/btnGotoApp"
             style="@style/font_500_14"
-            android:layout_width="@dimen/_150sdp"
-            android:layout_height="@dimen/_40sdp"
-            android:layout_marginTop="@dimen/_12sdp"
+            android:layout_width="@dimen/dp_150"
+            android:layout_height="@dimen/dp_40"
+            android:layout_marginTop="@dimen/dp_12"
             android:background="@color/colorPrimary"
             android:gravity="center"
             android:text="@string/go_to_app"

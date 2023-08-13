@@ -2,7 +2,6 @@ package com.sdk.ads.ads.interstitial
 
 import android.app.Activity
 import androidx.lifecycle.Lifecycle
-import com.sdk.ads.ui.dialogs.DialogShowLoadingAds
 import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.FullScreenContentCallback
@@ -10,6 +9,7 @@ import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.sdk.ads.ads.AdsSDK
+import com.sdk.ads.ui.dialogs.DialogShowLoadingAds
 import com.sdk.ads.utils.AdType
 import com.sdk.ads.utils.TAdCallback
 import com.sdk.ads.utils.delay

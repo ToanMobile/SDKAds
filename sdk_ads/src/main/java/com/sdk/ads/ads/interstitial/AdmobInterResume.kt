@@ -1,8 +1,8 @@
 package com.sdk.ads.ads.interstitial
 
-import com.sdk.ads.ui.dialogs.DialogWelcomeBackAds
 import com.google.android.gms.ads.AdActivity
 import com.sdk.ads.ads.AdsSDK
+import com.sdk.ads.ui.dialogs.DialogWelcomeBackAds
 import com.sdk.ads.utils.getActivityOnTop
 import com.sdk.ads.utils.getAppCompatActivityOnTop
 import com.sdk.ads.utils.getClazzOnTop

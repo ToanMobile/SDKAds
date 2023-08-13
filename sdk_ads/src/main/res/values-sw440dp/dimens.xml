@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><!--
+  ~ /**Created by NetaloTeamAndroid on 2020
+  ~ Company: Netacom.
+  ~  **/
+  -->
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!--Image size-->
+
+    <!--Radius-->
+
+    <!--Elevation-->
+
+    <!-- Button -->
+
+    <!--Bottom sheet dialog-->
+
+    <!-- Bottom navigation Text Size -->
+    <dimen name="design_bottom_navigation_text_size" tools:override="true">
+        @dimen/sp_12
+    </dimen>
+    <dimen name="design_bottom_navigation_active_text_size" tools:override="true">
+        @dimen/sp_12
+    </dimen>
+
+    <dimen name="separator_spacing_dimen">
+        @dimen/dp_8
+    </dimen>
+
+    <dimen name="dp_1">1dp</dimen>
+    <dimen name="dp_3">3dp</dimen>
+    <dimen name="dp_5">6dp</dimen>
+    <dimen name="dp_15">16dp</dimen>
+    <dimen name="dp_21">23dp</dimen>
+    <dimen name="dp_112">123dp</dimen>
+
+    <!--New dimens from dungpnt-->
+    <dimen name="dp_2">2dp</dimen>
+    <dimen name="dp_4">4dp</dimen>
+    <dimen name="dp_6">7dp</dimen>
+    <dimen name="dp_8">9dp</dimen>
+    <dimen name="dp_10">11dp</dimen>
+    <dimen name="dp_12">13dp</dimen>
+    <dimen name="dp_14">15dp</dimen>
+    <dimen name="dp_16">18dp</dimen>
+    <dimen name="dp_18">20dp</dimen>
+    <dimen name="dp_20">22dp</dimen>
+    <dimen name="dp_22">24dp</dimen>
+    <dimen name="dp_24">26dp</dimen>
+    <dimen name="dp_26">29dp</dimen>
+    <dimen name="dp_28">31dp</dimen>
+    <dimen name="dp_30">33dp</dimen>
+    <dimen name="dp_32">35dp</dimen>
+    <dimen name="dp_34">37dp</dimen>
+    <dimen name="dp_36">40dp</dimen>
+    <dimen name="dp_38">42dp</dimen>
+    <dimen name="dp_40">44dp</dimen>
+    <dimen name="dp_42">46dp</dimen>
+    <dimen name="dp_44">48dp</dimen>
+    <dimen name="dp_46">51dp</dimen>
+    <dimen name="dp_48">53dp</dimen>
+    <dimen name="dp_50">55dp</dimen>
+    <dimen name="dp_56">62dp</dimen>
+    <dimen name="dp_60">66dp</dimen>
+    <dimen name="dp_64">70dp</dimen>
+    <dimen name="dp_70">77dp</dimen>
+    <dimen name="dp_72">79dp</dimen>
+    <dimen name="dp_80">88dp</dimen>
+    <dimen name="dp_88">97dp</dimen>
+    <dimen name="dp_90">99dp</dimen>
+    <dimen name="dp_95">104dp</dimen>
+    <dimen name="dp_96">106dp</dimen>
+    <dimen name="dp_100">110dp</dimen>
+    <dimen name="dp_110">121dp</dimen>
+    <dimen name="dp_120">132dp</dimen>
+    <dimen name="dp_130">143dp</dimen>
+    <dimen name="dp_140">154dp</dimen>
+    <dimen name="dp_150">165dp</dimen>
+    <dimen name="dp_160">176dp</dimen>
+    <dimen name="dp_170">187dp</dimen>
+    <dimen name="dp_180">198dp</dimen>
+    <dimen name="dp_200">220dp</dimen>
+    <dimen name="dp_220">242dp</dimen>
+    <dimen name="dp_240">264dp</dimen>
+    <dimen name="dp_250">275dp</dimen>
+    <dimen name="dp_260">286dp</dimen>
+    <dimen name="dp_280">308dp</dimen>
+    <dimen name="dp_300">330dp</dimen>
+    <dimen name="dp_360">396dp</dimen>
+    <dimen name="dp_400">440dp</dimen>
+    <!--  -->
+    <dimen name="sub_dp_10">-11dp</dimen>
+    <dimen name="sub_dp_24">-26dp</dimen>
+    <dimen name="sub_dp_112">-123dp</dimen>
+
+    <dimen name="sp_10">11sp</dimen>
+    <dimen name="sp_12">13sp</dimen>
+    <dimen name="sp_14">15sp</dimen>
+    <dimen name="sp_16">18sp</dimen>
+    <dimen name="sp_18">20sp</dimen>
+    <dimen name="sp_20">22sp</dimen>
+    <dimen name="sp_22">24sp</dimen>
+    <dimen name="sp_26">29sp</dimen>
+    <dimen name="sp_28">31sp</dimen>
+    <dimen name="sp_30">33sp</dimen>
+    <dimen name="sp_32">35sp</dimen>
+    <dimen name="sp_72">79sp</dimen>
+</resources>

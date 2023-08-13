@@ -1,9 +1,9 @@
 package com.sdk.ads.ads.open
 
-import com.sdk.ads.ui.dialogs.DialogBackgroundOpenApp
 import com.google.android.gms.ads.AdActivity
 import com.google.android.gms.ads.appopen.AppOpenAd
 import com.sdk.ads.ads.AdsSDK
+import com.sdk.ads.ui.dialogs.DialogBackgroundOpenApp
 import com.sdk.ads.utils.AdType
 import com.sdk.ads.utils.TAdCallback
 import com.sdk.ads.utils.getActivityOnTop

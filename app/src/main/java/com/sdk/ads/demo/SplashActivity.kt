@@ -2,7 +2,6 @@ package com.sdk.ads.demo
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.sdk.ads.R
 import com.sdk.ads.ads.open.AdmobOpenSplash
 
 class SplashActivity : AppCompatActivity() {

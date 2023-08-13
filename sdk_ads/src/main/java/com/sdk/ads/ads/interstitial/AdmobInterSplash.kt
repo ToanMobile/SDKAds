@@ -20,11 +20,12 @@ object AdmobInterSplash {
      */
     fun show(
         adUnitId: String,
-        isForceShowNow: Boolean = true,
+        isForceShowNow: Boolean = false,
+        isShowLoading: Boolean = false,
         isDelayNextAds: Boolean = true,
-        isShowLoading: Boolean = true,
-        timeout: Long = 15000,
+        timeout: Long = 30000,
         nextAction: () -> Unit,
+        adLoaded: () -> Unit = {},
     ) {
         if (!AdsSDK.isEnableInter) {
             nextAction.invoke()
@@ -34,6 +35,7 @@ object AdmobInterSplash {
         val callback = object : TAdCallback {
             override fun onAdLoaded(adUnit: String, adType: AdType) {
                 super.onAdLoaded(adUnit, adType)
+                adLoaded()
                 if (isForceShowNow) {
                     showAds(adUnitId, isShowLoading, isDelayNextAds, this, nextAction)
                 }

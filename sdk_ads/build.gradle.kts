@@ -12,7 +12,7 @@ android {
     compileSdk = 33
     buildFeatures.dataBinding = true
     defaultConfig {
-        minSdk = 24
+        minSdk = 21
     }
 
     buildTypes {
@@ -42,7 +42,7 @@ afterEvaluate {
                 from(components.findByName("release"))
                 groupId = "com.magic.sdk"
                 artifactId = "AdsSdk"
-                version = "v1.0.3"
+                version = "v1.0.4"
             }
         }
     }
@@ -55,12 +55,12 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.1.1"))
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.firebase:firebase-crashlytics-ktx")
-    implementation("com.google.android.gms:play-services-ads-identifier:18.0.1")
-    implementation("com.google.android.gms:play-services-ads:22.2.0")
-    api("com.google.android.gms:play-services-ads-lite:22.2.0")
-    implementation("com.google.firebase:firebase-ads:22.2.0")
-    implementation("androidx.navigation:navigation-fragment-ktx:2.6.0")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.1")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
-    implementation("androidx.lifecycle:lifecycle-process:2.6.1")
+    implementation(libs.play.services.ads.identifier)
+    implementation(libs.play.services.ads)
+    api(libs.play.services.ads.lite)
+    implementation(libs.firebase.ads)
+    implementation(libs.navigation.fragment.ktx)
+    implementation(libs.lifecycle.livedata.ktx)
+    implementation(libs.lifecycle.viewmodel.ktx)
+    implementation(libs.lifecycle.process)
 }
