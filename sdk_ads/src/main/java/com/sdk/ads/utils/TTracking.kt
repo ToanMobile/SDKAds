@@ -52,6 +52,12 @@ fun logEvent(evenName: String) {
     tracker.logEvent(result, null)
 }
 
+fun logProperty(evenName: String, data: String?) {
+    val result = evenName.trim().replace("-", "_")
+    Log.e("logProperty::", evenName)
+    tracker.setUserProperty(result, data)
+}
+
 fun logScreen(screenName: String) {
     val result = screenName.trim().replace("-", "_")
     Log.e("logScreen::", result)

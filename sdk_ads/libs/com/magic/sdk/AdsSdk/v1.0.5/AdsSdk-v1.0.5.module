@@ -1,0 +1,255 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.magic.sdk",
+    "module": "AdsSdk",
+    "version": "v1.0.5",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.2.1"
+    }
+  },
+  "variants": [
+    {
+      "name": "releaseApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "java-api",
+        "org.jetbrains.kotlin.platform.type": "androidJvm"
+      },
+      "dependencies": [
+        {
+          "group": "com.google.android.gms",
+          "module": "play-services-ads-lite",
+          "version": {
+            "requires": "22.2.0"
+          }
+        },
+        {
+          "group": "androidx.databinding",
+          "module": "databinding-common",
+          "version": {
+            "requires": "8.1.1"
+          }
+        },
+        {
+          "group": "androidx.databinding",
+          "module": "databinding-runtime",
+          "version": {
+            "requires": "8.1.1"
+          }
+        },
+        {
+          "group": "androidx.databinding",
+          "module": "databinding-adapters",
+          "version": {
+            "requires": "8.1.1"
+          }
+        },
+        {
+          "group": "androidx.databinding",
+          "module": "databinding-ktx",
+          "version": {
+            "requires": "8.1.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk8",
+          "version": {
+            "requires": "1.9.0"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "AdsSdk-v1.0.5.aar",
+          "url": "AdsSdk-v1.0.5.aar",
+          "size": 669118,
+          "sha512": "1455c1d5d807087f10dcfc981c033f0ce84283826c4fdd3c8888800f4b9890b07d818026ef0dc4bde3a9de3246ea59840abb59685ada883cff1fa21df319bf00",
+          "sha256": "bd2294601644077c7ffe6b7bd26bb7ef28ab701e70afb321ec5f088c594eb0dd",
+          "sha1": "d0896f7caea45228f040e3f14f322736d9c16476",
+          "md5": "7d9869b27d56728d938f14c4640f56f2"
+        }
+      ]
+    },
+    {
+      "name": "releaseRuntimeElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.platform.type": "androidJvm"
+      },
+      "dependencies": [
+        {
+          "group": "androidx.core",
+          "module": "core-ktx",
+          "version": {
+            "requires": "1.10.1"
+          }
+        },
+        {
+          "group": "androidx.appcompat",
+          "module": "appcompat",
+          "version": {
+            "requires": "1.6.1"
+          }
+        },
+        {
+          "group": "com.google.android.material",
+          "module": "material",
+          "version": {
+            "requires": "1.9.0"
+          }
+        },
+        {
+          "group": "com.google.firebase",
+          "module": "firebase-bom",
+          "version": {
+            "requires": "32.1.1"
+          },
+          "attributes": {
+            "org.gradle.category": "platform"
+          },
+          "endorseStrictVersions": true
+        },
+        {
+          "group": "com.google.firebase",
+          "module": "firebase-analytics-ktx"
+        },
+        {
+          "group": "com.google.firebase",
+          "module": "firebase-crashlytics-ktx"
+        },
+        {
+          "group": "com.google.android.gms",
+          "module": "play-services-ads-identifier",
+          "version": {
+            "requires": "18.0.1"
+          }
+        },
+        {
+          "group": "com.google.android.gms",
+          "module": "play-services-ads",
+          "version": {
+            "requires": "22.2.0"
+          }
+        },
+        {
+          "group": "com.google.firebase",
+          "module": "firebase-ads",
+          "version": {
+            "requires": "22.2.0"
+          }
+        },
+        {
+          "group": "androidx.navigation",
+          "module": "navigation-fragment-ktx",
+          "version": {
+            "requires": "2.6.0"
+          }
+        },
+        {
+          "group": "androidx.lifecycle",
+          "module": "lifecycle-livedata-ktx",
+          "version": {
+            "requires": "2.6.1"
+          }
+        },
+        {
+          "group": "androidx.lifecycle",
+          "module": "lifecycle-viewmodel-ktx",
+          "version": {
+            "requires": "2.6.1"
+          }
+        },
+        {
+          "group": "androidx.lifecycle",
+          "module": "lifecycle-process",
+          "version": {
+            "requires": "2.6.1"
+          }
+        },
+        {
+          "group": "com.google.android.gms",
+          "module": "play-services-ads-lite",
+          "version": {
+            "requires": "22.2.0"
+          }
+        },
+        {
+          "group": "androidx.databinding",
+          "module": "databinding-common",
+          "version": {
+            "requires": "8.1.1"
+          }
+        },
+        {
+          "group": "androidx.databinding",
+          "module": "databinding-runtime",
+          "version": {
+            "requires": "8.1.1"
+          }
+        },
+        {
+          "group": "androidx.databinding",
+          "module": "databinding-adapters",
+          "version": {
+            "requires": "8.1.1"
+          }
+        },
+        {
+          "group": "androidx.databinding",
+          "module": "databinding-ktx",
+          "version": {
+            "requires": "8.1.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk8",
+          "version": {
+            "requires": "1.9.0"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "AdsSdk-v1.0.5.aar",
+          "url": "AdsSdk-v1.0.5.aar",
+          "size": 669118,
+          "sha512": "1455c1d5d807087f10dcfc981c033f0ce84283826c4fdd3c8888800f4b9890b07d818026ef0dc4bde3a9de3246ea59840abb59685ada883cff1fa21df319bf00",
+          "sha256": "bd2294601644077c7ffe6b7bd26bb7ef28ab701e70afb321ec5f088c594eb0dd",
+          "sha1": "d0896f7caea45228f040e3f14f322736d9c16476",
+          "md5": "7d9869b27d56728d938f14c4640f56f2"
+        }
+      ]
+    },
+    {
+      "name": "releaseSourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.platform.type": "androidJvm"
+      },
+      "files": [
+        {
+          "name": "AdsSdk-v1.0.5-sources.jar",
+          "url": "AdsSdk-v1.0.5-sources.jar",
+          "size": 44535,
+          "sha512": "39011e1cc74c04380713c3d68ba3292972361bf3e01b5264bd14115d7702c4ca3826efa583c3d09f26068e46e112b095e797c05f0c9d07d0022e89d42f65e225",
+          "sha256": "3ffaa74b018709edc63dde914aed31a32d1ea137f786abc85d4b4be30ed22887",
+          "sha1": "6aa510994f204ab3de5f62bf32bc3d9b58dc9750",
+          "md5": "cc4455d1a3a74269313f60cc842ba739"
+        }
+      ]
+    }
+  ]
+}
