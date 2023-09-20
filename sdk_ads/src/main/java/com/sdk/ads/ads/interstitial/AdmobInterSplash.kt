@@ -13,6 +13,10 @@ object AdmobInterSplash {
 
     private var timer: CountDownTimer? = null
 
+    fun cancelAds() {
+        timer?.cancel()
+    }
+
     /**
      * @param adUnitId: adUnit
      * @param timeout: timeout to wait ad show
