@@ -303,4 +303,8 @@ object AdmobInter {
             }
         }
     }
+
+    fun checkAdsShow(adUnitId: String): Boolean {
+        return inters[adUnitId] != null
+    }
 }

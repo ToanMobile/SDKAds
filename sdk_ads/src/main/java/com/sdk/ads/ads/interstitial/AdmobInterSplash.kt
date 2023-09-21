@@ -17,6 +17,8 @@ object AdmobInterSplash {
         timer?.cancel()
     }
 
+    fun checkAdsShow(adUnitId: String): Boolean = AdmobInter.checkAdsShow(adUnitId = adUnitId)
+
     /**
      * @param adUnitId: adUnit
      * @param timeout: timeout to wait ad show
