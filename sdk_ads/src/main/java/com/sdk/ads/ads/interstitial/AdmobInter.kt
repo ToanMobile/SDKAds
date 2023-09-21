@@ -305,6 +305,6 @@ object AdmobInter {
     }
 
     fun checkAdsShow(adUnitId: String): Boolean {
-        return inters[adUnitId] != null
+        return inters[adUnitId] != null || intersLoading.contains(adUnitId)
     }
 }
