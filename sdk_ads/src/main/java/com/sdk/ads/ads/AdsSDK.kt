@@ -139,7 +139,8 @@ object AdsSDK {
                 preventShowResumeAd = false
                 return
             }
-            AdmobInterResume.onInterAppResume()
+            //TODO
+            //AdmobInterResume.onInterAppResume()
             AdmobOpenResume.onOpenAdAppResume()
         }
 
