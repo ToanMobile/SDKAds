@@ -25,12 +25,6 @@
   <dependencies>
     <dependency>
       <groupId>com.google.android.gms</groupId>
-      <artifactId>play-services-ads-identifier</artifactId>
-      <version>18.0.1</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.google.android.gms</groupId>
       <artifactId>play-services-ads-lite</artifactId>
       <version>22.4.0</version>
       <scope>compile</scope>
@@ -97,6 +91,12 @@
       <groupId>com.google.android.gms</groupId>
       <artifactId>play-services-ads</artifactId>
       <version>22.4.0</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.google.android.gms</groupId>
+      <artifactId>play-services-ads-identifier</artifactId>
+      <version>18.0.1</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>

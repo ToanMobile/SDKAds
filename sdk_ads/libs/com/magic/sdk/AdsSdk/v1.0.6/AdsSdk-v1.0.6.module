@@ -24,13 +24,6 @@
       "dependencies": [
         {
           "group": "com.google.android.gms",
-          "module": "play-services-ads-identifier",
-          "version": {
-            "requires": "18.0.1"
-          }
-        },
-        {
-          "group": "com.google.android.gms",
           "module": "play-services-ads-lite",
           "version": {
             "requires": "22.4.0"
@@ -140,6 +133,13 @@
           }
         },
         {
+          "group": "com.google.android.gms",
+          "module": "play-services-ads-identifier",
+          "version": {
+            "requires": "18.0.1"
+          }
+        },
+        {
           "group": "com.google.firebase",
           "module": "firebase-ads",
           "version": {
@@ -172,13 +172,6 @@
           "module": "lifecycle-process",
           "version": {
             "requires": "2.6.2"
-          }
-        },
-        {
-          "group": "com.google.android.gms",
-          "module": "play-services-ads-identifier",
-          "version": {
-            "requires": "18.0.1"
           }
         },
         {
