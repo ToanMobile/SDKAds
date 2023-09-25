@@ -42,7 +42,7 @@ afterEvaluate {
                 from(components.findByName("release"))
                 groupId = "com.magic.sdk"
                 artifactId = "AdsSdk"
-                version = "v1.0.5"
+                version = "v1.0.6"
             }
         }
     }
@@ -55,8 +55,8 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.1.1"))
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.firebase:firebase-crashlytics-ktx")
-    implementation(libs.play.services.ads.identifier)
     implementation(libs.play.services.ads)
+    api(libs.play.services.ads.identifier)
     api(libs.play.services.ads.lite)
     implementation(libs.firebase.ads)
     implementation(libs.navigation.fragment.ktx)

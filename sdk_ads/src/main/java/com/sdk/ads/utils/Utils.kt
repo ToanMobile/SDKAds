@@ -8,6 +8,7 @@ import android.net.Network
 import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
@@ -121,11 +122,13 @@ fun Activity.avoidShowWhenResume(block: () -> Unit) {
 fun delay(duration: Int, block: () -> Unit) {
     if (duration > 0) {
         safeRun {
-            Handler()
-                .postDelayed(
-                    { block.invoke() },
-                    duration.toLong(),
-                )
+            Looper.myLooper()?.let {
+                Handler(it)
+                    .postDelayed(
+                        { block.invoke() },
+                        duration.toLong(),
+                    )
+            }
         }
         return
     }
@@ -135,11 +138,13 @@ fun delay(duration: Int, block: () -> Unit) {
 fun delay(duration: Long, block: () -> Unit) {
     if (duration > 0) {
         safeRun {
-            Handler()
-                .postDelayed(
-                    { block.invoke() },
-                    duration,
-                )
+            Looper.myLooper()?.let {
+                Handler(it)
+                    .postDelayed(
+                        { block.invoke() },
+                        duration,
+                    )
+            }
         }
         return
     }
