@@ -9,7 +9,7 @@ plugins {
 
 android {
     namespace = "com.sdk.ads"
-    compileSdk = 33
+    compileSdk = 34
     buildFeatures.dataBinding = true
     defaultConfig {
         minSdk = 21
