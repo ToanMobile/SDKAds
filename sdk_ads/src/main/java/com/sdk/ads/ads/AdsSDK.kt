@@ -3,12 +3,18 @@ package com.sdk.ads.ads
 import android.app.Activity
 import android.app.Application
 import android.os.Bundle
+import android.util.Log
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.google.android.gms.ads.AdActivity
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.LoadAdError
+import com.google.android.ump.ConsentDebugSettings
+import com.google.android.ump.ConsentInformation
+import com.google.android.ump.ConsentRequestParameters
+import com.google.android.ump.FormError
+import com.google.android.ump.UserMessagingPlatform
 import com.sdk.ads.ads.banner.AdmobBanner
 import com.sdk.ads.ads.interstitial.AdmobInterResume
 import com.sdk.ads.ads.nativead.AdmobNative
@@ -23,6 +29,7 @@ import com.sdk.ads.utils.logParams
 object AdsSDK {
 
     internal lateinit var app: Application
+    private lateinit var consentInformation: ConsentInformation
 
     var isEnableBanner = true
         private set
@@ -221,4 +228,103 @@ object AdsSDK {
     internal fun defaultAdRequest(): AdRequest {
         return AdRequest.Builder().build()
     }
+
+    //GDPR
+    fun setGDPR(activity: Activity, isDebug: Boolean = false, isRemoveGDPR: Boolean = false, hashId: String = "7822D1589F13F5F09E72FC50D721D7F7", callback: (Boolean) -> Unit): AdsSDK {
+        if (isRemoveGDPR) {
+            callback(true)
+            return this
+        }
+        val debugSettings = ConsentDebugSettings.Builder(activity)
+            .setDebugGeography(ConsentDebugSettings.DebugGeography.DEBUG_GEOGRAPHY_EEA)
+            .addTestDeviceHashedId(hashId)
+            .setForceTesting(true)
+            .build()
+        val params = if (isDebug) {
+            ConsentRequestParameters
+                .Builder()
+                .setConsentDebugSettings(debugSettings)
+                .setTagForUnderAgeOfConsent(false)
+                .build()
+        } else {
+            ConsentRequestParameters
+                .Builder()
+                .setTagForUnderAgeOfConsent(false)
+                .build()
+        }
+
+        consentInformation = UserMessagingPlatform.getConsentInformation(activity)
+        consentInformation.requestConsentInfoUpdate(
+            activity,
+            params,
+            {
+                if (consentInformation.isConsentFormAvailable) {
+                    loadForm(activity, consentInformation, callback)
+                }
+            },
+            { requestConsentError ->
+                // Consent gathering failed.
+                Log.i(
+                    "AdsSDK.GDPR:Error=>", String.format(
+                        "checkGDPR::::%s: %s",
+                        requestConsentError.errorCode,
+                        requestConsentError.message
+                    )
+                )
+            })
+        Log.i("AdsSDK.GDPR.RequestAds=", consentInformation.canRequestAds().toString())
+        if (consentInformation.canRequestAds()) {
+            callback(true)
+            //initializeMobileAdsSdk()
+        }
+        return this
+    }
+
+    private fun loadForm(context: Activity, consentInformation: ConsentInformation, callback: (Boolean) -> Unit) {
+        UserMessagingPlatform.loadConsentForm(context, { consentForm ->
+            if (consentInformation.consentStatus == ConsentInformation.ConsentStatus.REQUIRED) {
+                consentForm.show(context) { formError: FormError? ->
+                    if (formError != null) {
+                        Log.i("AdsSDK.GDPR.error=", formError.errorCode.toString() + "message:" + formError.message)
+                    }
+                    when (consentInformation.consentStatus) {
+                        ConsentInformation.ConsentStatus.OBTAINED -> {
+                            Log.i("AdsSDK.GDPR=", "OBTAINED")
+                            callback(true)
+                        }
+
+                        ConsentInformation.ConsentStatus.NOT_REQUIRED -> {
+                            Log.i("AdsSDK.GDPR=", "NOT_REQUIRED")
+                        }
+
+                        ConsentInformation.ConsentStatus.REQUIRED -> {
+                            Log.i("AdsSDK.GDPR=", "REQUIRED")
+                        }
+
+                        ConsentInformation.ConsentStatus.UNKNOWN -> {
+                            Log.i("AdsSDK.GDPR=", "UNKNOWN")
+                        }
+                    }
+                }
+            }
+        }) {
+            // Handle Error.
+            callback(false)
+            Log.i(
+                "AdsSDK.checkGDPR=", String.format(
+                    "checkGDPR::::%s: %s",
+                    it.errorCode,
+                    it.message
+                )
+            )
+        }
+    }
+
+    fun resetGDPR() {
+        if (::consentInformation.isInitialized) {
+            Log.i("AdsSDK.resetGDPR=", "resetGDPR")
+            consentInformation.reset()
+        }
+    }
+
 }

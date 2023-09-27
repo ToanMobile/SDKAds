@@ -17,7 +17,7 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             consumerProguardFile("proguard-rules.pro")
         }
     }
@@ -37,27 +37,28 @@ afterEvaluate {
         }
         publications {
             create<MavenPublication>("maven") {
-                val variantName = project.name
+                //val variantName = project.name
                 // from(components[variantName])
                 from(components.findByName("release"))
                 groupId = "com.magic.sdk"
                 artifactId = "AdsSdk"
-                version = "v1.0.6"
+                version = "v1.0.7"
             }
         }
     }
 }
 
 dependencies {
+    implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
+    implementation("com.google.firebase:firebase-analytics-ktx")
+    implementation("com.google.firebase:firebase-crashlytics-ktx")
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
     implementation(libs.material)
-    implementation(platform("com.google.firebase:firebase-bom:32.1.1"))
-    implementation("com.google.firebase:firebase-analytics-ktx")
-    implementation("com.google.firebase:firebase-crashlytics-ktx")
     implementation(libs.play.services.ads)
     implementation(libs.play.services.ads.identifier)
     api(libs.play.services.ads.lite)
+    implementation(libs.ads.gdpr)
     implementation(libs.firebase.ads)
     implementation(libs.navigation.fragment.ktx)
     implementation(libs.lifecycle.livedata.ktx)
