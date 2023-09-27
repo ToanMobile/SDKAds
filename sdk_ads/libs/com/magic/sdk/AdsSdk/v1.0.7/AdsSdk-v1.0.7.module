@@ -69,11 +69,11 @@
         {
           "name": "AdsSdk-v1.0.7.aar",
           "url": "AdsSdk-v1.0.7.aar",
-          "size": 583695,
-          "sha512": "c346cf13ab58a054479f5aab141cd0c9c26e622863fedd01f8bcdd3221ad9618aecfa9ecc08ebc196f986981f33c91e770dcdb0de53d531ca5e0f9e1a8a3a210",
-          "sha256": "991ca8929549db89d413f077274615c42a0b10e18cbf6305ccc4d24e7da1e6c4",
-          "sha1": "a1eefbdd0aaa167b5b12d4067014ff08af6d25a2",
-          "md5": "1ecc9c3c5bd064646456fc7246d32359"
+          "size": 672499,
+          "sha512": "be6dabc41a9b0ed4b883f56d988795eb968758cbda05fc55a554cb79e9db9610c23f6717c56216dfad64463150c91152494f1cd4bc69fe60eb3ab756389be959",
+          "sha256": "85358d1f9a13dc55dfe8e650708b0d8d442b9dbd1c1b8f221c71813143c50a33",
+          "sha1": "0737554dfd7995094440509b6d59b1d198a861e4",
+          "md5": "3a75195baac6c3b29828f57cf16a1ba1"
         }
       ]
     },
@@ -228,11 +228,11 @@
         {
           "name": "AdsSdk-v1.0.7.aar",
           "url": "AdsSdk-v1.0.7.aar",
-          "size": 583695,
-          "sha512": "c346cf13ab58a054479f5aab141cd0c9c26e622863fedd01f8bcdd3221ad9618aecfa9ecc08ebc196f986981f33c91e770dcdb0de53d531ca5e0f9e1a8a3a210",
-          "sha256": "991ca8929549db89d413f077274615c42a0b10e18cbf6305ccc4d24e7da1e6c4",
-          "sha1": "a1eefbdd0aaa167b5b12d4067014ff08af6d25a2",
-          "md5": "1ecc9c3c5bd064646456fc7246d32359"
+          "size": 672499,
+          "sha512": "be6dabc41a9b0ed4b883f56d988795eb968758cbda05fc55a554cb79e9db9610c23f6717c56216dfad64463150c91152494f1cd4bc69fe60eb3ab756389be959",
+          "sha256": "85358d1f9a13dc55dfe8e650708b0d8d442b9dbd1c1b8f221c71813143c50a33",
+          "sha1": "0737554dfd7995094440509b6d59b1d198a861e4",
+          "md5": "3a75195baac6c3b29828f57cf16a1ba1"
         }
       ]
     },
