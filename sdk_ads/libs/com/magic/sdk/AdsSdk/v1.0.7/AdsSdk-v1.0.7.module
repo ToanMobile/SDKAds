@@ -89,7 +89,7 @@
           "group": "com.google.firebase",
           "module": "firebase-bom",
           "version": {
-            "requires": "32.3.1"
+            "requires": "32.1.1"
           },
           "attributes": {
             "org.gradle.category": "platform"
