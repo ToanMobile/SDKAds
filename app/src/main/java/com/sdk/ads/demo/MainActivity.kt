@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.ads.LoadAdError
 import com.sdk.ads.ads.interstitial.AdmobInterSplash
 import com.sdk.ads.utils.AdType
+import com.sdk.ads.utils.TAdCallback
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,6 +19,30 @@ class MainActivity : AppCompatActivity() {
                 Log.e("callbackADS", "Ads")
             })
         }
+
+        com.sdk.ads.ads.nativead.AdmobNative.show(
+            findViewById(R.id.layoutAdsNative),
+            adUnitId = "ca-app-pub-3940256099942544/2247696110",//"ca-app-pub-2428922951355303/6635076633",
+            nativeContentLayoutId = R.layout.layout_ads_native,
+            forceRefresh = false,
+            callback = object : TAdCallback {
+                override fun onAdLoaded(adUnit: String, adType: AdType) {
+                    super.onAdLoaded(adUnit, adType)
+                    Log.e("callbackADS", "onAdLoaded")
+                }
+
+                override fun onAdFailedToLoad(adUnit: String, adType: AdType, error: LoadAdError) {
+                    super.onAdFailedToLoad(adUnit, adType, error)
+                    Log.e("callbackADS", "onAdFailedToLoad")
+                }
+
+                override fun onAdFailedToShowFullScreenContent(adUnit: String, adType: AdType) {
+                    super.onAdFailedToShowFullScreenContent(adUnit, adType)
+                    Log.e("callbackADS", "onAdFailedToShowFullScreenContent")
+                }
+            }
+        )
+
         com.sdk.ads.ads.banner.AdmobBanner.showAdaptive(
             findViewById(R.id.viewBottom),
             adUnitId = "ca-app-pub-2428922951355303/2584272751",
