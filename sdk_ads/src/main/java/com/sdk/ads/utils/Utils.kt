@@ -23,6 +23,7 @@ import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdValue
 import com.google.android.gms.ads.ResponseInfo
 import com.sdk.ads.ads.AdsSDK
+import com.sdk.ads.databinding.AdLoadingBanner300250Binding
 import com.sdk.ads.databinding.AdLoadingViewBinding
 
 val displayMetrics: DisplayMetrics get() = Resources.getSystem().displayMetrics
@@ -172,6 +173,16 @@ fun AppCompatActivity?.runIfResuming(block: () -> Unit) {
 
 fun ViewGroup.addLoadingView() {
     val view = AdLoadingViewBinding
+        .inflate(LayoutInflater.from(context), null, false)
+        .root
+
+    removeAllViews()
+    addView(view)
+    view.requestLayout()
+}
+
+fun ViewGroup.addLoadingView300x250() {
+    val view = AdLoadingBanner300250Binding
         .inflate(LayoutInflater.from(context), null, false)
         .root
 

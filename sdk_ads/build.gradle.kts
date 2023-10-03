@@ -42,7 +42,7 @@ afterEvaluate {
                 from(components.findByName("release"))
                 groupId = "com.magic.sdk"
                 artifactId = "AdsSdk"
-                version = "v1.0.7"
+                version = "v1.0.8"
             }
         }
     }
@@ -64,4 +64,5 @@ dependencies {
     implementation(libs.lifecycle.livedata.ktx)
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.lifecycle.process)
+    implementation(libs.shimmer)
 }

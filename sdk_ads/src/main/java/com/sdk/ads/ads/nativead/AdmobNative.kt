@@ -21,6 +21,7 @@ import com.google.android.gms.ads.nativead.NativeAdView
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.sdk.ads.R
 import com.sdk.ads.ads.AdsSDK
+import com.sdk.ads.databinding.AdLoadingNativeViewBinding
 import com.sdk.ads.databinding.AdLoadingViewBinding
 import com.sdk.ads.utils.AdType
 import com.sdk.ads.utils.TAdCallback
@@ -388,7 +389,7 @@ object AdmobNative {
     }
 
     private fun addLoadingLayout(viewGroup: ViewGroup) {
-        val view = AdLoadingViewBinding
+        val view = AdLoadingNativeViewBinding
             .inflate(LayoutInflater.from(viewGroup.context))
             .root
 

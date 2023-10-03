@@ -13,37 +13,18 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_70">
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/dp_250">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/img3"
-                android:layout_width="@dimen/dp_50"
-                android:layout_height="@dimen/dp_50"
-                android:layout_marginStart="@dimen/dp_16"
-                android:background="#B5B2B2"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
                 android:layout_width="0dp"
-                android:layout_height="@dimen/dp_40"
-                android:layout_marginStart="@dimen/dp_8"
-                android:layout_marginEnd="@dimen/dp_8"
-                android:background="#B5B2B2"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/img4"
-                app:layout_constraintStart_toEndOf="@id/img3"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/img4"
-                android:layout_width="@dimen/dp_100"
-                android:layout_height="@dimen/dp_50"
-                android:layout_marginHorizontal="@dimen/dp_16"
+                android:layout_height="0dp"
+                android:layout_margin="@dimen/dp_16"
                 android:background="#B5B2B2"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
@@ -62,6 +43,5 @@
                 tools:ignore="HardcodedText" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </com.facebook.shimmer.ShimmerFrameLayout>
 </layout>

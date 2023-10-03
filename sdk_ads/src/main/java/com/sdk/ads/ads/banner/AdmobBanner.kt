@@ -15,6 +15,7 @@ import com.sdk.ads.ads.AdsSDK.isEnableBanner
 import com.sdk.ads.utils.TAdCallback
 import com.sdk.ads.utils.adaptiveBannerSize
 import com.sdk.ads.utils.addLoadingView
+import com.sdk.ads.utils.addLoadingView300x250
 import com.sdk.ads.utils.getPaidTrackingBundle
 import com.sdk.ads.utils.isNetworkAvailable
 
@@ -98,7 +99,7 @@ object AdmobBanner {
         }
 
         val adSize = getAdSize(bannerType)
-        addLoadingLayout(adContainer, adSize)
+        addLoadingLayout(adContainer, adSize, bannerType)
 
         if (!adContainer.context.isNetworkAvailable()) {
             return
@@ -139,13 +140,17 @@ object AdmobBanner {
         adContainer.addView(bannerView)
     }
 
-    private fun addLoadingLayout(adContainer: ViewGroup, adSize: AdSize) {
+    private fun addLoadingLayout(adContainer: ViewGroup, adSize: AdSize, bannerType: BannerAdSize) {
         val lp = adContainer.layoutParams
         lp.width = adSize.getWidthInPixels(adContainer.context)
         lp.height = adSize.getHeightInPixels(adContainer.context)
         adContainer.layoutParams = lp
         adContainer.requestLayout()
-        adContainer.addLoadingView()
+        if (bannerType == BannerAdSize.Banner300x250) {
+            adContainer.addLoadingView300x250()
+        } else {
+            adContainer.addLoadingView()
+        }
     }
 
     private fun getAdSize(bannerAdSize: BannerAdSize): AdSize {
