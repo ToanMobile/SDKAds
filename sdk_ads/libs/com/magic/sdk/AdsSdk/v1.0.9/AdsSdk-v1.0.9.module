@@ -24,7 +24,7 @@
       "dependencies": [
         {
           "group": "com.google.firebase",
-          "module": "firebase-common-ktx"
+          "module": "firebase-crashlytics-ktx"
         },
         {
           "group": "com.google.android.gms",
@@ -103,10 +103,6 @@
         {
           "group": "com.google.firebase",
           "module": "firebase-analytics-ktx"
-        },
-        {
-          "group": "com.google.firebase",
-          "module": "firebase-crashlytics-ktx"
         },
         {
           "group": "androidx.core",
@@ -194,7 +190,7 @@
         },
         {
           "group": "com.google.firebase",
-          "module": "firebase-common-ktx"
+          "module": "firebase-crashlytics-ktx"
         },
         {
           "group": "com.google.android.gms",
