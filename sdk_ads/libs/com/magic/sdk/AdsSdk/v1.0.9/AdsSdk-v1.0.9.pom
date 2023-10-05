@@ -24,6 +24,11 @@
   </dependencyManagement>
   <dependencies>
     <dependency>
+      <groupId>com.google.firebase</groupId>
+      <artifactId>firebase-common-ktx</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
       <groupId>com.google.android.gms</groupId>
       <artifactId>play-services-ads-lite</artifactId>
       <version>22.4.0</version>
@@ -67,11 +72,6 @@
     <dependency>
       <groupId>com.google.firebase</groupId>
       <artifactId>firebase-crashlytics-ktx</artifactId>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.google.firebase</groupId>
-      <artifactId>firebase-common-ktx</artifactId>
       <scope>runtime</scope>
     </dependency>
     <dependency>

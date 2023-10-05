@@ -23,6 +23,10 @@
       },
       "dependencies": [
         {
+          "group": "com.google.firebase",
+          "module": "firebase-common-ktx"
+        },
+        {
           "group": "com.google.android.gms",
           "module": "play-services-ads-lite",
           "version": {
@@ -103,10 +107,6 @@
         {
           "group": "com.google.firebase",
           "module": "firebase-crashlytics-ktx"
-        },
-        {
-          "group": "com.google.firebase",
-          "module": "firebase-common-ktx"
         },
         {
           "group": "androidx.core",
@@ -191,6 +191,10 @@
           "version": {
             "requires": "0.5.0"
           }
+        },
+        {
+          "group": "com.google.firebase",
+          "module": "firebase-common-ktx"
         },
         {
           "group": "com.google.android.gms",
