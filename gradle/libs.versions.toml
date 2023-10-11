@@ -7,12 +7,13 @@ crashlyticsVersion = "2.9.7"
 core-ktx = "1.12.0"
 appcompat = "1.6.1"
 lifecycleLivedataKtx = "2.6.2"
-material = "1.9.0"
+material = "1.10.0"
 constraintlayout = "2.1.4"
-navigationFragmentKtx = "2.7.3"
+navigationFragmentKtx = "2.7.4"
 playServicesAds = "22.4.0"
 playServicesAdsIdentifier = "18.0.1"
 gdprVersion = "2.1.0"
+billingVersion = "6.0.1"
 shimmer = "0.5.0"
 
 [libraries]
@@ -29,6 +30,7 @@ play-services-ads = { module = "com.google.android.gms:play-services-ads", versi
 play-services-ads-identifier = { module = "com.google.android.gms:play-services-ads-identifier", version.ref = "playServicesAdsIdentifier" }
 play-services-ads-lite = { module = "com.google.android.gms:play-services-ads-lite", version.ref = "playServicesAds" }
 ads-gDPR = { module = "com.google.android.ump:user-messaging-platform", version.ref = "gdprVersion"}
+ads-billing = { module = "com.android.billingclient:billing-ktx", version.ref = "billingVersion"}
 shimmer = { module = "com.facebook.shimmer:shimmer", version.ref = "shimmer" }
 
 [plugins]

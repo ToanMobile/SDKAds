@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
 
         com.sdk.ads.ads.nativead.AdmobNative.show(
             findViewById(R.id.layoutAdsNative),
-            adUnitId = "ca-app-pub-3940256099942544/2247696110",//"ca-app-pub-2428922951355303/6635076633",
+            adUnitId = "ca-app-pub-3940256099942544/2247696110", // "ca-app-pub-2428922951355303/6635076633",
             nativeContentLayoutId = R.layout.layout_ads_native,
             forceRefresh = false,
             callback = object : TAdCallback {
@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
                     super.onAdFailedToShowFullScreenContent(adUnit, adType)
                     Log.e("callbackADS", "onAdFailedToShowFullScreenContent")
                 }
-            }
+            },
         )
 
         com.sdk.ads.ads.banner.AdmobBanner.showAdaptive(

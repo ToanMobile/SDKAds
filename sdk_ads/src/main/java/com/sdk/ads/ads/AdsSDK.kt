@@ -3,22 +3,23 @@ package com.sdk.ads.ads
 import android.app.Activity
 import android.app.Application
 import android.os.Bundle
-import android.util.Log
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.google.android.gms.ads.AdActivity
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.LoadAdError
-import com.google.android.ump.ConsentDebugSettings
-import com.google.android.ump.ConsentInformation
-import com.google.android.ump.ConsentRequestParameters
-import com.google.android.ump.FormError
-import com.google.android.ump.UserMessagingPlatform
+import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.RequestConfiguration
 import com.sdk.ads.ads.banner.AdmobBanner
 import com.sdk.ads.ads.interstitial.AdmobInterResume
 import com.sdk.ads.ads.nativead.AdmobNative
 import com.sdk.ads.ads.open.AdmobOpenResume
+import com.sdk.ads.billing.BillingManager
+import com.sdk.ads.billing.BillingPurchase
+import com.sdk.ads.billing.PurchaseListener
+import com.sdk.ads.billing.extensions.containsAny
+import com.sdk.ads.consent.ConsentManager
 import com.sdk.ads.utils.ActivityActivityLifecycleCallbacks
 import com.sdk.ads.utils.AdType
 import com.sdk.ads.utils.TAdCallback
@@ -29,7 +30,10 @@ import com.sdk.ads.utils.logParams
 object AdsSDK {
 
     internal lateinit var app: Application
-    private lateinit var consentInformation: ConsentInformation
+    private var isInitialized = false
+
+    var isEnableAds = true
+        private set
 
     var isEnableBanner = true
         private set
@@ -54,6 +58,8 @@ object AdsSDK {
     private var outsideAdCallback: TAdCallback? = null
 
     private var preventShowResumeAd = false
+    private var purchaseSkuForRemovingAds: List<String>? = null
+    private var listTestDeviceIDs: List<String>? = null
 
     val adCallback: TAdCallback = object : TAdCallback {
         override fun onAdClicked(adUnit: String, adType: AdType) {
@@ -229,102 +235,86 @@ object AdsSDK {
         return AdRequest.Builder().build()
     }
 
-    //GDPR
-    fun setGDPR(activity: Activity, isDebug: Boolean = false, isRemoveGDPR: Boolean = false, hashId: String = "7822D1589F13F5F09E72FC50D721D7F7", callback: (Boolean) -> Unit): AdsSDK {
-        if (isRemoveGDPR) {
-            callback(true)
-            return this
-        }
-        val debugSettings = ConsentDebugSettings.Builder(activity)
-            .setDebugGeography(ConsentDebugSettings.DebugGeography.DEBUG_GEOGRAPHY_EEA)
-            .addTestDeviceHashedId(hashId)
-            .setForceTesting(true)
-            .build()
-        val params = if (isDebug) {
-            ConsentRequestParameters
-                .Builder()
-                .setConsentDebugSettings(debugSettings)
-                .setTagForUnderAgeOfConsent(false)
-                .build()
-        } else {
-            ConsentRequestParameters
-                .Builder()
-                .setTagForUnderAgeOfConsent(false)
-                .build()
+    // UMP
+    fun initialize(activity: Activity, listener: AdsInitializeListener) {
+        setDebugConfiguration()
+
+        if (!isEnableAds) {
+            listener.onFail("Ads is not allowed.")
+            listener.always()
+            return
         }
 
-        consentInformation = UserMessagingPlatform.getConsentInformation(activity)
-        consentInformation.requestConsentInfoUpdate(
-            activity,
-            params,
-            {
-                if (consentInformation.isConsentFormAvailable) {
-                    loadForm(activity, consentInformation, callback)
-                }
-            },
-            { requestConsentError ->
-                // Consent gathering failed.
-                Log.i(
-                    "AdsSDK.GDPR:Error=>", String.format(
-                        "checkGDPR::::%s: %s",
-                        requestConsentError.errorCode,
-                        requestConsentError.message
-                    )
-                )
-            })
-        Log.i("AdsSDK.GDPR.RequestAds=", consentInformation.canRequestAds().toString())
-        if (consentInformation.canRequestAds()) {
-            callback(true)
-            //initializeMobileAdsSdk()
+        if (isInitialized) {
+            listener.onInitialize()
+            listener.always()
+            return
         }
-        return this
+        val skus = purchaseSkuForRemovingAds ?: listOf()
+        if (skus.isNotEmpty()) {
+            performQueryPurchases(activity, listener)
+        } else {
+            performConsent(activity, listener)
+        }
     }
 
-    private fun loadForm(context: Activity, consentInformation: ConsentInformation, callback: (Boolean) -> Unit) {
-        UserMessagingPlatform.loadConsentForm(context, { consentForm ->
-            if (consentInformation.consentStatus == ConsentInformation.ConsentStatus.REQUIRED) {
-                consentForm.show(context) { formError: FormError? ->
-                    if (formError != null) {
-                        Log.i("AdsSDK.GDPR.error=", formError.errorCode.toString() + "message:" + formError.message)
-                    }
-                    when (consentInformation.consentStatus) {
-                        ConsentInformation.ConsentStatus.OBTAINED -> {
-                            Log.i("AdsSDK.GDPR=", "OBTAINED")
-                            callback(true)
-                        }
-
-                        ConsentInformation.ConsentStatus.NOT_REQUIRED -> {
-                            Log.i("AdsSDK.GDPR=", "NOT_REQUIRED")
-                        }
-
-                        ConsentInformation.ConsentStatus.REQUIRED -> {
-                            Log.i("AdsSDK.GDPR=", "REQUIRED")
-                        }
-
-                        ConsentInformation.ConsentStatus.UNKNOWN -> {
-                            Log.i("AdsSDK.GDPR=", "UNKNOWN")
-                        }
-                    }
+    private fun performQueryPurchases(activity: Activity, listener: AdsInitializeListener) {
+        val billingManager = BillingManager(activity)
+        billingManager.purchaseListener = object : PurchaseListener {
+            override fun onResult(purchases: List<BillingPurchase>, pending: List<BillingPurchase>) {
+                val skus = purchaseSkuForRemovingAds ?: listOf()
+                if (!purchases.containsAny(skus)) {
+                    performConsent(activity, listener)
+                } else {
+                    listener.onFail("There are some purchases for removing ads.")
+                    listener.always()
                 }
             }
-        }) {
-            // Handle Error.
-            callback(false)
-            Log.i(
-                "AdsSDK.checkGDPR=", String.format(
-                    "checkGDPR::::%s: %s",
-                    it.errorCode,
-                    it.message
-                )
-            )
+        }
+
+        billingManager.queryPurchases()
+    }
+
+    private fun performConsent(activity: Activity, listener: AdsInitializeListener) {
+        ConsentManager(activity).request {
+            if (it) {
+                performInitializeAds(activity, listener)
+            } else {
+                listener.onFail("User data consent couldn't be requested.")
+                listener.always()
+            }
         }
     }
 
-    fun resetGDPR() {
-        if (::consentInformation.isInitialized) {
-            Log.i("AdsSDK.resetGDPR=", "resetGDPR")
-            consentInformation.reset()
+    private fun performInitializeAds(activity: Activity, listener: AdsInitializeListener) {
+        MobileAds.initialize(activity) {
+            isInitialized = it.adapterStatusMap.entries.any { entry -> entry.value.initializationState.name == "READY" }
+
+            if (isInitialized) {
+                MobileAds.setAppMuted(true)
+                listener.onInitialize()
+            } else {
+                val first = it.adapterStatusMap.entries.firstOrNull()?.value
+                listener.onFail(first?.description ?: first?.initializationState?.name ?: "Ads initialization fail.")
+            }
+            listener.always()
         }
     }
 
+    fun setDebug(purchasedSkuRemovingAds: List<String>, listTestDeviceIDs: List<String>) {
+        this.purchaseSkuForRemovingAds = purchasedSkuRemovingAds
+        this.listTestDeviceIDs = listTestDeviceIDs
+    }
+
+    private fun setDebugConfiguration() {
+        val devices = mutableListOf(AdRequest.DEVICE_ID_EMULATOR)
+        listTestDeviceIDs?.let {
+            devices.addAll(it)
+        }
+        MobileAds.setRequestConfiguration(
+            RequestConfiguration.Builder()
+                .setTestDeviceIds(devices)
+                .build(),
+        )
+    }
 }

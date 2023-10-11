@@ -37,12 +37,12 @@ afterEvaluate {
         }
         publications {
             create<MavenPublication>("maven") {
-                //val variantName = project.name
+                // val variantName = project.name
                 // from(components[variantName])
                 from(components.findByName("release"))
                 groupId = "com.magic.sdk"
                 artifactId = "AdsSdk"
-                version = "v1.0.9"
+                version = "v1.1.0"
             }
         }
     }
@@ -53,13 +53,14 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics-ktx")
     api("com.google.firebase:firebase-crashlytics-ktx")
     api(libs.play.services.ads.lite)
-    implementation(libs.core.ktx)
-    implementation(libs.appcompat)
-    implementation(libs.material)
     implementation(libs.play.services.ads)
     implementation(libs.play.services.ads.identifier)
     implementation(libs.ads.gdpr)
+    implementation(libs.ads.billing)
     implementation(libs.firebase.ads)
+    implementation(libs.core.ktx)
+    implementation(libs.appcompat)
+    implementation(libs.material)
     implementation(libs.navigation.fragment.ktx)
     implementation(libs.lifecycle.livedata.ktx)
     implementation(libs.lifecycle.viewmodel.ktx)

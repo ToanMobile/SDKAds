@@ -22,7 +22,6 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.sdk.ads.R
 import com.sdk.ads.ads.AdsSDK
 import com.sdk.ads.databinding.AdLoadingNativeViewBinding
-import com.sdk.ads.databinding.AdLoadingViewBinding
 import com.sdk.ads.utils.AdType
 import com.sdk.ads.utils.TAdCallback
 import com.sdk.ads.utils.getPaidTrackingBundle
