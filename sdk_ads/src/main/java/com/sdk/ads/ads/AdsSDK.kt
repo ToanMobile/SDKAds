@@ -60,6 +60,8 @@ object AdsSDK {
     private var preventShowResumeAd = false
     private var purchaseSkuForRemovingAds: List<String>? = null
     private var listTestDeviceIDs: List<String>? = null
+    var isConsentApplicable: Boolean = if (::consentManager.isInitialized) consentManager.isApplicable else false
+    private lateinit var consentManager: ConsentManager
 
     val adCallback: TAdCallback = object : TAdCallback {
         override fun onAdClicked(adUnit: String, adType: AdType) {
@@ -238,7 +240,6 @@ object AdsSDK {
     // UMP
     fun initialize(activity: Activity, listener: AdsInitializeListener) {
         setDebugConfiguration()
-
         if (!isEnableAds) {
             listener.onFail("Ads is not allowed.")
             listener.always()
@@ -276,7 +277,8 @@ object AdsSDK {
     }
 
     private fun performConsent(activity: Activity, listener: AdsInitializeListener) {
-        ConsentManager(activity).request {
+        consentManager = ConsentManager(activity)
+        consentManager.request {
             if (it) {
                 performInitializeAds(activity, listener)
             } else {
@@ -284,12 +286,14 @@ object AdsSDK {
                 listener.always()
             }
         }
+        if (::consentManager.isInitialized) {
+            isConsentApplicable = consentManager.isApplicable
+        }
     }
 
     private fun performInitializeAds(activity: Activity, listener: AdsInitializeListener) {
         MobileAds.initialize(activity) {
             isInitialized = it.adapterStatusMap.entries.any { entry -> entry.value.initializationState.name == "READY" }
-
             if (isInitialized) {
                 MobileAds.setAppMuted(true)
                 listener.onInitialize()
@@ -316,5 +320,14 @@ object AdsSDK {
                 .setTestDeviceIds(devices)
                 .build(),
         )
+    }
+
+    fun resetConsent() {
+        consentManager.reset()
+        /*consentManager.request {
+            if (it) {
+                resume()
+            }
+        }*/
     }
 }

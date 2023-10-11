@@ -275,5 +275,5 @@ fun adLogger(
     adUnitId: String,
     message: String,
 ) {
-    Log.i("AdsSDK.ThoNH.[$adType]", "[$adUnitId] => $message")
+    Log.i("AdsSDK.ToanMobile.[$adType]", "[$adUnitId] => $message")
 }
