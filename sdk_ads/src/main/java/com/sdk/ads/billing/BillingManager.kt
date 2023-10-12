@@ -1,6 +1,7 @@
 package com.sdk.ads.billing
 
 import android.app.Activity
+import android.util.Log
 import com.android.billingclient.api.*
 import com.android.billingclient.api.BillingClient.BillingResponseCode.OK
 import com.android.billingclient.api.BillingClient.BillingResponseCode.SERVICE_DISCONNECTED
@@ -85,6 +86,7 @@ class BillingManager(activity: Activity) {
     fun launchBillingFlow(sku: String) {
         ensureConnection {
             performQuerySkuDetails(listOf(sku)) { skuDetails ->
+                Log.e("launchBillingFlow::", skuDetails.toString())
                 skuDetails.firstOrNull()?.let {
                     performLaunchBillingFlow(it)
                 }
@@ -124,16 +126,19 @@ class BillingManager(activity: Activity) {
             .setSkusList(skus)
             .setType(INAPP)
             .build()
-
+        Log.e("querySkuDetails:skus::", skus.toString() + "params:" + params.toString())
         billingClient.querySkuDetailsAsync(params) { result, detailsList ->
+            Log.e("querySkuDetailsAsync::", result.toString() + "detailsList:" + detailsList.toString())
             when (result.responseCode) {
                 OK -> {
                     val list = detailsList ?: listOf()
                     resultHandler?.invoke(list)
                     productsListener?.onResult(list.asBillingProducts)
                 }
+
                 SERVICE_DISCONNECTED -> querySkuDetails(skus)
                 else -> {
+                    Log.e("querySkuDetailsError::", result.toString())
                     // TODO: Handle other errors
                 }
             }
@@ -201,6 +206,7 @@ class BillingManager(activity: Activity) {
             OK -> purchases?.let {
                 handlePurchases(it)
             }
+
             SERVICE_DISCONNECTED -> startConnection()
             else -> queryPurchases()
         }

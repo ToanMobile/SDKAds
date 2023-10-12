@@ -93,6 +93,7 @@ class ConsentManager(activity: Activity) {
         val debugSettings = ConsentDebugSettings.Builder(activity)
             .setDebugGeography(ConsentDebugSettings.DebugGeography.DEBUG_GEOGRAPHY_EEA)
             .addTestDeviceHashedId(AdRequest.DEVICE_ID_EMULATOR)
+            .addTestDeviceHashedId("7F918B01D8AF60BA7D816B92323D4F97")
             .setForceTesting(true)
             .build()
         builder.setConsentDebugSettings(debugSettings)

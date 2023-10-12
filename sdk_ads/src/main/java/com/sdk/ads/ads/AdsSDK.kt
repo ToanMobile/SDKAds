@@ -18,7 +18,7 @@ import com.sdk.ads.ads.open.AdmobOpenResume
 import com.sdk.ads.billing.BillingManager
 import com.sdk.ads.billing.BillingPurchase
 import com.sdk.ads.billing.PurchaseListener
-import com.sdk.ads.billing.extensions.containsAny
+import com.sdk.ads.billing.extensions.containsAnySKU
 import com.sdk.ads.consent.ConsentManager
 import com.sdk.ads.utils.ActivityActivityLifecycleCallbacks
 import com.sdk.ads.utils.AdType
@@ -264,7 +264,7 @@ object AdsSDK {
         billingManager.purchaseListener = object : PurchaseListener {
             override fun onResult(purchases: List<BillingPurchase>, pending: List<BillingPurchase>) {
                 val skus = purchaseSkuForRemovingAds ?: listOf()
-                if (!purchases.containsAny(skus)) {
+                if (!purchases.containsAnySKU(skus)) {
                     performConsent(activity, listener)
                 } else {
                     listener.onFail("There are some purchases for removing ads.")
@@ -305,9 +305,14 @@ object AdsSDK {
         }
     }
 
-    fun setDebug(purchasedSkuRemovingAds: List<String>, listTestDeviceIDs: List<String>) {
+    fun setPurchaseSku(purchasedSkuRemovingAds: List<String>): AdsSDK {
         this.purchaseSkuForRemovingAds = purchasedSkuRemovingAds
+        return this
+    }
+
+    fun setDeviceTest(listTestDeviceIDs: List<String>): AdsSDK {
         this.listTestDeviceIDs = listTestDeviceIDs
+        return this
     }
 
     private fun setDebugConfiguration() {
