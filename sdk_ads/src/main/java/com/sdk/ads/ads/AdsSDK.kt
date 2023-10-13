@@ -277,6 +277,8 @@ object AdsSDK {
     }
 
     private fun performConsent(activity: Activity, listener: AdsInitializeListener) {
+        performInitializeAds(activity, listener)
+        return
         consentManager = ConsentManager(activity)
         consentManager.request {
             if (it) {

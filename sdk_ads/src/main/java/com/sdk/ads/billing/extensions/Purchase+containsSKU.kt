@@ -6,14 +6,14 @@ import com.sdk.ads.billing.BillingPurchase
 @JvmName("skusPurchase")
 fun List<Purchase>.skus(): List<String> {
     val list = arrayListOf<String>()
-    forEach { list + it.skus }
+    forEach { list.addAll(it.products) }
     return list
 }
 
 @JvmName("skusBillingPurchase")
 fun List<BillingPurchase>.skus(): List<String> {
     val list = arrayListOf<String>()
-    forEach { list + it.skus }
+    forEach { list.addAll(it.products) }
     return list
 }
 
