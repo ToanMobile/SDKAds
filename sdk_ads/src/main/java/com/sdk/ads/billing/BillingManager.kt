@@ -5,6 +5,7 @@ import android.util.Log
 import com.android.billingclient.api.*
 import com.android.billingclient.api.BillingClient.BillingResponseCode.OK
 import com.android.billingclient.api.BillingClient.BillingResponseCode.SERVICE_DISCONNECTED
+import com.android.billingclient.api.BillingClient.BillingResponseCode.USER_CANCELED
 import com.android.billingclient.api.BillingClient.ProductType.INAPP
 import com.android.billingclient.api.BillingClient.ProductType.SUBS
 import com.android.billingclient.api.Purchase.PurchaseState.PENDING
@@ -145,7 +146,11 @@ class BillingManager(activity: Activity) {
         }
     }
 
-    private fun queryProductDetails(productIdsInApp: List<String>, productIdsSubs: List<String>, purchasedSku: String) = runBlocking {
+    private fun queryProductDetails(
+        productIdsInApp: List<String>,
+        productIdsSubs: List<String>,
+        purchasedSku: String
+    ) = runBlocking {
         val inAppFlow = getDetailsFlow(productIdsInApp, INAPP)
         val subsFlow = getDetailsFlow(productIdsSubs, SUBS)
         inAppFlow.zip(subsFlow) { inAppResult, subsResult ->
@@ -172,7 +177,10 @@ class BillingManager(activity: Activity) {
         }
     }
 
-    private fun performQuerySkuDetails(skus: List<String>, resultHandler: ((List<SkuDetails>) -> Unit)? = null) {
+    private fun performQuerySkuDetails(
+        skus: List<String>,
+        resultHandler: ((List<SkuDetails>) -> Unit)? = null
+    ) {
         val params = SkuDetailsParams
             .newBuilder()
             .setSkusList(skus)
@@ -180,7 +188,10 @@ class BillingManager(activity: Activity) {
             .build()
         Log.e("querySkuDetails:skus::", skus.toString() + "params:" + params.toString())
         billingClient.querySkuDetailsAsync(params) { result, detailsList ->
-            Log.e("querySkuDetailsAsync::", result.toString() + "detailsList:" + detailsList.toString())
+            Log.e(
+                "querySkuDetailsAsync::",
+                result.toString() + "detailsList:" + detailsList.toString()
+            )
             when (result.responseCode) {
                 OK -> {
                     val list = detailsList ?: listOf()
@@ -210,7 +221,7 @@ class BillingManager(activity: Activity) {
 
     private fun performLaunchBillingFlow(productDetails: ProductDetails) {
         val activity = activity.get() ?: return
-        val offerToken = productDetails.subscriptionOfferDetails?.get(0)?.offerToken ?: ""
+        val offerToken = productDetails.subscriptionOfferDetails?.firstOrNull()?.offerToken ?: ""
         val productDetailsParamsList = listOf(
             BillingFlowParams.ProductDetailsParams.newBuilder()
                 .setProductDetails(productDetails)
@@ -253,6 +264,7 @@ class BillingManager(activity: Activity) {
     }
 
     private fun handlePurchases(list: List<Purchase>) {
+        Log.e("handlePurchases:::", list.toString())
         if (list.isEmpty()) {
             purchaseListener?.onResult(listOf(), listOf())
             return
@@ -269,10 +281,13 @@ class BillingManager(activity: Activity) {
     }
 
     private fun onPurchasesUpdated(billingResult: BillingResult, purchases: List<Purchase>?) {
+        Log.e("onPurchasesUpdated:::", billingResult.responseCode.toString())
         when (billingResult.responseCode) {
             OK -> purchases?.let {
                 handlePurchases(it)
             }
+
+            USER_CANCELED -> purchaseListener?.onUserCancelBilling()
 
             SERVICE_DISCONNECTED -> startConnection()
             else -> queryPurchases()

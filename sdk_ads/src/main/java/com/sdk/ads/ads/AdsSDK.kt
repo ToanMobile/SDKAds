@@ -3,6 +3,7 @@ package com.sdk.ads.ads
 import android.app.Activity
 import android.app.Application
 import android.os.Bundle
+import android.util.Log
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
@@ -264,12 +265,22 @@ object AdsSDK {
         billingManager.purchaseListener = object : PurchaseListener {
             override fun onResult(purchases: List<BillingPurchase>, pending: List<BillingPurchase>) {
                 val skus = purchaseSkuForRemovingAds ?: listOf()
+                Log.e("performQueryPurchases:", "purchases:$purchases skus=$skus")
                 if (!purchases.containsAnySKU(skus)) {
+                    Log.e("performQueryPurchases:", "ok")
+                    listener.onPurchase(isPurchase = false)
                     performConsent(activity, listener)
                 } else {
+                    Log.e("performQueryPurchases:", "There are some purchases for removing ads.")
                     listener.onFail("There are some purchases for removing ads.")
+                    listener.onPurchase(isPurchase = true)
                     listener.always()
                 }
+            }
+
+            override fun onUserCancelBilling() {
+                Log.e("performQueryPurchases:", "onUserCancelBilling")
+                listener.onPurchase(isPurchase = false)
             }
         }
 

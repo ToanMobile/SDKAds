@@ -6,4 +6,6 @@ abstract class AdsInitializeListener {
 
     open fun onFail(message: String) {}
     open fun always() {}
+
+    open fun onPurchase(isPurchase: Boolean) {}
 }
