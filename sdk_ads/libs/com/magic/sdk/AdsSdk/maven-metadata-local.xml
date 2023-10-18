@@ -3,11 +3,11 @@
   <groupId>com.magic.sdk</groupId>
   <artifactId>AdsSdk</artifactId>
   <versioning>
-    <latest>v1.1.1</latest>
-    <release>v1.1.1</release>
+    <latest>v1.1.2</latest>
+    <release>v1.1.2</release>
     <versions>
-      <version>v1.1.1</version>
+      <version>v1.1.2</version>
     </versions>
-    <lastUpdated>20231013054946</lastUpdated>
+    <lastUpdated>20231018085455</lastUpdated>
   </versioning>
 </metadata>
