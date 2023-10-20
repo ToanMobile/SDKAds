@@ -25,11 +25,6 @@
   <dependencies>
     <dependency>
       <groupId>com.google.firebase</groupId>
-      <artifactId>firebase-config</artifactId>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.google.firebase</groupId>
       <artifactId>firebase-crashlytics-ktx</artifactId>
       <scope>compile</scope>
     </dependency>
@@ -37,6 +32,12 @@
       <groupId>com.google.android.gms</groupId>
       <artifactId>play-services-ads-lite</artifactId>
       <version>22.4.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.android.billingclient</groupId>
+      <artifactId>billing-ktx</artifactId>
+      <version>6.0.1</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -90,12 +91,6 @@
       <groupId>com.google.android.ump</groupId>
       <artifactId>user-messaging-platform</artifactId>
       <version>2.1.0</version>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.android.billingclient</groupId>
-      <artifactId>billing-ktx</artifactId>
-      <version>6.0.1</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>

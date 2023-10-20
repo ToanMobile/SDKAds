@@ -25,8 +25,6 @@ class BillingManager(activity: Activity) {
     // region Public Variables
 
     var purchaseListener: PurchaseListener? = null
-    private var productsListener: ProductsListener? = null
-
     // endregion
 
     // region Private Variables
@@ -78,33 +76,21 @@ class BillingManager(activity: Activity) {
         }
     }
 
-    fun querySkuDetails(skus: List<String>) {
+    fun launchBillingFlow(productIdsInApp: List<String>, productIdsSubs: List<String>, purchasedSku: String, resultProducts: (List<ProductDetails>) -> Unit) {
         ensureConnection {
-            performQuerySkuDetails(skus)
+            queryProductDetails(productIdsInApp = productIdsInApp, productIdsSubs = productIdsSubs, purchasedSku = purchasedSku, resultProducts = resultProducts)
         }
     }
 
-    fun launchBillingFlow(product: BillingProduct) {
+    fun launchBillingFlow(productsDetails: ProductDetails) {
         ensureConnection {
-            performLaunchBillingFlow(product.skuDetails)
+            performLaunchBillingFlow(productsDetails)
         }
     }
 
-    @JvmName("launchBillingFlowSku")
-    fun launchBillingFlow(sku: String) {
+    fun queryAllProductDetails(productIdsInApp: List<String>, productIdsSubs: List<String>, resultProducts: (List<ProductDetails>) -> Unit) {
         ensureConnection {
-            performQuerySkuDetails(listOf(sku)) { skuDetails ->
-                Log.e("launchBillingFlow::", skuDetails.toString())
-                skuDetails.firstOrNull()?.let {
-                    performLaunchBillingFlow(it)
-                }
-            }
-        }
-    }
-
-    fun launchBillingFlow(productIdsInApp: List<String>, productIdsSubs: List<String>, purchasedSku: String) {
-        ensureConnection {
-            queryProductDetails(productIdsInApp, productIdsSubs, purchasedSku)
+            queryProductDetails(productIdsInApp = productIdsInApp, productIdsSubs = productIdsSubs, resultProducts = resultProducts)
         }
     }
 
@@ -126,14 +112,6 @@ class BillingManager(activity: Activity) {
         })
     }
 
-    private fun performQueryPurchasesV5() {
-        billingClient.queryPurchasesAsync(SUBS) { billingResult, list ->
-            if (billingResult.responseCode == OK) {
-                handlePurchases(list)
-            }
-        }
-    }
-
     private fun performQueryPurchases() {
         billingClient.queryPurchasesAsync(
             QueryPurchasesParams.newBuilder()
@@ -149,15 +127,19 @@ class BillingManager(activity: Activity) {
     private fun queryProductDetails(
         productIdsInApp: List<String>,
         productIdsSubs: List<String>,
-        purchasedSku: String
+        purchasedSku: String? = null,
+        resultProducts: (List<ProductDetails>) -> Unit,
     ) = runBlocking {
         val inAppFlow = getDetailsFlow(productIdsInApp, INAPP)
         val subsFlow = getDetailsFlow(productIdsSubs, SUBS)
         inAppFlow.zip(subsFlow) { inAppResult, subsResult ->
             return@zip inAppResult + subsResult
         }.collect { listProduct ->
-            listProduct.firstOrNull { it.productId == purchasedSku }?.let {
-                performLaunchBillingFlow(it)
+            resultProducts(listProduct)
+            purchasedSku?.let { purchasedSku ->
+                listProduct.firstOrNull { it.productId == purchasedSku }?.let {
+                    performLaunchBillingFlow(it)
+                }
             }
         }
     }
@@ -175,48 +157,6 @@ class BillingManager(activity: Activity) {
         }.map { result ->
             result.productDetailsList ?: emptyList()
         }
-    }
-
-    private fun performQuerySkuDetails(
-        skus: List<String>,
-        resultHandler: ((List<SkuDetails>) -> Unit)? = null
-    ) {
-        val params = SkuDetailsParams
-            .newBuilder()
-            .setSkusList(skus)
-            .setType(INAPP)
-            .build()
-        Log.e("querySkuDetails:skus::", skus.toString() + "params:" + params.toString())
-        billingClient.querySkuDetailsAsync(params) { result, detailsList ->
-            Log.e(
-                "querySkuDetailsAsync::",
-                result.toString() + "detailsList:" + detailsList.toString()
-            )
-            when (result.responseCode) {
-                OK -> {
-                    val list = detailsList ?: listOf()
-                    resultHandler?.invoke(list)
-                    productsListener?.onResult(list.asBillingProducts)
-                }
-
-                SERVICE_DISCONNECTED -> querySkuDetails(skus)
-                else -> {
-                    Log.e("querySkuDetailsError::", result.toString())
-                    // TODO: Handle other errors
-                }
-            }
-        }
-    }
-
-    private fun performLaunchBillingFlow(productDetails: SkuDetails) {
-        val activity = activity.get() ?: return
-
-        val flowParams = BillingFlowParams
-            .newBuilder()
-            .setSkuDetails(productDetails)
-            .build()
-
-        billingClient.launchBillingFlow(activity, flowParams)
     }
 
     private fun performLaunchBillingFlow(productDetails: ProductDetails) {
