@@ -341,11 +341,17 @@ object AdsSDK {
     }
 
     fun resetConsent() {
-        consentManager.reset()
-        /*consentManager.request {
+        try {
+            if (::consentManager.isInitialized) {
+                consentManager.reset()
+            }
+            /*consentManager.request {
             if (it) {
                 resume()
             }
         }*/
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 }
