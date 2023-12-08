@@ -44,10 +44,33 @@ class MainActivity : AppCompatActivity() {
         )
 
         com.sdk.ads.ads.banner.AdmobBanner.showAdaptive(
-            findViewById(R.id.viewBottom),
-            adUnitId = "ca-app-pub-2428922951355303/2584272751",
+            findViewById(R.id.viewTop),
+            adUnitId = "ca-app-pub-3940256099942544/6300978111",
             forceRefresh = false,
-            callback = object : com.sdk.ads.utils.TAdCallback {
+            callback = object : TAdCallback {
+                override fun onAdLoaded(adUnit: String, adType: AdType) {
+                    super.onAdLoaded(adUnit, adType)
+                    Log.e("onAdLoaded::", adType.toString())
+                    com.sdk.ads.utils.logScreen(this::class.java.simpleName)
+                }
+
+                override fun onAdFailedToLoad(adUnit: String, adType: AdType, error: com.google.android.gms.ads.LoadAdError) {
+                    super.onAdFailedToLoad(adUnit, adType, error)
+                    Log.e("onAdFailedToLoad::", adType.toString())
+                }
+
+                override fun onAdOpened(adUnit: String, adType: AdType) {
+                    super.onAdOpened(adUnit, adType)
+                    Log.e("onAdLoaded::", adType.toString())
+                }
+            },
+        )
+
+        com.sdk.ads.ads.banner.AdmobBanner.showCollapsible(
+            findViewById(R.id.viewBottom),
+            adUnitId = "ca-app-pub-3940256099942544/8388050270",
+            forceRefresh = false,
+            callback = object : TAdCallback {
                 override fun onAdLoaded(adUnit: String, adType: AdType) {
                     super.onAdLoaded(adUnit, adType)
                     Log.e("onAdLoaded::", adType.toString())
