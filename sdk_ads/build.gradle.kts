@@ -54,6 +54,7 @@ dependencies {
     //api("com.google.firebase:firebase-config")
     api("com.google.firebase:firebase-crashlytics-ktx")
     api(libs.ads.billing)
+    api(libs.play.services.ads.lite)
     implementation(libs.ads.gdpr)
     implementation(libs.play.services.ads.identifier)
     implementation(libs.firebase.ads)

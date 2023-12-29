@@ -5,6 +5,8 @@ import android.util.Log
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.ads.LoadAdError
+import com.sdk.ads.ads.AdsInitializeListener
+import com.sdk.ads.ads.AdsSDK
 import com.sdk.ads.ads.interstitial.AdmobInterSplash
 import com.sdk.ads.utils.AdType
 import com.sdk.ads.utils.TAdCallback
@@ -13,6 +15,26 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        AdsSDK.initialize(this, listener = object : AdsInitializeListener() {
+            override fun onInitialize() {
+                Log.e("AdsSDK:::", "onInitialize")
+            }
+
+            override fun onFail(message: String) {
+                super.onFail(message)
+                Log.e("AdsSDK:::", "onFail:$message")
+            }
+
+            override fun onPurchase(isPurchase: Boolean) {
+                super.onPurchase(isPurchase)
+                Log.e("AdsSDK:::", "onPurchase")
+            }
+
+            override fun always() {
+                super.always()
+                Log.e("AdsSDK:::", "always")
+            }
+        })
         findViewById<TextView>(R.id.txtText).setOnClickListener {
             com.sdk.ads.utils.logEvent("txtTextClick")
             AdmobInterSplash.show(adUnitId = "ca-app-pub-2428922951355303/8012376174", timeout = 3000, nextAction = {

@@ -41,6 +41,7 @@ class MyApplication : Application() {
             }) // Set global callback for all AdType/AdUnit
             .setIgnoreAdResume(SplashActivity::class.java) // Ingore show AdResume in these classes (All fragments and Activities is Accepted)
         // ads.setEnableOpenAds(false)
+        ads.setEnableDebugGDPR(true)
         ads.setEnableRewarded(false)
     }
 }

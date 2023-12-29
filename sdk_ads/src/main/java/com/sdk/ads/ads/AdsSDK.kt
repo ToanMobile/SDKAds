@@ -20,7 +20,8 @@ import com.sdk.ads.billing.BillingManager
 import com.sdk.ads.billing.BillingPurchase
 import com.sdk.ads.billing.PurchaseListener
 import com.sdk.ads.billing.extensions.containsAnySKU
-import com.sdk.ads.consent.ConsentManager
+import com.sdk.ads.consent.ConsentTracker
+import com.sdk.ads.consent.GdprConsent
 import com.sdk.ads.utils.ActivityActivityLifecycleCallbacks
 import com.sdk.ads.utils.AdType
 import com.sdk.ads.utils.TAdCallback
@@ -51,6 +52,9 @@ object AdsSDK {
     var isEnableRewarded = true
         private set
 
+    var isEnableDebugGDPR = false
+        private set
+
     var interTimeDelayMs = 15_000
         private set
 
@@ -61,8 +65,7 @@ object AdsSDK {
     private var preventShowResumeAd = false
     private var purchaseSkuForRemovingAds: List<String>? = null
     private var listTestDeviceIDs: List<String>? = null
-    var isConsentApplicable: Boolean = if (::consentManager.isInitialized) consentManager.isApplicable else false
-    private lateinit var consentManager: ConsentManager
+    private lateinit var gdprConsent: GdprConsent
 
     val adCallback: TAdCallback = object : TAdCallback {
         override fun onAdClicked(adUnit: String, adType: AdType) {
@@ -226,6 +229,10 @@ object AdsSDK {
         isEnableRewarded = isEnable
     }
 
+    fun setEnableDebugGDPR(isEnable: Boolean) {
+        isEnableDebugGDPR = isEnable
+    }
+
     fun setTimeInterDelayMs(timeDelayMs: Int) {
         interTimeDelayMs = timeDelayMs
     }
@@ -288,19 +295,24 @@ object AdsSDK {
     }
 
     private fun performConsent(activity: Activity, listener: AdsInitializeListener) {
-        performInitializeAds(activity, listener)
-        return
-        consentManager = ConsentManager(activity)
-        consentManager.request {
-            if (it) {
+        //performInitializeAds(activity, listener)
+        //return
+        val consentTracker = ConsentTracker(activity)
+        gdprConsent = GdprConsent(activity)
+        if (isEnableDebugGDPR) {
+            resetConsent()
+            gdprConsent.updateConsentInfoWithDebugGeographics(activity = activity, consentPermit = {}, consentTracker = consentTracker, initAds = {
                 performInitializeAds(activity, listener)
-            } else {
-                listener.onFail("User data consent couldn't be requested.")
-                listener.always()
-            }
+            })
+        } else {
+            gdprConsent.updateConsentInfo(activity = activity, underAge = false, consentPermit = {}, consentTracker = consentTracker, initAds = {
+                performInitializeAds(activity, listener)
+            })
         }
-        if (::consentManager.isInitialized) {
-            isConsentApplicable = consentManager.isApplicable
+        Log.e("isUserConsentValid:::", "User data consent couldn't be requested.")
+        if (consentTracker.isUserConsentValid()) {
+            listener.onFail("User data consent couldn't be requested.")
+            listener.always()
         }
     }
 
@@ -342,8 +354,8 @@ object AdsSDK {
 
     fun resetConsent() {
         try {
-            if (::consentManager.isInitialized) {
-                consentManager.reset()
+            if (::gdprConsent.isInitialized) {
+                gdprConsent.resetConsent()
             }
             /*consentManager.request {
             if (it) {

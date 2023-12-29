@@ -54,6 +54,7 @@ class GdprConsent(val context: Context) {
             .setDebugGeography(georaph)
             //.setDebugGeography(ConsentDebugSettings.DebugGeography.DEBUG_GEOGRAPHY_EEA)
             .addTestDeviceHashedId(AdRequest.DEVICE_ID_EMULATOR)
+            .addTestDeviceHashedId("B58902D5FBC20938E8B12C76700BD34C")
             .build()
 
         val params = ConsentRequestParameters
