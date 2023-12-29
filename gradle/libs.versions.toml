@@ -1,16 +1,16 @@
 [versions]
 agp = "8.2.0"
-firebaseAds = "22.5.0"
-kotlin = "1.9.20"
+kotlin = "1.9.21"
 google_service = "4.4.0"
 crashlyticsVersion = "2.9.9"
+preferenceVersion = "1.2.1"
 core-ktx = "1.12.0"
 appcompat = "1.6.1"
 lifecycleLivedataKtx = "2.6.2"
-material = "1.10.0"
+material = "1.11.0"
 constraintlayout = "2.1.4"
-navigationFragmentKtx = "2.7.5"
-playServicesAds = "22.5.0"
+navigationFragmentKtx = "2.7.6"
+playServicesAds = "22.6.0"
 playServicesAdsIdentifier = "18.0.1"
 gdprVersion = "2.1.0"
 billingVersion = "6.1.0"
@@ -19,17 +19,16 @@ shimmer = "0.5.0"
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
-firebase-ads = { module = "com.google.firebase:firebase-ads", version.ref = "firebaseAds" }
+firebase-ads = { module = "com.google.firebase:firebase-ads", version.ref = "playServicesAds" }
 lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycleLivedataKtx" }
 lifecycle-process = { module = "androidx.lifecycle:lifecycle-process", version.ref = "lifecycleLivedataKtx" }
 lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleLivedataKtx" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+preference = { group = "androidx.preference", name = "preference-ktx", version.ref = "preferenceVersion" }
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 navigation-fragment-ktx = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }
-play-services-ads = { module = "com.google.android.gms:play-services-ads", version.ref = "playServicesAds" }
 play-services-ads-identifier = { module = "com.google.android.gms:play-services-ads-identifier", version.ref = "playServicesAdsIdentifier" }
-play-services-ads-lite = { module = "com.google.android.gms:play-services-ads-lite", version.ref = "playServicesAds" }
-ads-gDPR = { module = "com.google.android.ump:user-messaging-platform", version.ref = "gdprVersion"}
+ads-gdpr = { module = "com.google.android.ump:user-messaging-platform", version.ref = "gdprVersion"}
 ads-billing = { module = "com.android.billingclient:billing-ktx", version.ref = "billingVersion"}
 shimmer = { module = "com.facebook.shimmer:shimmer", version.ref = "shimmer" }
 

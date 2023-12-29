@@ -1,6 +1,8 @@
 package com.sdk.ads.consent
 
-import com.google.android.ump.ConsentDebugSettings.DebugGeography.*
+import com.google.android.ump.ConsentDebugSettings.DebugGeography.DEBUG_GEOGRAPHY_DISABLED
+import com.google.android.ump.ConsentDebugSettings.DebugGeography.DEBUG_GEOGRAPHY_EEA
+import com.google.android.ump.ConsentDebugSettings.DebugGeography.DEBUG_GEOGRAPHY_NOT_EEA
 
 enum class ConsentGeography {
     DISABLED,

@@ -4,7 +4,9 @@ import android.app.Activity
 import android.util.Log
 import com.google.android.gms.ads.AdRequest
 import com.google.android.ump.ConsentDebugSettings
-import com.google.android.ump.ConsentInformation.ConsentStatus.*
+import com.google.android.ump.ConsentInformation.ConsentStatus.NOT_REQUIRED
+import com.google.android.ump.ConsentInformation.ConsentStatus.OBTAINED
+import com.google.android.ump.ConsentInformation.ConsentStatus.REQUIRED
 import com.google.android.ump.ConsentRequestParameters
 import com.google.android.ump.UserMessagingPlatform
 import java.lang.ref.WeakReference
