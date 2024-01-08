@@ -246,7 +246,7 @@ object AdsSDK {
     }
 
     // UMP
-    fun initialize(activity: Activity, listener: AdsInitializeListener) {
+    fun initialize(activity: Activity, hashDeviceIdTest: List<String>? = null, listener: AdsInitializeListener) {
         setDebugConfiguration()
         if (!isEnableAds) {
             listener.onFail("Ads is not allowed.")
@@ -261,13 +261,13 @@ object AdsSDK {
         }
         val skus = purchaseSkuForRemovingAds ?: listOf()
         if (skus.isNotEmpty()) {
-            performQueryPurchases(activity, listener)
+            performQueryPurchases(activity, hashDeviceIdTest, listener)
         } else {
-            performConsent(activity, listener)
+            performConsent(activity, hashDeviceIdTest, listener)
         }
     }
 
-    private fun performQueryPurchases(activity: Activity, listener: AdsInitializeListener) {
+    private fun performQueryPurchases(activity: Activity, hashDeviceIdTest: List<String>?, listener: AdsInitializeListener) {
         val billingManager = BillingManager(activity)
         billingManager.purchaseListener = object : PurchaseListener {
             override fun onResult(purchases: List<BillingPurchase>, pending: List<BillingPurchase>) {
@@ -276,7 +276,7 @@ object AdsSDK {
                 if (!purchases.containsAnySKU(skus)) {
                     Log.e("performQueryPurchases:", "ok")
                     listener.onPurchase(isPurchase = false)
-                    performConsent(activity, listener)
+                    performConsent(activity = activity, hashDeviceIdTest = hashDeviceIdTest, listener = listener)
                 } else {
                     Log.e("performQueryPurchases:", "There are some purchases for removing ads.")
                     listener.onFail("There are some purchases for removing ads.")
@@ -294,16 +294,21 @@ object AdsSDK {
         billingManager.queryPurchases()
     }
 
-    private fun performConsent(activity: Activity, listener: AdsInitializeListener) {
+    private fun performConsent(activity: Activity, hashDeviceIdTest: List<String>?, listener: AdsInitializeListener) {
         //performInitializeAds(activity, listener)
         //return
         val consentTracker = ConsentTracker(activity)
         gdprConsent = GdprConsent(activity)
         if (isEnableDebugGDPR) {
             resetConsent()
-            gdprConsent.updateConsentInfoWithDebugGeographics(activity = activity, consentPermit = {}, consentTracker = consentTracker, initAds = {
-                performInitializeAds(activity, listener)
-            })
+            gdprConsent.updateConsentInfoWithDebugGeoGraphics(
+                activity = activity,
+                consentPermit = {},
+                consentTracker = consentTracker,
+                hashDeviceIdTest = hashDeviceIdTest,
+                initAds = {
+                    performInitializeAds(activity, listener)
+                })
         } else {
             gdprConsent.updateConsentInfo(activity = activity, underAge = false, consentPermit = {}, consentTracker = consentTracker, initAds = {
                 performInitializeAds(activity, listener)

@@ -43,20 +43,21 @@ class GdprConsent(val context: Context) {
      * NOT EU: ConsentDebugSettings.DebugGeography.DEBUG_GEOGRAPHY_NOT_EEA
      * DISABLED: ConsentDebugSettings.DebugGeography.DEBUG_GEOGRAPHY_DISABLED
      * requestConsentInfoUpdate() logs the hashed id when run*/
-    fun updateConsentInfoWithDebugGeographics(
+    fun updateConsentInfoWithDebugGeoGraphics(
         activity: Activity,
-        georaph: Int = ConsentDebugSettings.DebugGeography.DEBUG_GEOGRAPHY_EEA,
+        geoGraph: Int = ConsentDebugSettings.DebugGeography.DEBUG_GEOGRAPHY_EEA,
         consentTracker: ConsentTracker,
         consentPermit: (Boolean) -> Unit,
-        initAds: () -> Unit
+        initAds: () -> Unit,
+        hashDeviceIdTest: List<String>?,
     ) {
-        val debugSettings = ConsentDebugSettings.Builder(context)
-            .setDebugGeography(georaph)
-            //.setDebugGeography(ConsentDebugSettings.DebugGeography.DEBUG_GEOGRAPHY_EEA)
+        val debugSetting = ConsentDebugSettings.Builder(context)
+            .setDebugGeography(geoGraph)
             .addTestDeviceHashedId(AdRequest.DEVICE_ID_EMULATOR)
-            .addTestDeviceHashedId("B58902D5FBC20938E8B12C76700BD34C")
-            .build()
-
+        hashDeviceIdTest?.forEach {
+            debugSetting.addTestDeviceHashedId(it)
+        }
+        val debugSettings = debugSetting.build()
         val params = ConsentRequestParameters
             .Builder()
             .setConsentDebugSettings(debugSettings)

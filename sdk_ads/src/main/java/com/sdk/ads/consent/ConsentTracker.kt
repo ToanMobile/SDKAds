@@ -40,8 +40,13 @@ class ConsentTracker(val context: Context) {
         val hasGoogleVendorLI = hasAttribute(vendorLI, index = googleId)
 
         // Minimum required for at least non-personalized ads
-        return hasConsentFor(listOf(1), purposeConsent, hasGoogleVendorConsent) &&
-                hasConsentOrLegitimateInterestFor(listOf(2, 7, 9, 10), purposeConsent, purposeLI, hasGoogleVendorConsent, hasGoogleVendorLI)
+        return hasConsentFor(listOf(1), purposeConsent, hasGoogleVendorConsent) && hasConsentOrLegitimateInterestFor(
+            listOf(2, 7, 9, 10),
+            purposeConsent,
+            purposeLI,
+            hasGoogleVendorConsent,
+            hasGoogleVendorLI
+        )
     }
 
     private fun canShowPersonalizedAds(): Boolean {
@@ -59,8 +64,13 @@ class ConsentTracker(val context: Context) {
         val hasGoogleVendorConsent = hasAttribute(vendorConsent, index = googleId)
         val hasGoogleVendorLI = hasAttribute(vendorLI, index = googleId)
 
-        return hasConsentFor(listOf(1, 3, 4), purposeConsent, hasGoogleVendorConsent)
-                && hasConsentOrLegitimateInterestFor(listOf(2, 7, 9, 10), purposeConsent, purposeLI, hasGoogleVendorConsent, hasGoogleVendorLI)
+        return hasConsentFor(listOf(1, 3, 4), purposeConsent, hasGoogleVendorConsent) && hasConsentOrLegitimateInterestFor(
+            listOf(2, 7, 9, 10),
+            purposeConsent,
+            purposeLI,
+            hasGoogleVendorConsent,
+            hasGoogleVendorLI
+        )
     }
 
     // Check if a binary string has a "1" at position "index" (1-based)
