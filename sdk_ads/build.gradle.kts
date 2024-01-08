@@ -67,4 +67,5 @@ dependencies {
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.lifecycle.process)
     implementation(libs.shimmer)
+    implementation(libs.utilCore)
 }

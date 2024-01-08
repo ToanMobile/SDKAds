@@ -2,15 +2,14 @@ package com.sdk.ads.utils
 
 import android.util.Log
 import com.google.firebase.analytics.FirebaseAnalytics
-import com.google.firebase.analytics.ktx.ParametersBuilder
-import com.google.firebase.analytics.ktx.analytics
-import com.google.firebase.analytics.ktx.logEvent
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.Firebase
+import com.google.firebase.analytics.ParametersBuilder
+import com.google.firebase.analytics.analytics
+import com.google.firebase.analytics.logEvent
 import com.sdk.ads.ads.AdsSDK
 
 private val tracker get() = Firebase.analytics
 
-// Todo bốc ra ngoài app, ko để trong module
 fun logAdClicked(adType: AdType, adID: String? = null) {
     if (!AdsSDK.isEnableAds) return
     logParams("ad_click_custom") {

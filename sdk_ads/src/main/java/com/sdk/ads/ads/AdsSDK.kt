@@ -7,6 +7,7 @@ import android.util.Log
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
+import com.blankj.utilcode.util.LanguageUtils
 import com.google.android.gms.ads.AdActivity
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.LoadAdError
@@ -246,7 +247,7 @@ object AdsSDK {
     }
 
     // UMP
-    fun initialize(activity: Activity, hashDeviceIdTest: List<String>? = null, listener: AdsInitializeListener) {
+    fun initialize(activity: Activity, listener: AdsInitializeListener) {
         setDebugConfiguration()
         if (!isEnableAds) {
             listener.onFail("Ads is not allowed.")
@@ -261,13 +262,13 @@ object AdsSDK {
         }
         val skus = purchaseSkuForRemovingAds ?: listOf()
         if (skus.isNotEmpty()) {
-            performQueryPurchases(activity, hashDeviceIdTest, listener)
+            performQueryPurchases(activity, listener)
         } else {
-            performConsent(activity, hashDeviceIdTest, listener)
+            performConsent(activity, listener)
         }
     }
 
-    private fun performQueryPurchases(activity: Activity, hashDeviceIdTest: List<String>?, listener: AdsInitializeListener) {
+    private fun performQueryPurchases(activity: Activity, listener: AdsInitializeListener) {
         val billingManager = BillingManager(activity)
         billingManager.purchaseListener = object : PurchaseListener {
             override fun onResult(purchases: List<BillingPurchase>, pending: List<BillingPurchase>) {
@@ -276,7 +277,7 @@ object AdsSDK {
                 if (!purchases.containsAnySKU(skus)) {
                     Log.e("performQueryPurchases:", "ok")
                     listener.onPurchase(isPurchase = false)
-                    performConsent(activity = activity, hashDeviceIdTest = hashDeviceIdTest, listener = listener)
+                    performConsent(activity = activity, listener = listener)
                 } else {
                     Log.e("performQueryPurchases:", "There are some purchases for removing ads.")
                     listener.onFail("There are some purchases for removing ads.")
@@ -294,18 +295,19 @@ object AdsSDK {
         billingManager.queryPurchases()
     }
 
-    private fun performConsent(activity: Activity, hashDeviceIdTest: List<String>?, listener: AdsInitializeListener) {
+    private fun performConsent(activity: Activity, listener: AdsInitializeListener) {
         //performInitializeAds(activity, listener)
         //return
+        val language = LanguageUtils.getSystemLanguage().language
         val consentTracker = ConsentTracker(activity)
-        gdprConsent = GdprConsent(activity)
+        gdprConsent = GdprConsent(activity, language)
         if (isEnableDebugGDPR) {
             resetConsent()
             gdprConsent.updateConsentInfoWithDebugGeoGraphics(
                 activity = activity,
                 consentPermit = {},
                 consentTracker = consentTracker,
-                hashDeviceIdTest = hashDeviceIdTest,
+                hashDeviceIdTest = listTestDeviceIDs,
                 initAds = {
                     performInitializeAds(activity, listener)
                 })
@@ -357,16 +359,25 @@ object AdsSDK {
         )
     }
 
+    fun reUseExistingConsentForm(activity: Activity, listener: AdsInitializeListener) {
+        try {
+            val consentTracker = ConsentTracker(activity)
+            gdprConsent.reUseExistingConsentForm(activity = activity,
+                consentPermit = {},
+                consentTracker = consentTracker,
+                initAds = {
+                    performInitializeAds(activity, listener)
+                })
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
     fun resetConsent() {
         try {
             if (::gdprConsent.isInitialized) {
                 gdprConsent.resetConsent()
             }
-            /*consentManager.request {
-            if (it) {
-                resume()
-            }
-        }*/
         } catch (e: Exception) {
             e.printStackTrace()
         }

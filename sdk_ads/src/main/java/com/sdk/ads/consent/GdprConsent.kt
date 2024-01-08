@@ -9,13 +9,13 @@ import com.google.android.ump.ConsentForm
 import com.google.android.ump.ConsentInformation
 import com.google.android.ump.ConsentRequestParameters
 import com.google.android.ump.UserMessagingPlatform
+import com.sdk.ads.utils.logEvent
 
-class GdprConsent(val context: Context) {
+class GdprConsent(val context: Context, private val language: String) {
     @Suppress("PrivatePropertyName")
     private val TAG = "GdprConsent"
     private val consentInformation = UserMessagingPlatform.getConsentInformation(context)
     private var consentForm: ConsentForm? = null
-
     /**IN PRODUCTION CALL AT ONCREATE FOR CONSENT FORM CHECK*/
     fun updateConsentInfo(
         activity: Activity,
@@ -109,6 +109,7 @@ class GdprConsent(val context: Context) {
                 when (consentInformation.consentStatus) {
                     ConsentInformation.ConsentStatus.REQUIRED -> {
                         Log.e(TAG, "consentForm is required to show")
+                        logEvent("consent_showFormGDPR_$language")
                         consentForm?.show(
                             activity,
                         ) { formError ->
@@ -133,6 +134,7 @@ class GdprConsent(val context: Context) {
                 }
             },
             { formError ->
+                logEvent("GDPR_formError_${formError.errorCode}_${formError.message}_$language")
                 Log.e(TAG, "loadForm Failure: ${formError.message}")
             },
         )
@@ -146,6 +148,7 @@ class GdprConsent(val context: Context) {
     ) {
         if (consentInformation.isConsentFormAvailable) {
             Log.e(TAG, "reUseExistingConsentForm")
+            logEvent("GDPR3_showFormGDPR_$language")
             consentForm?.show(
                 activity,
             ) { formError ->

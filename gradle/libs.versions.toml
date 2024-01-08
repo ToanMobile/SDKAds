@@ -1,6 +1,6 @@
 [versions]
-agp = "8.2.0"
-kotlin = "1.9.21"
+agp = "8.2.1"
+kotlin = "1.9.22"
 google_service = "4.4.0"
 crashlyticsVersion = "2.9.9"
 preferenceVersion = "1.2.1"
@@ -15,6 +15,7 @@ playServicesAdsIdentifier = "18.0.1"
 gdprVersion = "2.1.0"
 billingVersion = "6.1.0"
 shimmer = "0.5.0"
+utilCore = "1.31.1"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -32,6 +33,7 @@ play-services-ads-identifier = { module = "com.google.android.gms:play-services-
 ads-gdpr = { module = "com.google.android.ump:user-messaging-platform", version.ref = "gdprVersion"}
 ads-billing = { module = "com.android.billingclient:billing-ktx", version.ref = "billingVersion"}
 shimmer = { module = "com.facebook.shimmer:shimmer", version.ref = "shimmer" }
+utilCore = { module = "com.blankj:utilcodex", version.ref = "utilCore" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
