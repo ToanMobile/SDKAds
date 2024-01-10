@@ -365,6 +365,7 @@ object AdsSDK {
             //performInitializeAds(activity, listener)
         }
         if (consentTracker.isRequestAdsFail()) {
+            adsType = AdsType.SHOW_CONSENT
             Log.e("isUserConsentValid:::", "canRequestAds:${gdprConsent.canRequestAds()}")
             gdprConsent.resetConsent()
             if (isEnableDebugGDPR) {
@@ -386,8 +387,6 @@ object AdsSDK {
                 })
             }
             //reUseExistingConsentForm(activity, gdprConsent, consentTracker, listener)
-        } else {
-            adsType = AdsType.SHOW_ADS
         }
     }
 
