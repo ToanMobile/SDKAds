@@ -341,7 +341,7 @@ object AdsSDK {
         val consentTracker = ConsentTracker(activity)
         val gdprConsent = GdprConsent(activity, language)
         if (isEnableDebugGDPR) {
-            resetConsent(gdprConsent)
+            //resetConsent(gdprConsent)
             gdprConsent.updateConsentInfoWithDebugGeoGraphics(
                 activity = activity,
                 consentPermit = {
