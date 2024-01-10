@@ -18,6 +18,13 @@ class ConsentTracker(val context: Context) {
         return consentValidity
     }
 
+    fun isRequestAdsFail(): Boolean {
+        val canShowPersonAds = canShowPersonalizedAds()
+        val canShowAds = canShowAds()
+        Log.e(TAG, "isRequestAdsFail:PersonAds: $canShowPersonAds, Ads: $canShowAds")
+        return canShowAds && canShowPersonAds
+    }
+
     private fun isGDPR(): Boolean {
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
         val gdpr = prefs.getInt("IABTCF_gdprApplies", 0)

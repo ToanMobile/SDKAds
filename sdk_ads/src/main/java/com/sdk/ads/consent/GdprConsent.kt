@@ -100,12 +100,15 @@ class GdprConsent(val context: Context, private val language: String) {
         consentTracker: ConsentTracker,
         consentPermit: (Boolean) -> Unit,
         initAds: () -> Unit
-    ) { // Loads a consent form. Must be called on the main thread.
+    ) {
+        Log.e(TAG, "requestConsentInfoUpdate:loadConsentForm")
+        // Loads a consent form. Must be called on the main thread.
         UserMessagingPlatform.loadConsentForm(
             context,
             { _consentForm ->
                 // Take form if needed later
                 consentForm = _consentForm
+                Log.e(TAG, "consentForm is required to show" + consentInformation.consentStatus.toString())
                 when (consentInformation.consentStatus) {
                     ConsentInformation.ConsentStatus.REQUIRED -> {
                         Log.e(TAG, "consentForm is required to show")
@@ -146,15 +149,16 @@ class GdprConsent(val context: Context, private val language: String) {
         consentPermit: (Boolean) -> Unit,
         initAds: () -> Unit
     ) {
+        //resetConsent()
         if (consentInformation.isConsentFormAvailable) {
-            Log.e(TAG, "reUseExistingConsentForm")
+            Log.e(TAG, "reUseExistingConsentForm" + consentForm.toString())
             logEvent("GDPR3_showFormGDPR_$language")
             consentForm?.show(
                 activity,
             ) { formError ->
                 // Log error
                 if (formError != null) {
-                    Log.e(TAG, "consentForm show ${formError.message}")
+                    Log.e(TAG, "consentForm formError ${formError.message}")
                 }
                 // App can start requesting ads.
                 if (consentInformation.consentStatus == ConsentInformation.ConsentStatus.OBTAINED) {

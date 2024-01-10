@@ -363,13 +363,14 @@ object AdsSDK {
         if (consentTracker.isUserConsentValid()) {
             //performInitializeAds(activity, listener)
         }
+        if (consentTracker.isRequestAdsFail()) {
+            reUseExistingConsentForm(activity, gdprConsent, consentTracker, listener)
+        }
     }
 
-    fun reUseExistingConsentForm(activity: Activity, listener: AdsInitializeListener) {
+    private fun reUseExistingConsentForm(activity: Activity, gdprConsent: GdprConsent, consentTracker: ConsentTracker, listener: AdsInitializeListener) {
         try {
-            val language = LanguageUtils.getSystemLanguage().language
-            val consentTracker = ConsentTracker(activity)
-            val gdprConsent = GdprConsent(activity, language)
+            Log.e("reUseConsentForm:", "reUseExistingConsentForm")
             gdprConsent.reUseExistingConsentForm(
                 activity = activity,
                 consentPermit = {
