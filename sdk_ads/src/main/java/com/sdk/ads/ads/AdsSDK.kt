@@ -66,7 +66,10 @@ object AdsSDK {
     private var preventShowResumeAd = false
     private var purchaseSkuForRemovingAds: List<String>? = null
     private var listTestDeviceIDs: List<String>? = null
-    private lateinit var gdprConsent: GdprConsent
+    private var adsType = AdsType.SHOW_ADS
+    val getAdsType get() = adsType
+    val checkAds get() = adsType == AdsType.SHOW_ADS
+    val checkConsent get() = (adsType == AdsType.CLOSE_CONSENT) || (adsType == AdsType.ACCEPT_CONSENT)
 
     val adCallback: TAdCallback = object : TAdCallback {
         override fun onAdClicked(adUnit: String, adType: AdType) {
@@ -295,41 +298,16 @@ object AdsSDK {
         billingManager.queryPurchases()
     }
 
-    private fun performConsent(activity: Activity, listener: AdsInitializeListener) {
-        //performInitializeAds(activity, listener)
-        //return
-        val language = LanguageUtils.getSystemLanguage().language
-        val consentTracker = ConsentTracker(activity)
-        gdprConsent = GdprConsent(activity, language)
-        if (isEnableDebugGDPR) {
-            resetConsent()
-            gdprConsent.updateConsentInfoWithDebugGeoGraphics(
-                activity = activity,
-                consentPermit = {},
-                consentTracker = consentTracker,
-                hashDeviceIdTest = listTestDeviceIDs,
-                initAds = {
-                    performInitializeAds(activity, listener)
-                })
-        } else {
-            gdprConsent.updateConsentInfo(activity = activity, underAge = false, consentPermit = {}, consentTracker = consentTracker, initAds = {
-                performInitializeAds(activity, listener)
-            })
-        }
-        Log.e("isUserConsentValid:::", "User data consent couldn't be requested.")
-        if (consentTracker.isUserConsentValid()) {
-            listener.onFail("User data consent couldn't be requested.")
-            listener.always()
-        }
-    }
-
     private fun performInitializeAds(activity: Activity, listener: AdsInitializeListener) {
         MobileAds.initialize(activity) {
             isInitialized = it.adapterStatusMap.entries.any { entry -> entry.value.initializationState.name == "READY" }
+            Log.e("performInitializeAds:::", "isInitialized:$isInitialized")
             if (isInitialized) {
+                adsType = AdsType.SHOW_ADS
                 MobileAds.setAppMuted(true)
                 listener.onInitialize()
             } else {
+                adsType = AdsType.FAIL_ADS
                 val first = it.adapterStatusMap.entries.firstOrNull()?.value
                 listener.onFail(first?.description ?: first?.initializationState?.name ?: "Ads initialization fail.")
             }
@@ -359,10 +337,48 @@ object AdsSDK {
         )
     }
 
+    private fun performConsent(activity: Activity, listener: AdsInitializeListener) {
+        //performInitializeAds(activity, listener)
+        //return
+        adsType = AdsType.SHOW_CONSENT
+        val language = LanguageUtils.getSystemLanguage().language
+        val consentTracker = ConsentTracker(activity)
+        val gdprConsent = GdprConsent(activity, language)
+        if (isEnableDebugGDPR) {
+            resetConsent(gdprConsent)
+            gdprConsent.updateConsentInfoWithDebugGeoGraphics(
+                activity = activity,
+                consentPermit = {
+                    adsType = if (it) AdsType.ACCEPT_CONSENT else AdsType.DENY_CONSENT
+                },
+                consentTracker = consentTracker,
+                hashDeviceIdTest = listTestDeviceIDs,
+                initAds = {
+                    adsType = AdsType.CLOSE_CONSENT
+                    performInitializeAds(activity, listener)
+                })
+        } else {
+            gdprConsent.updateConsentInfo(activity = activity, underAge = false, consentPermit = {
+                adsType = if (it) AdsType.ACCEPT_CONSENT else AdsType.DENY_CONSENT
+            }, consentTracker = consentTracker, initAds = {
+                adsType = AdsType.CLOSE_CONSENT
+                performInitializeAds(activity, listener)
+            })
+        }
+        Log.e("isUserConsentValid:::", "User data consent couldn't be requested.")
+        if (consentTracker.isUserConsentValid()) {
+            adsType = AdsType.CLOSE_CONSENT
+            performInitializeAds(activity, listener)
+        }
+    }
+
     fun reUseExistingConsentForm(activity: Activity, listener: AdsInitializeListener) {
         try {
+            val language = LanguageUtils.getSystemLanguage().language
             val consentTracker = ConsentTracker(activity)
-            gdprConsent.reUseExistingConsentForm(activity = activity,
+            val gdprConsent = GdprConsent(activity, language)
+            gdprConsent.reUseExistingConsentForm(
+                activity = activity,
                 consentPermit = {},
                 consentTracker = consentTracker,
                 initAds = {
@@ -373,11 +389,9 @@ object AdsSDK {
         }
     }
 
-    fun resetConsent() {
+    private fun resetConsent(gdprConsent: GdprConsent) {
         try {
-            if (::gdprConsent.isInitialized) {
-                gdprConsent.resetConsent()
-            }
+            gdprConsent.resetConsent()
         } catch (e: Exception) {
             e.printStackTrace()
         }
