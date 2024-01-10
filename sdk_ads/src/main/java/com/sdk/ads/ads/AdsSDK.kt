@@ -66,10 +66,11 @@ object AdsSDK {
     private var preventShowResumeAd = false
     private var purchaseSkuForRemovingAds: List<String>? = null
     private var listTestDeviceIDs: List<String>? = null
-    private var adsType = AdsType.SHOW_ADS
+    private var adsType = AdsType.NONE
     val getAdsType get() = adsType
-    val checkAds get() = adsType == AdsType.SHOW_ADS
-    val checkConsent get() = (adsType == AdsType.CLOSE_CONSENT) || (adsType == AdsType.ACCEPT_CONSENT)
+    val checkAdsShow get() = adsType == AdsType.SHOW_ADS
+    val checkAdsFail get() = adsType == AdsType.FAIL_ADS
+    val checkIsShowConsent get() = adsType == AdsType.SHOW_CONSENT
 
     val adCallback: TAdCallback = object : TAdCallback {
         override fun onAdClicked(adUnit: String, adType: AdType) {
@@ -276,13 +277,13 @@ object AdsSDK {
         billingManager.purchaseListener = object : PurchaseListener {
             override fun onResult(purchases: List<BillingPurchase>, pending: List<BillingPurchase>) {
                 val skus = purchaseSkuForRemovingAds ?: listOf()
-                Log.e("performQueryPurchases:", "purchases:$purchases skus=$skus")
+                //Log.e("performQueryPurchases:", "purchases:$purchases skus=$skus")
                 if (!purchases.containsAnySKU(skus)) {
-                    Log.e("performQueryPurchases:", "ok")
+                    //Log.e("performQueryPurchases:", "ok")
                     listener.onPurchase(isPurchase = false)
                     performConsent(activity = activity, listener = listener)
                 } else {
-                    Log.e("performQueryPurchases:", "There are some purchases for removing ads.")
+                    //Log.e("performQueryPurchases:", "There are some purchases for removing ads.")
                     listener.onFail("There are some purchases for removing ads.")
                     listener.onPurchase(isPurchase = true)
                     listener.always()
@@ -301,13 +302,12 @@ object AdsSDK {
     private fun performInitializeAds(activity: Activity, listener: AdsInitializeListener) {
         MobileAds.initialize(activity) {
             isInitialized = it.adapterStatusMap.entries.any { entry -> entry.value.initializationState.name == "READY" }
-            Log.e("performInitializeAds:::", "isInitialized:$isInitialized")
             if (isInitialized) {
-                adsType = AdsType.SHOW_ADS
+                Log.e("performInitializeAds:::", "AdsType.SHOW_ADS")
                 MobileAds.setAppMuted(true)
                 listener.onInitialize()
             } else {
-                adsType = AdsType.FAIL_ADS
+                Log.e("performInitializeAds:::", "AdsType.FAIL_ADS")
                 val first = it.adapterStatusMap.entries.firstOrNull()?.value
                 listener.onFail(first?.description ?: first?.initializationState?.name ?: "Ads initialization fail.")
             }
@@ -326,13 +326,9 @@ object AdsSDK {
     }
 
     private fun setDebugConfiguration() {
-        val devices = mutableListOf(AdRequest.DEVICE_ID_EMULATOR)
-        listTestDeviceIDs?.let {
-            devices.addAll(it)
-        }
         MobileAds.setRequestConfiguration(
             RequestConfiguration.Builder()
-                .setTestDeviceIds(devices)
+                .setTestDeviceIds(listTestDeviceIDs)
                 .build(),
         )
     }
@@ -349,26 +345,23 @@ object AdsSDK {
             gdprConsent.updateConsentInfoWithDebugGeoGraphics(
                 activity = activity,
                 consentPermit = {
-                    adsType = if (it) AdsType.ACCEPT_CONSENT else AdsType.DENY_CONSENT
+                    adsType = if (it) AdsType.SHOW_ADS else AdsType.FAIL_ADS
                 },
                 consentTracker = consentTracker,
                 hashDeviceIdTest = listTestDeviceIDs,
                 initAds = {
-                    adsType = AdsType.CLOSE_CONSENT
                     performInitializeAds(activity, listener)
                 })
         } else {
             gdprConsent.updateConsentInfo(activity = activity, underAge = false, consentPermit = {
-                adsType = if (it) AdsType.ACCEPT_CONSENT else AdsType.DENY_CONSENT
+                adsType = if (it) AdsType.SHOW_ADS else AdsType.FAIL_ADS
             }, consentTracker = consentTracker, initAds = {
-                adsType = AdsType.CLOSE_CONSENT
                 performInitializeAds(activity, listener)
             })
         }
         Log.e("isUserConsentValid:::", "User data consent couldn't be requested.")
         if (consentTracker.isUserConsentValid()) {
-            adsType = AdsType.CLOSE_CONSENT
-            performInitializeAds(activity, listener)
+            //performInitializeAds(activity, listener)
         }
     }
 
@@ -379,7 +372,9 @@ object AdsSDK {
             val gdprConsent = GdprConsent(activity, language)
             gdprConsent.reUseExistingConsentForm(
                 activity = activity,
-                consentPermit = {},
+                consentPermit = {
+                    adsType = if (it) AdsType.SHOW_ADS else AdsType.FAIL_ADS
+                },
                 consentTracker = consentTracker,
                 initAds = {
                     performInitializeAds(activity, listener)
