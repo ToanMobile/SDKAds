@@ -21,8 +21,7 @@ class ConsentTracker(val context: Context) {
     fun isRequestAdsFail(): Boolean {
         val canShowPersonAds = canShowPersonalizedAds()
         val canShowAds = canShowAds()
-        Log.e(TAG, "isRequestAdsFail:PersonAds: $canShowPersonAds, Ads: $canShowAds")
-        return canShowAds && canShowPersonAds
+        return (!canShowAds && !canShowPersonAds) && isGDPR()
     }
 
     private fun isGDPR(): Boolean {

@@ -252,6 +252,7 @@ object AdsSDK {
 
     // UMP
     fun initialize(activity: Activity, listener: AdsInitializeListener) {
+        Log.e("initialize:::", "initialize")
         setDebugConfiguration()
         if (!isEnableAds) {
             listener.onFail("Ads is not allowed.")
@@ -364,7 +365,29 @@ object AdsSDK {
             //performInitializeAds(activity, listener)
         }
         if (consentTracker.isRequestAdsFail()) {
-            reUseExistingConsentForm(activity, gdprConsent, consentTracker, listener)
+            Log.e("isUserConsentValid:::", "canRequestAds:${gdprConsent.canRequestAds()}")
+            gdprConsent.resetConsent()
+            if (isEnableDebugGDPR) {
+                gdprConsent.updateConsentInfoWithDebugGeoGraphics(
+                    activity = activity,
+                    consentPermit = {
+                        adsType = if (it) AdsType.SHOW_ADS else AdsType.FAIL_ADS
+                    },
+                    consentTracker = consentTracker,
+                    hashDeviceIdTest = listTestDeviceIDs,
+                    initAds = {
+                        performInitializeAds(activity, listener)
+                    })
+            } else {
+                gdprConsent.updateConsentInfo(activity = activity, underAge = false, consentPermit = {
+                    adsType = if (it) AdsType.SHOW_ADS else AdsType.FAIL_ADS
+                }, consentTracker = consentTracker, initAds = {
+                    performInitializeAds(activity, listener)
+                })
+            }
+            //reUseExistingConsentForm(activity, gdprConsent, consentTracker, listener)
+        } else {
+            adsType = AdsType.SHOW_ADS
         }
     }
 

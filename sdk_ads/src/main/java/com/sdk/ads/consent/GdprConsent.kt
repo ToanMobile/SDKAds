@@ -63,6 +63,7 @@ class GdprConsent(val context: Context, private val language: String) {
             .setConsentDebugSettings(debugSettings)
             // .setAdMobAppId(context.getString(R.string.AdMob_App_ID))
             .build()
+        Log.e("requestConsent:::", "requestConsentInfoUpdate")
         requestConsentInfoUpdate(
             activity = activity,
             params = params,
@@ -106,12 +107,13 @@ class GdprConsent(val context: Context, private val language: String) {
         UserMessagingPlatform.loadConsentForm(
             context,
             { _consentForm ->
+                if (consentForm != null) return@loadConsentForm
                 // Take form if needed later
                 consentForm = _consentForm
                 Log.e(TAG, "consentForm is required to show" + consentInformation.consentStatus.toString())
                 when (consentInformation.consentStatus) {
                     ConsentInformation.ConsentStatus.REQUIRED -> {
-                        Log.e(TAG, "consentForm is required to show")
+                        Log.e(TAG, "consentForm is required to show:::${consentForm}")
                         logEvent("consent_showFormGDPR_$language")
                         consentForm?.show(
                             activity,
@@ -126,6 +128,7 @@ class GdprConsent(val context: Context, private val language: String) {
                                 consentPermit(isConsentObtained(consentTracker))
                                 initAds()
                             }
+                            Log.e(TAG, "consentForm is required to show${consentForm}")
                             // Handle dismissal by reloading form.
                             loadForm(activity, consentTracker, consentPermit, initAds)
                         }
@@ -149,7 +152,7 @@ class GdprConsent(val context: Context, private val language: String) {
         consentPermit: (Boolean) -> Unit,
         initAds: () -> Unit
     ) {
-        //resetConsent()
+        resetConsent()
         if (consentInformation.isConsentFormAvailable) {
             Log.e(TAG, "reUseExistingConsentForm" + consentForm.toString())
             logEvent("GDPR3_showFormGDPR_$language")
@@ -182,6 +185,10 @@ class GdprConsent(val context: Context, private val language: String) {
         val isObtained = obtained || notRequired
         Log.e(TAG, "isConsentObtained or not required: $isObtained")
         return isObtained
+    }
+
+    fun canRequestAds(): Boolean {
+        return consentInformation.canRequestAds()
     }
 
     /**RESET ONLY IF TRULY REQUIRED. E.G FOR TESTING OR USER WANTS TO RESET CONSENT SETTINGS*/
