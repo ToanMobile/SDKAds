@@ -33,8 +33,6 @@ import com.sdk.ads.utils.logParams
 object AdsSDK {
 
     internal lateinit var app: Application
-    private var isInitialized = false
-
     var isEnableAds = true
         private set
 
@@ -259,12 +257,6 @@ object AdsSDK {
             listener.always()
             return
         }
-
-        if (isInitialized) {
-            listener.onInitialize()
-            listener.always()
-            return
-        }
         val skus = purchaseSkuForRemovingAds ?: listOf()
         if (skus.isNotEmpty()) {
             performQueryPurchases(activity, listener)
@@ -302,7 +294,7 @@ object AdsSDK {
 
     private fun performInitializeAds(activity: Activity, listener: AdsInitializeListener) {
         MobileAds.initialize(activity) {
-            isInitialized = it.adapterStatusMap.entries.any { entry -> entry.value.initializationState.name == "READY" }
+            val isInitialized = it.adapterStatusMap.entries.any { entry -> entry.value.initializationState.name == "READY" }
             if (isInitialized) {
                 Log.e("performInitializeAds:::", "AdsType.SHOW_ADS")
                 MobileAds.setAppMuted(true)
