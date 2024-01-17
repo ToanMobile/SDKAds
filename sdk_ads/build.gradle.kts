@@ -49,15 +49,16 @@ afterEvaluate {
 }
 
 dependencies {
-    implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
-    implementation("com.google.firebase:firebase-analytics-ktx")
-    //api("com.google.firebase:firebase-config")
-    api("com.google.firebase:firebase-crashlytics-ktx")
+    //Ads
+    implementation(libs.firebase.analytics)
+    api(libs.firebase.crashlytics)
+    api(libs.firebase.config)
     api(libs.ads.billing)
-    api(libs.play.services.ads.lite)
+    api(libs.ads.services.lite)
     implementation(libs.ads.gdpr)
-    implementation(libs.play.services.ads.identifier)
-    implementation(libs.firebase.ads)
+    implementation(libs.ads.identifier)
+    implementation(libs.ads.firebase.ads)
+    //Core
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
     implementation(libs.preference)

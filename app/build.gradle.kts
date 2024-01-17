@@ -2,8 +2,8 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
-    id("com.google.gms.google-services")
-    id("com.google.firebase.crashlytics")
+    alias(libs.plugins.googleService)
+    alias(libs.plugins.crashlytics)
 }
 
 android {
