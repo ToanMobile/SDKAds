@@ -19,12 +19,6 @@
       <scope>compile</scope>
     </dependency>
     <dependency>
-      <groupId>com.google.firebase</groupId>
-      <artifactId>firebase-config-ktx</artifactId>
-      <version>21.6.0</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
       <groupId>com.android.billingclient</groupId>
       <artifactId>billing-ktx</artifactId>
       <version>6.1.0</version>

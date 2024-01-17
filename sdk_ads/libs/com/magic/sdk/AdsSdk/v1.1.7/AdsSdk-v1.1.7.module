@@ -30,13 +30,6 @@
           }
         },
         {
-          "group": "com.google.firebase",
-          "module": "firebase-config-ktx",
-          "version": {
-            "requires": "21.6.0"
-          }
-        },
-        {
           "group": "com.android.billingclient",
           "module": "billing-ktx",
           "version": {
@@ -209,13 +202,6 @@
           "module": "firebase-crashlytics-ktx",
           "version": {
             "requires": "18.6.0"
-          }
-        },
-        {
-          "group": "com.google.firebase",
-          "module": "firebase-config-ktx",
-          "version": {
-            "requires": "21.6.0"
           }
         },
         {
