@@ -333,6 +333,7 @@ object AdsSDK {
         val language = LanguageUtils.getSystemLanguage().language
         val consentTracker = ConsentTracker(activity)
         val gdprConsent = GdprConsent(activity, language)
+        consentTracker.updateState(isShowForceAgain = false, language = language)
         if (isEnableDebugGDPR) {
             //resetConsent(gdprConsent)
             gdprConsent.updateConsentInfoWithDebugGeoGraphics(
@@ -340,6 +341,7 @@ object AdsSDK {
                 consentPermit = {
                     adsType = if (it) AdsType.SHOW_ADS else AdsType.FAIL_ADS
                 },
+                isShowForceAgain = false,
                 consentTracker = consentTracker,
                 hashDeviceIdTest = listTestDeviceIDs,
                 initAds = {
@@ -348,7 +350,7 @@ object AdsSDK {
         } else {
             gdprConsent.updateConsentInfo(activity = activity, underAge = false, consentPermit = {
                 adsType = if (it) AdsType.SHOW_ADS else AdsType.FAIL_ADS
-            }, consentTracker = consentTracker, initAds = {
+            }, consentTracker = consentTracker, isShowForceAgain = false, initAds = {
                 performInitializeAds(activity, listener)
             })
         }
@@ -357,9 +359,17 @@ object AdsSDK {
             //performInitializeAds(activity, listener)
         }
         if (consentTracker.isRequestAdsFail()) {
+            forceReShowGDPR(activity, gdprConsent, consentTracker, language, listener)
+            //reUseExistingConsentForm(activity, gdprConsent, consentTracker, listener)
+        }
+    }
+
+    private fun forceReShowGDPR(activity: Activity, gdprConsent: GdprConsent, consentTracker: ConsentTracker, language: String, listener: AdsInitializeListener) {
+        try {
             adsType = AdsType.SHOW_CONSENT
             Log.e("isUserConsentValid:::", "canRequestAds:${gdprConsent.canRequestAds()}")
             gdprConsent.resetConsent()
+            consentTracker.updateState(isShowForceAgain = true, language = language)
             if (isEnableDebugGDPR) {
                 gdprConsent.updateConsentInfoWithDebugGeoGraphics(
                     activity = activity,
@@ -367,6 +377,7 @@ object AdsSDK {
                         adsType = if (it) AdsType.SHOW_ADS else AdsType.FAIL_ADS
                     },
                     consentTracker = consentTracker,
+                    isShowForceAgain = true,
                     hashDeviceIdTest = listTestDeviceIDs,
                     initAds = {
                         performInitializeAds(activity, listener)
@@ -374,11 +385,12 @@ object AdsSDK {
             } else {
                 gdprConsent.updateConsentInfo(activity = activity, underAge = false, consentPermit = {
                     adsType = if (it) AdsType.SHOW_ADS else AdsType.FAIL_ADS
-                }, consentTracker = consentTracker, initAds = {
+                }, consentTracker = consentTracker, isShowForceAgain = true, initAds = {
                     performInitializeAds(activity, listener)
                 })
             }
-            //reUseExistingConsentForm(activity, gdprConsent, consentTracker, listener)
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
