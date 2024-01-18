@@ -50,12 +50,12 @@ afterEvaluate {
 
 dependencies {
     //Ads
-    api(libs.firebase.crashlytics)
     api(libs.ads.billing)
+    api(libs.ads.identifier)
     api(libs.ads.services.lite)
+    implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.analytics)
     implementation(libs.ads.gdpr)
-    implementation(libs.ads.identifier)
     implementation(libs.ads.firebase.ads)
     //Core
     implementation(libs.core.ktx)
