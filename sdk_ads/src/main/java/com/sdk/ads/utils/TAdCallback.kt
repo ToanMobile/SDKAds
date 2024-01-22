@@ -15,6 +15,7 @@ interface TAdCallback {
     fun onAdOpened(adUnit: String, adType: AdType) {}
     fun onAdSwipeGestureClicked(adUnit: String, adType: AdType) {}
     fun onPaidValueListener(bundle: Bundle) {}
+    fun hideAds() {}
 }
 
 enum class AdType {
