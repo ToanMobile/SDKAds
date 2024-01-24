@@ -44,31 +44,38 @@
           }
         },
         {
+          "group": "com.google.firebase",
+          "module": "firebase-crashlytics-ktx",
+          "version": {
+            "requires": "18.6.1"
+          }
+        },
+        {
           "group": "androidx.databinding",
           "module": "databinding-common",
           "version": {
-            "requires": "8.2.1"
+            "requires": "8.2.2"
           }
         },
         {
           "group": "androidx.databinding",
           "module": "databinding-runtime",
           "version": {
-            "requires": "8.2.1"
+            "requires": "8.2.2"
           }
         },
         {
           "group": "androidx.databinding",
           "module": "databinding-adapters",
           "version": {
-            "requires": "8.2.1"
+            "requires": "8.2.2"
           }
         },
         {
           "group": "androidx.databinding",
           "module": "databinding-ktx",
           "version": {
-            "requires": "8.2.1"
+            "requires": "8.2.2"
           }
         },
         {
@@ -83,11 +90,11 @@
         {
           "name": "AdsSdk-v1.1.8.aar",
           "url": "AdsSdk-v1.1.8.aar",
-          "size": 746362,
-          "sha512": "280ba996e9132410d49bf75b3ac4327c07bee73bb212d632eff14ec1a2a60dbd5235c706f6e421f78d71028cef67386e5ba3aa53a820f14defdf0fae2ca6ea14",
-          "sha256": "0bab15b7364224229213e815be5c56632d899246e7426dbc13841ed375254126",
-          "sha1": "d20da3549aa2430aba2eb8deaafb36ba4e9397d3",
-          "md5": "ec7d5296633f55a2824e81a3035cec5e"
+          "size": 746536,
+          "sha512": "9d11fe9a4b3cf03406e53d390547ab53659b805bd96023e9666223334f1e7b259d57af6bfe01c2cc64b187fbd071f5bc39fe8f565975cbc32544943f4d068188",
+          "sha256": "79248b5ddef713a3debfa8ba533f2a3ff781d26a176a14119350388625cfb72b",
+          "sha1": "f5498403d453dee3fca2cea34c7faf2c69c085e6",
+          "md5": "5bb88b68a0b0f2858de3e4392b811426"
         }
       ]
     },
@@ -99,13 +106,6 @@
         "org.jetbrains.kotlin.platform.type": "androidJvm"
       },
       "dependencies": [
-        {
-          "group": "com.google.firebase",
-          "module": "firebase-crashlytics-ktx",
-          "version": {
-            "requires": "18.6.0"
-          }
-        },
         {
           "group": "com.google.firebase",
           "module": "firebase-analytics-ktx",
@@ -219,31 +219,38 @@
           }
         },
         {
+          "group": "com.google.firebase",
+          "module": "firebase-crashlytics-ktx",
+          "version": {
+            "requires": "18.6.1"
+          }
+        },
+        {
           "group": "androidx.databinding",
           "module": "databinding-common",
           "version": {
-            "requires": "8.2.1"
+            "requires": "8.2.2"
           }
         },
         {
           "group": "androidx.databinding",
           "module": "databinding-runtime",
           "version": {
-            "requires": "8.2.1"
+            "requires": "8.2.2"
           }
         },
         {
           "group": "androidx.databinding",
           "module": "databinding-adapters",
           "version": {
-            "requires": "8.2.1"
+            "requires": "8.2.2"
           }
         },
         {
           "group": "androidx.databinding",
           "module": "databinding-ktx",
           "version": {
-            "requires": "8.2.1"
+            "requires": "8.2.2"
           }
         },
         {
@@ -258,11 +265,11 @@
         {
           "name": "AdsSdk-v1.1.8.aar",
           "url": "AdsSdk-v1.1.8.aar",
-          "size": 746362,
-          "sha512": "280ba996e9132410d49bf75b3ac4327c07bee73bb212d632eff14ec1a2a60dbd5235c706f6e421f78d71028cef67386e5ba3aa53a820f14defdf0fae2ca6ea14",
-          "sha256": "0bab15b7364224229213e815be5c56632d899246e7426dbc13841ed375254126",
-          "sha1": "d20da3549aa2430aba2eb8deaafb36ba4e9397d3",
-          "md5": "ec7d5296633f55a2824e81a3035cec5e"
+          "size": 746536,
+          "sha512": "9d11fe9a4b3cf03406e53d390547ab53659b805bd96023e9666223334f1e7b259d57af6bfe01c2cc64b187fbd071f5bc39fe8f565975cbc32544943f4d068188",
+          "sha256": "79248b5ddef713a3debfa8ba533f2a3ff781d26a176a14119350388625cfb72b",
+          "sha1": "f5498403d453dee3fca2cea34c7faf2c69c085e6",
+          "md5": "5bb88b68a0b0f2858de3e4392b811426"
         }
       ]
     },
