@@ -13,6 +13,7 @@ class MyApplication : Application() {
         super.onCreate()
 
         val ads = AdsSDK.init(this)
+            .setDeviceTest(listOf(""))
             .setAdCallback(object : TAdCallback {
                 override fun onAdClicked(adUnit: String, adType: AdType) {
                     super.onAdClicked(adUnit, adType)

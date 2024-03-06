@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        AdsSDK.initialize(activity = this, hashDeviceIdTest = listOf("5F0CCADCCF81D2A23FA916C2AC27C93B"), listener = object : AdsInitializeListener() {
+        AdsSDK.initialize(activity = this, listener = object : AdsInitializeListener() {
             override fun onInitialize() {
                 Log.e("AdsSDK:::", "onInitialize")
             }
