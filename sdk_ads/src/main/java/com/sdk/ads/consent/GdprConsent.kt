@@ -96,6 +96,7 @@ class GdprConsent(val context: Context, private val language: String) {
                 }
             },
             { formError ->
+                initAds()
                 Log.e(TAG, "requestConsentInfoUpdate: ${formError.message}")
             }
         )
