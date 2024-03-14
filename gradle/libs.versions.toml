@@ -13,10 +13,10 @@ navigationFragmentKtx = "2.7.7"
 shimmer = "0.5.0"
 utilCore = "1.31.1"
 #Ads
-playServicesAds = "22.6.0"
+playServicesAds = "23.0.0"
 playServicesAdsIdentifier = "18.0.1"
 gdprVersion = "2.2.0"
-billingVersion = "6.1.0"
+billingVersion = "6.2.0"
 firebaseAnylatics = "21.5.1"
 firebaseCrashlytics = "18.6.2"
 
