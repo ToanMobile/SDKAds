@@ -2,7 +2,6 @@ package com.sdk.ads.ads.open
 
 import android.os.CountDownTimer
 import com.google.android.gms.ads.LoadAdError
-import com.google.android.gms.ads.appopen.AppOpenAd
 import com.sdk.ads.ads.AdsSDK
 import com.sdk.ads.utils.AdType
 import com.sdk.ads.utils.TAdCallback
@@ -58,38 +57,52 @@ object AdmobOpenSplash {
             }
         }
 
-        var adOpenAd: AppOpenAd? = null
+        // var adOpenAd: AppOpenAd? = null
 
         AdmobOpen.load(
             adUnitId,
             callback,
-            onAdLoaded = { adOpenAd = it },
-        )
-
-        timer?.cancel()
-        timer = object : CountDownTimer(timeout, 200) {
-            override fun onTick(millisUntilFinished: Long) {
+            onAdLoaded = {
                 if (!AdsSDK.isEnableOpenAds) {
                     timer?.cancel()
                     onAdLoaded.invoke()
                     nextAction.invoke()
-                    return
+                    return@load
                 }
 
-                adOpenAd?.let { appOpenAd ->
-                    timer?.cancel()
-                    onNextActionWhenResume {
-                        AdsSDK.getAppCompatActivityOnTop()?.waitActivityResumed {
-                            AdmobOpen.show(appOpenAd, callback)
-                        }
+                timer?.cancel()
+                onNextActionWhenResume {
+                    AdsSDK.getAppCompatActivityOnTop()?.waitActivityResumed {
+                        AdmobOpen.show(it, callback)
                     }
                 }
-            }
+            },
+        )
 
-            override fun onFinish() {
-                timer?.cancel()
-                onNextActionWhenResume(nextAction)
-            }
-        }.start()
+        /* timer?.cancel()
+         timer = object : CountDownTimer(timeout, 200) {
+             override fun onTick(millisUntilFinished: Long) {
+                 if (!AdsSDK.isEnableOpenAds) {
+                     timer?.cancel()
+                     onAdLoaded.invoke()
+                     nextAction.invoke()
+                     return
+                 }
+
+                 adOpenAd?.let { appOpenAd ->
+                     timer?.cancel()
+                     onNextActionWhenResume {
+                         AdsSDK.getAppCompatActivityOnTop()?.waitActivityResumed {
+                             AdmobOpen.show(appOpenAd, callback)
+                         }
+                     }
+                 }
+             }
+
+             override fun onFinish() {
+                 timer?.cancel()
+                 onNextActionWhenResume(nextAction)
+             }
+         }.start()*/
     }
 }
