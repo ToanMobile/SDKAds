@@ -67,7 +67,7 @@ object AdmobOpenSplash {
         )
 
         timer?.cancel()
-        timer = object : CountDownTimer(timeout, 1000) {
+        timer = object : CountDownTimer(timeout, 200) {
             override fun onTick(millisUntilFinished: Long) {
                 if (!AdsSDK.isEnableOpenAds) {
                     timer?.cancel()
