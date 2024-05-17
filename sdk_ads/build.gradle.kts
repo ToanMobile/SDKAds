@@ -3,13 +3,13 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.googleService)
-    alias(libs.plugins.crashlytics)
     id("maven-publish")
 }
 
 android {
     namespace = "com.sdk.ads"
     compileSdk = 34
+    //noinspection DataBindingWithoutKapt
     buildFeatures.dataBinding = true
     defaultConfig {
         minSdk = 21
@@ -42,7 +42,7 @@ afterEvaluate {
                 from(components.findByName("release"))
                 groupId = "com.magic.sdk"
                 artifactId = "AdsSdk"
-                version = "v2.0.4"
+                version = "v2.0.5"
             }
         }
     }
@@ -53,7 +53,6 @@ dependencies {
     api(libs.ads.billing)
     api(libs.ads.identifier)
     api(libs.ads.services.lite)
-    api(libs.firebase.crashlytics)
     implementation(libs.firebase.analytics)
     implementation(libs.ads.gdpr)
     implementation(libs.ads.firebase.ads)

@@ -18,7 +18,6 @@ import com.google.android.gms.ads.nativead.MediaView
 import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.gms.ads.nativead.NativeAdOptions
 import com.google.android.gms.ads.nativead.NativeAdView
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.sdk.ads.R
 import com.sdk.ads.ads.AdsSDK
 import com.sdk.ads.databinding.AdLoadingNativeViewBinding
@@ -406,7 +405,6 @@ object AdmobNative {
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
-                FirebaseCrashlytics.getInstance().recordException(e)
             }
         }
     }

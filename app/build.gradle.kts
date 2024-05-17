@@ -2,18 +2,18 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.googleService)
-    alias(libs.plugins.crashlytics)
 }
 
 android {
     namespace = "com.sdk.ads.demo"
     compileSdk = 34
 
+    //noinspection DataBindingWithoutKapt
     buildFeatures.dataBinding = true
     defaultConfig {
         applicationId = "com.sdk.ads.demo"
         minSdk = 24
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
