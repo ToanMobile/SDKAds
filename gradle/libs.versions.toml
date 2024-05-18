@@ -2,6 +2,7 @@
 agp = "8.4.0"
 kotlin = "1.9.23"
 google_service = "4.4.1"
+crashlyticsVersion = "3.0.1"
 preferenceVersion = "1.2.1"
 core-ktx = "1.13.1"
 appcompat = "1.6.1"
@@ -17,6 +18,7 @@ playServicesAdsIdentifier = "18.0.1"
 gdprVersion = "2.2.0"
 billingVersion = "7.0.0"
 firebaseAnylatics = "22.0.0"
+firebaseCrashlytics = "19.0.0"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -37,10 +39,12 @@ ads-billing = { module = "com.android.billingclient:billing-ktx", version.ref = 
 ads-firebase-ads = { module = "com.google.firebase:firebase-ads", version.ref = "playServicesAds" }
 ads-services-lite = { module = "com.google.android.gms:play-services-ads-lite", version.ref = "playServicesAds" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics-ktx", version.ref = "firebaseAnylatics" }
+firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics-ktx", version.ref = "firebaseCrashlytics" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 googleService = { id = "com.google.gms.google-services", version.ref = "google_service" }
+crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "crashlyticsVersion" }
 
