@@ -1,7 +1,7 @@
 package com.sdk.ads.ads.rewarded
 
 import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.ads.AdActivity
 import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
@@ -11,6 +11,9 @@ import com.sdk.ads.ads.AdsSDK
 import com.sdk.ads.ui.dialogs.DialogShowLoadingAds
 import com.sdk.ads.utils.AdType
 import com.sdk.ads.utils.TAdCallback
+import com.sdk.ads.utils.getActivityOnTop
+import com.sdk.ads.utils.getAppCompatActivityOnTop
+import com.sdk.ads.utils.getClazzOnTop
 import com.sdk.ads.utils.getPaidTrackingBundle
 import com.sdk.ads.utils.waitActivityResumed
 
@@ -24,7 +27,6 @@ object AdmobRewarded {
      * @param onFailureUserNotEarn
      */
     fun show(
-        activity: AppCompatActivity,
         adUnitId: String,
         isShowDefaultLoadingDialog: Boolean = true,
         callBack: TAdCallback? = null,
@@ -35,7 +37,14 @@ object AdmobRewarded {
             onUserEarnedReward.invoke()
             return
         }
-
+        val activity = AdsSDK.getAppCompatActivityOnTop()
+        activity ?: return
+        val clazzOnTop = AdsSDK.getClazzOnTop()
+        val adActivityOnTop = AdsSDK.getActivityOnTop() is AdActivity
+        val containClazzOnTop = AdsSDK.clazzIgnoreAdResume.contains(AdsSDK.getClazzOnTop())
+        if (clazzOnTop == null || containClazzOnTop || adActivityOnTop) {
+            return
+        }
         var dialog: DialogShowLoadingAds? = null
 
         if (isShowDefaultLoadingDialog) {

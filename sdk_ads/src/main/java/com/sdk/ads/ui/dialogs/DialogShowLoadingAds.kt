@@ -5,12 +5,12 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.admob.ui.BaseDialog
-import com.sdk.ads.databinding.DialogLoadingInterBinding
+import com.sdk.ads.databinding.DialogLoadingAdsBinding
 import com.sdk.ads.utils.screenWidth
 
-class DialogShowLoadingAds(context: Context) : BaseDialog<DialogLoadingInterBinding>(context) {
+class DialogShowLoadingAds(context: Context) : BaseDialog<DialogLoadingAdsBinding>(context) {
     override fun getWidthPercent() = 1f
-    override val binding = DialogLoadingInterBinding.inflate(LayoutInflater.from(context))
+    override val binding = DialogLoadingAdsBinding.inflate(LayoutInflater.from(context))
     override fun onViewReady() {}
 
     override fun show() {
