@@ -38,7 +38,7 @@ object AdmobOpenSplash {
                 onAdLoaded.invoke()
             }
 
-            override fun onAdFailedToLoad(adUnit: String, adType: AdType, error: LoadAdError) {
+            override fun onAdFailedToLoad(adUnit: String, adType: AdType, error: LoadAdError?) {
                 super.onAdFailedToLoad(adUnit, adType, error)
                 timer?.cancel()
                 onNextActionWhenResume(nextAction)

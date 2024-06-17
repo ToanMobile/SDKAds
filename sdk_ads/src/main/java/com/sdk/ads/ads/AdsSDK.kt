@@ -102,10 +102,10 @@ object AdsSDK {
             adLogger(adType, adUnit, "onAdFailedToShowFullScreenContent")
         }
 
-        override fun onAdFailedToLoad(adUnit: String, adType: AdType, error: LoadAdError) {
+        override fun onAdFailedToLoad(adUnit: String, adType: AdType, error: LoadAdError?) {
             super.onAdFailedToLoad(adUnit, adType, error)
             outsideAdCallback?.onAdFailedToLoad(adUnit, adType, error)
-            adLogger(adType, adUnit, "onAdFailedToLoad(${error.code} - ${error.message})")
+            adLogger(adType, adUnit, "onAdFailedToLoad(${error?.code} - ${error?.message})")
         }
 
         override fun onAdImpression(adUnit: String, adType: AdType) {

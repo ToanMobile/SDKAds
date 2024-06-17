@@ -6,8 +6,10 @@ import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.ResponseInfo
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
+import com.google.android.gms.ads.zzc
 import com.sdk.ads.ads.AdsSDK
 import com.sdk.ads.ui.dialogs.DialogShowLoadingAds
 import com.sdk.ads.utils.AdType
@@ -60,6 +62,7 @@ object AdmobInter {
         }
 
         if (!AdsSDK.app.isNetworkAvailable()) {
+            callback?.onAdFailedToLoad(adUnitId, AdType.Inter, null)
             return
         }
 

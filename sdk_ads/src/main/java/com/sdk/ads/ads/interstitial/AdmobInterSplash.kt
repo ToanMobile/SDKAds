@@ -1,6 +1,7 @@
 package com.sdk.ads.ads.interstitial
 
 import android.os.CountDownTimer
+import android.util.Log
 import com.google.android.gms.ads.LoadAdError
 import com.sdk.ads.ads.AdsSDK
 import com.sdk.ads.utils.AdType
@@ -47,8 +48,9 @@ object AdmobInterSplash {
                 }
             }
 
-            override fun onAdFailedToLoad(adUnit: String, adType: AdType, error: LoadAdError) {
+            override fun onAdFailedToLoad(adUnit: String, adType: AdType, error: LoadAdError?) {
                 super.onAdFailedToLoad(adUnit, adType, error)
+                Log.e("onAdFailedToLoad::","error:$error")
                 timer?.cancel()
                 onNextActionWhenResume(nextAction)
             }

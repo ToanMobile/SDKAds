@@ -9,7 +9,7 @@ interface TAdCallback {
     fun onAdDismissedFullScreenContent(adUnit: String, adType: AdType) {}
     fun onAdShowedFullScreenContent(adUnit: String, adType: AdType) {}
     fun onAdFailedToShowFullScreenContent(adUnit: String, adType: AdType) {}
-    fun onAdFailedToLoad(adUnit: String, adType: AdType, error: LoadAdError) {}
+    fun onAdFailedToLoad(adUnit: String, adType: AdType, error: LoadAdError?) {}
     fun onAdImpression(adUnit: String, adType: AdType) {}
     fun onAdLoaded(adUnit: String, adType: AdType) {}
     fun onAdOpened(adUnit: String, adType: AdType) {}
