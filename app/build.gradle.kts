@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "com.sdk.ads.demo"
-    compileSdk = 34
+    compileSdk = 35
 
     //noinspection DataBindingWithoutKapt
     buildFeatures.dataBinding = true

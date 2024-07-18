@@ -97,6 +97,18 @@ class BillingManager(activity: Activity) {
         }
     }
 
+    fun launchBillingInAppFlow(productsDetails: ProductDetails) {
+        ensureConnection {
+            performLaunchBillingFlow(productsDetails, onlyInApp = true)
+        }
+    }
+
+    fun queryInAppProductDetails(productIdsInApp: List<String>, resultProducts: (List<ProductDetails>) -> Unit) {
+        ensureConnection {
+            queryProductDetails(productIdsInApp = productIdsInApp, resultProducts = resultProducts)
+        }
+    }
+
     fun queryAllProductDetails(productIdsInApp: List<String>, productIdsSubs: List<String>, resultProducts: (List<ProductDetails>) -> Unit) {
         ensureConnection {
             queryProductDetails(productIdsInApp = productIdsInApp, productIdsSubs = productIdsSubs, resultProducts = resultProducts)
@@ -129,6 +141,21 @@ class BillingManager(activity: Activity) {
         ) { billingResult, list ->
             if (billingResult.responseCode == OK) {
                 handlePurchases(list)
+            }
+        }
+    }
+
+    private fun queryProductDetails(
+        productIdsInApp: List<String>,
+        purchasedSku: String? = null,
+        resultProducts: (List<ProductDetails>) -> Unit,
+    ) = runBlocking {
+        getDetailsFlow(productIdsInApp, INAPP).collect { listProduct ->
+            resultProducts(listProduct)
+            purchasedSku?.let { purchasedSku ->
+                listProduct.firstOrNull { it.productId == purchasedSku }?.let {
+                    performLaunchBillingFlow(it)
+                }
             }
         }
     }
@@ -168,15 +195,20 @@ class BillingManager(activity: Activity) {
         }
     }
 
-    private fun performLaunchBillingFlow(productDetails: ProductDetails) {
+    private fun performLaunchBillingFlow(productDetails: ProductDetails, onlyInApp: Boolean = false) {
         val activity = activity.get() ?: return
         val offerToken = productDetails.subscriptionOfferDetails?.firstOrNull()?.offerToken ?: ""
-        val productDetailsParamsList = listOf(
+        val product = if (onlyInApp) {
+            BillingFlowParams.ProductDetailsParams.newBuilder()
+                .setProductDetails(productDetails)
+                .build()
+        } else {
             BillingFlowParams.ProductDetailsParams.newBuilder()
                 .setProductDetails(productDetails)
                 .setOfferToken(offerToken)
-                .build(),
-        )
+                .build()
+        }
+        val productDetailsParamsList = listOf(product)
         val billingFlowParams = BillingFlowParams.newBuilder()
             .setProductDetailsParamsList(productDetailsParamsList)
             .build()

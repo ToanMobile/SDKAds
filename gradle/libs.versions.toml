@@ -1,24 +1,24 @@
 [versions]
-agp = "8.4.2"
+agp = "8.5.1"
 kotlin = "1.9.23"
 google_service = "4.4.2"
-crashlyticsVersion = "3.0.1"
+crashlyticsVersion = "3.0.2"
 preferenceVersion = "1.2.1"
 core-ktx = "1.13.1"
 appcompat = "1.7.0"
-lifecycleLivedataKtx = "2.8.2"
+lifecycleLivedataKtx = "2.8.3"
 material = "1.12.0"
 constraintlayout = "2.1.4"
 navigationFragmentKtx = "2.7.7"
 shimmer = "0.5.0"
 utilCore = "1.31.1"
 #Ads
-playServicesAds = "23.1.0"
+playServicesAds = "23.2.0"
 playServicesAdsIdentifier = "18.1.0"
-gdprVersion = "2.2.0"
+gdprVersion = "3.0.0"
 billingVersion = "7.0.0"
-firebaseAnylatics = "22.0.1"
-firebaseCrashlytics = "19.0.1"
+firebaseAnylatics = "22.0.2"
+firebaseCrashlytics = "19.0.3"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }

@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.sdk.ads"
-    compileSdk = 34
+    compileSdk = 35
     //noinspection DataBindingWithoutKapt
     buildFeatures.dataBinding = true
     defaultConfig {
@@ -41,7 +41,7 @@ afterEvaluate {
                 from(components.findByName("release"))
                 groupId = "com.magic.sdk"
                 artifactId = "AdsSdk"
-                version = "v2.1.1"
+                version = "v2.1.2"
             }
         }
     }
