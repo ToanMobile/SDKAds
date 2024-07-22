@@ -4,6 +4,7 @@ import android.app.Activity
 import android.util.Log
 import com.android.billingclient.api.AcknowledgePurchaseParams
 import com.android.billingclient.api.BillingClient
+import com.android.billingclient.api.BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED
 import com.android.billingclient.api.BillingClient.BillingResponseCode.OK
 import com.android.billingclient.api.BillingClient.BillingResponseCode.SERVICE_DISCONNECTED
 import com.android.billingclient.api.BillingClient.BillingResponseCode.USER_CANCELED
@@ -136,7 +137,7 @@ class BillingManager(activity: Activity) {
     private fun performQueryPurchases() {
         billingClient.queryPurchasesAsync(
             QueryPurchasesParams.newBuilder()
-                .setProductType(SUBS)
+                .setProductType(INAPP) // SUBS
                 .build(),
         ) { billingResult, list ->
             if (billingResult.responseCode == OK) {
@@ -245,7 +246,7 @@ class BillingManager(activity: Activity) {
     }
 
     private fun handlePurchases(list: List<Purchase>) {
-        Log.e("handlePurchases:::", list.toString())
+        //Log.e("handlePurchases:::", list.toString())
         if (list.isEmpty()) {
             purchaseListener?.onResult(listOf(), listOf())
             return
@@ -262,9 +263,9 @@ class BillingManager(activity: Activity) {
     }
 
     private fun onPurchasesUpdated(billingResult: BillingResult, purchases: List<Purchase>?) {
-        Log.e("onPurchasesUpdated:::", billingResult.responseCode.toString())
+        //Log.e("onPurchasesUpdated:::", billingResult.responseCode.toString() +"\npurchases:"+purchases)
         when (billingResult.responseCode) {
-            OK -> purchases?.let {
+            OK, ITEM_ALREADY_OWNED -> purchases?.let {
                 handlePurchases(it)
             }
 
