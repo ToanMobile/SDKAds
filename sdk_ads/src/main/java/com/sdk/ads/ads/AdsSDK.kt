@@ -68,6 +68,7 @@ object AdsSDK {
     val getAdsType get() = adsType
     val checkAdsShow get() = adsType == AdsType.SHOW_ADS
     val checkAdsFail get() = adsType == AdsType.FAIL_ADS
+    val checkIsPurchase get() = adsType == AdsType.PURCHARSE
     val checkIsShowConsent get() = adsType == AdsType.SHOW_CONSENT
 
     val adCallback: TAdCallback = object : TAdCallback {
@@ -275,11 +276,13 @@ object AdsSDK {
                     //Log.e("performQueryPurchases:", "ok")
                     listener.onPurchase(isPurchase = false)
                     performConsent(activity = activity, listener = listener)
+                    adsType = AdsType.NONE
                 } else {
                     //Log.e("performQueryPurchases:", "There are some purchases for removing ads.")
                     listener.onFail("There are some purchases for removing ads.")
                     listener.onPurchase(isPurchase = true)
                     listener.always()
+                    adsType = AdsType.PURCHARSE
                 }
             }
 
