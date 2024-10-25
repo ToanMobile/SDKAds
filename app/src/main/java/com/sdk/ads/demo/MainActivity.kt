@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity() {
                     Log.e("callbackADS", "onAdLoaded")
                 }
 
-                override fun onAdFailedToLoad(adUnit: String, adType: AdType, error: LoadAdError) {
+                override fun onAdFailedToLoad(adUnit: String, adType: AdType, error: LoadAdError?) {
                     super.onAdFailedToLoad(adUnit, adType, error)
                     Log.e("callbackADS", "onAdFailedToLoad")
                 }
@@ -76,7 +76,7 @@ class MainActivity : AppCompatActivity() {
                     com.sdk.ads.utils.logScreen(this::class.java.simpleName)
                 }
 
-                override fun onAdFailedToLoad(adUnit: String, adType: AdType, error: com.google.android.gms.ads.LoadAdError) {
+                override fun onAdFailedToLoad(adUnit: String, adType: AdType, error: LoadAdError?) {
                     super.onAdFailedToLoad(adUnit, adType, error)
                     Log.e("onAdFailedToLoad::", adType.toString())
                 }
@@ -99,7 +99,7 @@ class MainActivity : AppCompatActivity() {
                     com.sdk.ads.utils.logScreen(this::class.java.simpleName)
                 }
 
-                override fun onAdFailedToLoad(adUnit: String, adType: AdType, error: com.google.android.gms.ads.LoadAdError) {
+                override fun onAdFailedToLoad(adUnit: String, adType: AdType, error: LoadAdError?) {
                     super.onAdFailedToLoad(adUnit, adType, error)
                     Log.e("onAdFailedToLoad::", adType.toString())
                 }

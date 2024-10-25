@@ -114,7 +114,11 @@ class GdprConsent(val context: Context, private val language: String) {
         UserMessagingPlatform.loadConsentForm(
             context,
             { consentFormShow ->
-                if (consentForm != null) return@loadConsentForm
+                if (consentForm != null) {
+                    Log.e(TAG, "return@loadConsentForm${consentInformation.consentStatus}")
+                    initAds()
+                    return@loadConsentForm
+                }
                 // Take form if needed later
                 consentForm = consentFormShow
                 Log.e(TAG, "consentForm is required to show" + consentInformation.consentStatus.toString())
