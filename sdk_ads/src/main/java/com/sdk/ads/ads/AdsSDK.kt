@@ -349,13 +349,19 @@ object AdsSDK {
                 hashDeviceIdTest = listTestDeviceIDs,
                 initAds = {
                     performInitializeAds(activity, listener)
+                },
+                callBackFormError = {
+                    listener.formError(it)
                 })
         } else {
             gdprConsent.updateConsentInfo(activity = activity, underAge = false, consentPermit = {
                 adsType = if (it) AdsType.SHOW_ADS else AdsType.FAIL_ADS
             }, consentTracker = consentTracker, isShowForceAgain = false, initAds = {
                 performInitializeAds(activity, listener)
-            })
+            },
+                callBackFormError = {
+                    listener.formError(it)
+                })
         }
         Log.e("isUserConsentValid:::", "User data consent couldn't be requested.")
         if (consentTracker.isUserConsentValid()) {
@@ -384,13 +390,19 @@ object AdsSDK {
                     hashDeviceIdTest = listTestDeviceIDs,
                     initAds = {
                         performInitializeAds(activity, listener)
+                    },
+                    callBackFormError = {
+                        listener.formError(it)
                     })
             } else {
                 gdprConsent.updateConsentInfo(activity = activity, underAge = false, consentPermit = {
                     adsType = if (it) AdsType.SHOW_ADS else AdsType.FAIL_ADS
                 }, consentTracker = consentTracker, isShowForceAgain = true, initAds = {
                     performInitializeAds(activity, listener)
-                })
+                },
+                    callBackFormError = {
+                        listener.formError(it)
+                    })
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -408,6 +420,9 @@ object AdsSDK {
                 consentTracker = consentTracker,
                 initAds = {
                     performInitializeAds(activity, listener)
+                },
+                callBackFormError = {
+                    listener.formError(it)
                 })
         } catch (e: Exception) {
             e.printStackTrace()

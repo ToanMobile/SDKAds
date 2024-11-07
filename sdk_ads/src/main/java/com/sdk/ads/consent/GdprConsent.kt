@@ -8,6 +8,7 @@ import com.google.android.ump.ConsentDebugSettings
 import com.google.android.ump.ConsentForm
 import com.google.android.ump.ConsentInformation
 import com.google.android.ump.ConsentRequestParameters
+import com.google.android.ump.FormError
 import com.google.android.ump.UserMessagingPlatform
 import com.sdk.ads.utils.logEvent
 
@@ -23,7 +24,8 @@ class GdprConsent(val context: Context, private val language: String) {
         consentTracker: ConsentTracker,
         isShowForceAgain: Boolean = false,
         consentPermit: (Boolean) -> Unit,
-        initAds: () -> Unit
+        initAds: () -> Unit,
+        callBackFormError: (FormError?) -> Unit
     ) {
         val params = ConsentRequestParameters
             .Builder()
@@ -36,7 +38,8 @@ class GdprConsent(val context: Context, private val language: String) {
             consentPermit = consentPermit,
             isShowForceAgain = isShowForceAgain,
             consentTracker = consentTracker,
-            initAds = { initAds() }
+            initAds = { initAds() },
+            callBackFormError = callBackFormError,
         )
     }
 
@@ -53,6 +56,7 @@ class GdprConsent(val context: Context, private val language: String) {
         consentPermit: (Boolean) -> Unit,
         initAds: () -> Unit,
         hashDeviceIdTest: List<String>?,
+        callBackFormError: (FormError?) -> Unit
     ) {
         val debugSetting = ConsentDebugSettings.Builder(context)
             .setDebugGeography(geoGraph)
@@ -73,7 +77,8 @@ class GdprConsent(val context: Context, private val language: String) {
             consentTracker = consentTracker,
             isShowForceAgain = isShowForceAgain,
             consentPermit = consentPermit,
-            initAds = { initAds() }
+            initAds = { initAds() },
+            callBackFormError = callBackFormError
         )
     }
 
@@ -83,14 +88,15 @@ class GdprConsent(val context: Context, private val language: String) {
         consentTracker: ConsentTracker,
         isShowForceAgain: Boolean = false,
         consentPermit: (Boolean) -> Unit,
-        initAds: () -> Unit
+        initAds: () -> Unit,
+        callBackFormError: (FormError?) -> Unit
     ) {
         consentInformation.requestConsentInfoUpdate(
             activity,
             params,
             { // The consent information state was updated, ready to check if a form is available.
                 if (consentInformation.isConsentFormAvailable) {
-                    loadForm(activity, consentTracker, isShowForceAgain, consentPermit, initAds = { initAds() })
+                    loadForm(activity, consentTracker, isShowForceAgain, consentPermit, initAds = { initAds() }, callBackFormError = callBackFormError)
                 } else {
                     consentPermit(isConsentObtained(consentTracker))
                 }
@@ -107,7 +113,8 @@ class GdprConsent(val context: Context, private val language: String) {
         consentTracker: ConsentTracker,
         isShowForceAgain: Boolean = false,
         consentPermit: (Boolean) -> Unit,
-        initAds: () -> Unit
+        initAds: () -> Unit,
+        callBackFormError: (FormError?) -> Unit
     ) {
         Log.e(TAG, "requestConsentInfoUpdate:loadConsentForm")
         // Loads a consent form. Must be called on the main thread.
@@ -141,6 +148,7 @@ class GdprConsent(val context: Context, private val language: String) {
                                 } else {
                                     logEvent(evenName = "GDPR_formError_${formError.errorCode}_${formError.message}_$language")
                                 }
+                                callBackFormError(formError)
                             }
                             // App can start requesting ads.
                             if (consentInformation.consentStatus == ConsentInformation.ConsentStatus.OBTAINED) {
@@ -150,7 +158,7 @@ class GdprConsent(val context: Context, private val language: String) {
                             }
                             Log.e(TAG, "consentForm is required to show${consentForm}")
                             // Handle dismissal by reloading form.
-                            loadForm(activity, consentTracker, isShowForceAgain, consentPermit, initAds)
+                            loadForm(activity, consentTracker, isShowForceAgain, consentPermit, initAds, callBackFormError = callBackFormError)
                         }
                     }
 
@@ -166,6 +174,7 @@ class GdprConsent(val context: Context, private val language: String) {
                 } else {
                     logEvent(evenName = "GDPR_formError_${formError.errorCode}_${formError.message}_$language")
                 }
+                callBackFormError(formError)
             },
         )
     }
@@ -174,7 +183,8 @@ class GdprConsent(val context: Context, private val language: String) {
         activity: Activity,
         consentTracker: ConsentTracker,
         consentPermit: (Boolean) -> Unit,
-        initAds: () -> Unit
+        initAds: () -> Unit,
+        callBackFormError: (FormError?) -> Unit
     ) {
         resetConsent()
         if (consentInformation.isConsentFormAvailable) {
@@ -194,7 +204,7 @@ class GdprConsent(val context: Context, private val language: String) {
                     initAds()
                 }
                 // Handle dismissal by reloading form.
-                loadForm(activity, consentTracker, true, consentPermit, initAds)
+                loadForm(activity, consentTracker, true, consentPermit, initAds, callBackFormError = callBackFormError)
             }
         } else {
             Log.e(TAG, "Consent form not available, check internet connection.")
