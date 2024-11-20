@@ -4,7 +4,9 @@ import android.os.CountDownTimer
 import android.util.Log
 import com.google.android.gms.ads.LoadAdError
 import com.sdk.ads.ads.AdsSDK
+import com.sdk.ads.ads.interstitial.AdmobInter.dismissLoading
 import com.sdk.ads.ads.interstitial.AdmobInter.showLoadingBeforeInter
+import com.sdk.ads.ui.dialogs.DialogShowLoadingAds
 import com.sdk.ads.utils.AdType
 import com.sdk.ads.utils.TAdCallback
 import com.sdk.ads.utils.getAppCompatActivityOnTop
@@ -35,17 +37,19 @@ object AdmobInterSplash {
         nextAction: () -> Unit,
         adLoaded: () -> Unit = {},
     ) {
+        var dialogShowLoadingAds: DialogShowLoadingAds? = null
         if (!AdsSDK.isEnableInter) {
             nextAction.invoke()
             return
         }
         if (isForceShowNow && isShowLoading) {
-            showLoadingBeforeInter {}
+            dialogShowLoadingAds = showLoadingBeforeInter()
         }
         val callback = object : TAdCallback {
             override fun onAdLoaded(adUnit: String, adType: AdType) {
                 super.onAdLoaded(adUnit, adType)
                 adLoaded()
+                dismissLoading(dialogShowLoadingAds)
                 if (isForceShowNow) {
                     showAds(adUnitId, isShowLoading, isDelayNextAds, this, nextAction)
                 }

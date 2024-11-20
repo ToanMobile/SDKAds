@@ -165,13 +165,15 @@ object AdmobInter {
         if (currActivity == null) {
             nextAction.invoke()
         } else {
-            if (showLoadingInter) {
+            invokeShowInter(interAd, currActivity, loadAfterDismiss, callback, nextAction)
+            //TODO
+            /*if (showLoadingInter) {
                 showLoadingBeforeInter {
                     invokeShowInter(interAd, currActivity, loadAfterDismiss, callback, nextAction)
                 }
             } else {
                 invokeShowInter(interAd, currActivity, loadAfterDismiss, callback, nextAction)
-            }
+            }*/
         }
     }
 
@@ -303,6 +305,47 @@ object AdmobInter {
                     dialog.dismiss()
                 }
                 nextAction.invoke()
+            }
+        }
+    }
+
+    fun showLoadingBeforeInter(): DialogShowLoadingAds? {
+        val topActivity = AdsSDK.getAppCompatActivityOnTop() ?: return null
+
+        val dialog = DialogShowLoadingAds(topActivity)
+
+        if (topActivity.lifecycle.currentState == Lifecycle.State.RESUMED) {
+            if (!dialog.isShowing) {
+                dialog.show()
+
+                topActivity.waitActivityStop {
+                    if (dialog.isShowing) {
+                        dialog.dismiss()
+                    }
+                }
+            }
+        } else {
+            topActivity.waitingResume {
+                if (dialog.isShowing) {
+                    dialog.dismiss()
+                }
+            }
+        }
+        return dialog
+    }
+
+    fun dismissLoading(dialog: DialogShowLoadingAds?) {
+        if (dialog == null) return
+        val topActivity = AdsSDK.getAppCompatActivityOnTop()
+        if (topActivity?.lifecycle?.currentState == Lifecycle.State.RESUMED) {
+            if (dialog.isShowing) {
+                dialog.dismiss()
+            }
+        } else {
+            topActivity?.waitActivityResumed {
+                if (dialog.isShowing) {
+                    dialog.dismiss()
+                }
             }
         }
     }
