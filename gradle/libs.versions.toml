@@ -9,7 +9,7 @@ appcompat = "1.7.0"
 lifecycleLivedataKtx = "2.8.7"
 material = "1.12.0"
 constraintlayout = "2.2.0"
-navigationFragmentKtx = "2.8.3"
+navigationFragmentKtx = "2.8.4"
 shimmer = "0.5.0"
 utilCore = "1.31.1"
 #Ads

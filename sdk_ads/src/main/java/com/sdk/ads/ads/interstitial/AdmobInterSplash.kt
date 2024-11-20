@@ -4,6 +4,7 @@ import android.os.CountDownTimer
 import android.util.Log
 import com.google.android.gms.ads.LoadAdError
 import com.sdk.ads.ads.AdsSDK
+import com.sdk.ads.ads.interstitial.AdmobInter.showLoadingBeforeInter
 import com.sdk.ads.utils.AdType
 import com.sdk.ads.utils.TAdCallback
 import com.sdk.ads.utils.getAppCompatActivityOnTop
@@ -38,7 +39,9 @@ object AdmobInterSplash {
             nextAction.invoke()
             return
         }
-
+        if (isForceShowNow && isShowLoading) {
+            showLoadingBeforeInter {}
+        }
         val callback = object : TAdCallback {
             override fun onAdLoaded(adUnit: String, adType: AdType) {
                 super.onAdLoaded(adUnit, adType)
@@ -50,7 +53,7 @@ object AdmobInterSplash {
 
             override fun onAdFailedToLoad(adUnit: String, adType: AdType, error: LoadAdError?) {
                 super.onAdFailedToLoad(adUnit, adType, error)
-                Log.e("onAdFailedToLoad::","error:$error")
+                Log.e("onAdFailedToLoad::", "error:$error")
                 timer?.cancel()
                 onNextActionWhenResume(nextAction)
             }

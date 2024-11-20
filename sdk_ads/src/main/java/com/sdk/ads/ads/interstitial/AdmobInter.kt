@@ -262,7 +262,7 @@ object AdmobInter {
      * 5.   Nếu Activity đang resume => ẩn dialog/ next action
      * 6.   Nếu Activity không resume => đợi resume thì ẩn dialog / nextAction
      */
-    private fun showLoadingBeforeInter(nextAction: () -> Unit) {
+    fun showLoadingBeforeInter(nextAction: () -> Unit) {
         val topActivity = AdsSDK.getAppCompatActivityOnTop()
 
         if (topActivity == null) {
