@@ -1,9 +1,9 @@
 package com.sdk.ads.billing
 
-import com.android.billingclient.api.SkuDetails
+import com.android.billingclient.api.ProductDetails
 
-data class BillingProduct(internal val skuDetails: SkuDetails) {
+data class BillingProduct(internal val skuDetails: ProductDetails) {
 
     val sku: String
-        get() = skuDetails.sku
+        get() = skuDetails.productId
 }

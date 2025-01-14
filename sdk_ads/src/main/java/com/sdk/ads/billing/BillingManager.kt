@@ -1,7 +1,6 @@
 package com.sdk.ads.billing
 
 import android.app.Activity
-import android.util.Log
 import com.android.billingclient.api.AcknowledgePurchaseParams
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED
@@ -14,6 +13,7 @@ import com.android.billingclient.api.BillingClientStateListener
 import com.android.billingclient.api.BillingFlowParams
 import com.android.billingclient.api.BillingResult
 import com.android.billingclient.api.ConsumeParams
+import com.android.billingclient.api.PendingPurchasesParams
 import com.android.billingclient.api.ProductDetails
 import com.android.billingclient.api.Purchase
 import com.android.billingclient.api.Purchase.PurchaseState.PENDING
@@ -23,12 +23,17 @@ import com.android.billingclient.api.QueryProductDetailsParams.Product
 import com.android.billingclient.api.QueryPurchasesParams
 import com.android.billingclient.api.queryProductDetails
 import com.sdk.ads.billing.extensions.asBillingPurchases
+import com.sdk.ads.utils.logEvent
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.runBlocking
 import java.lang.ref.WeakReference
+
+enum class BillingStatus {
+    OrderReceived, Chargeable, Charged, Pending
+}
 
 class BillingManager(activity: Activity) {
 
@@ -42,9 +47,10 @@ class BillingManager(activity: Activity) {
     private var activity: WeakReference<Activity> = WeakReference(activity)
 
     private val billingClient: BillingClient by lazy {
+        val pendingPurchasesParams = PendingPurchasesParams.newBuilder().enableOneTimeProducts().build()
         BillingClient.newBuilder(activity)
             .setListener(::onPurchasesUpdated)
-            .enablePendingPurchases()
+            .enablePendingPurchases(pendingPurchasesParams)
             .build()
     }
 
@@ -242,7 +248,11 @@ class BillingManager(activity: Activity) {
             .setPurchaseToken(purchase.purchaseToken)
             .build()
 
-        billingClient.acknowledgePurchase(params) {}
+        billingClient.acknowledgePurchase(params) { billingResult ->
+            if (billingResult.responseCode == OK) {
+                logEvent(BillingStatus.Chargeable.name)
+            }
+        }
     }
 
     private fun handlePurchases(list: List<Purchase>) {
@@ -258,7 +268,16 @@ class BillingManager(activity: Activity) {
         }
 
         val pending = list.filter { it.purchaseState == PENDING }
-
+        if (purchased.isNotEmpty()) {
+            val isCharged = purchased.filter { it.isAcknowledged }
+            if (isCharged.isNotEmpty()) {
+                logEvent(BillingStatus.Charged.name)
+            } else {
+                logEvent(BillingStatus.OrderReceived.name)
+            }
+        } else if (pending.isNotEmpty()) {
+            logEvent(BillingStatus.Pending.name)
+        }
         purchaseListener?.onResult(purchased.asBillingPurchases, pending.asBillingPurchases)
     }
 

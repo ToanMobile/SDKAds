@@ -1,10 +1,10 @@
 package com.sdk.ads.billing.extensions
 
-import com.android.billingclient.api.SkuDetails
+import com.android.billingclient.api.ProductDetails
 import com.sdk.ads.billing.BillingProduct
 
-val SkuDetails.asBillingProduct: BillingProduct
+val ProductDetails.asBillingProduct: BillingProduct
     get() = BillingProduct(this)
 
-val List<SkuDetails>.asBillingProducts: List<BillingProduct>
+val List<ProductDetails>.asBillingProducts: List<BillingProduct>
     get() = map { it.asBillingProduct }
