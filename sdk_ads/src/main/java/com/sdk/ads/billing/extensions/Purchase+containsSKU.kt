@@ -1,6 +1,5 @@
 package com.sdk.ads.billing.extensions
 
-import android.util.Log
 import com.android.billingclient.api.Purchase
 import com.sdk.ads.billing.BillingPurchase
 
