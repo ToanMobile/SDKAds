@@ -36,9 +36,13 @@ enum class BillingStatus {
     iap_OrderReceived, iap_Chargeable, iap_Charged, iap_Pending
 }
 
-class BillingManager(activity: Activity) {
+class BillingManager(activity: Activity, val isCharged: Boolean = false) {
 
-//    companion object {
+    init {
+        if (isCharged) currentStatus = BillingStatus.iap_Charged.name
+    }
+
+    companion object {
 //        const val IAP_PURCHASING_ORDER_RECEIVED = "iap_purchasing_orderReceived"
 //        const val IAP_PURCHASING_CHARGEABLE = "iap_purchasing_chargeable"
 //        const val IAP_PURCHASING_CHARGED = "iap_purchasing_charged"
@@ -48,7 +52,9 @@ class BillingManager(activity: Activity) {
 //        const val IAP_CHARGEABLE = "iap_Chargeable"
 //        const val IAP_CHARGED = "iap_Charged"
 //        const val IAP_PENDING = "iap_Pending"
-//    }
+
+        private var currentStatus = ""
+    }
 
     // region Public Variables
 
@@ -56,8 +62,6 @@ class BillingManager(activity: Activity) {
     // endregion
 
     // region Private Variables
-
-    private var currentStatus = ""
 
     private var activity: WeakReference<Activity> = WeakReference(activity)
 
@@ -274,21 +278,27 @@ class BillingManager(activity: Activity) {
     }
 
     private fun handlePurchases(list: List<Purchase>) {
-        //Log.e("handlePurchases:::", list.toString())
+        Log.e("handlePurchases:::", list.toString())
         if (list.isEmpty()) {
             purchaseListener?.onResult(listOf(), listOf())
             return
         }
-
+        Log.e("11111111", "handlePurchases  currentStatus = $currentStatus")
         val purchased = list.filter { it.purchaseState == PURCHASED }
         purchased.forEach {
             performAcknowledgePurchase(it)
         }
 
-        val pending = list.filter { it.purchaseState == PENDING }
+        val pendingList = list.filter { it.purchaseState == PENDING }
+        if (pendingList.isNotEmpty()) {
+            if (currentStatus != BillingStatus.iap_Pending.name) {
+                logEvent(BillingStatus.iap_Pending.name)
+                currentStatus = BillingStatus.iap_Pending.name
+            }
+        }
         if (purchased.isNotEmpty()) {
-            val isCharged = purchased.filter { it.isAcknowledged }
-            if (isCharged.isNotEmpty()) {
+            val chargedCount = purchased.count { it.isAcknowledged }
+            if (chargedCount > 0) {
                 if (currentStatus != BillingStatus.iap_Charged.name) {
                     logEvent(BillingStatus.iap_Charged.name)
                     currentStatus = BillingStatus.iap_Charged.name
@@ -299,13 +309,8 @@ class BillingManager(activity: Activity) {
                     currentStatus = BillingStatus.iap_OrderReceived.name
                 }
             }
-        } else if (pending.isNotEmpty()) {
-            if (currentStatus != BillingStatus.iap_Pending.name) {
-                logEvent(BillingStatus.iap_Pending.name)
-                currentStatus = BillingStatus.iap_Pending.name
-            }
         }
-        purchaseListener?.onResult(purchased.asBillingPurchases, pending.asBillingPurchases)
+        purchaseListener?.onResult(purchased.asBillingPurchases, pendingList.asBillingPurchases)
     }
 
     private fun onPurchasesUpdated(billingResult: BillingResult, purchases: List<Purchase>?) {

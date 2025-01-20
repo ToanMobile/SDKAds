@@ -250,7 +250,7 @@ object AdsSDK {
     }
 
     // UMP
-    fun initialize(activity: Activity, listener: AdsInitializeListener) {
+    fun initialize(activity: Activity, isCharged: Boolean = false, listener: AdsInitializeListener) {
         Log.e("initialize:::", "initialize")
         setDebugConfiguration()
         if (!isEnableAds) {
@@ -260,14 +260,14 @@ object AdsSDK {
         }
         val skus = purchaseSkuForRemovingAds ?: listOf()
         if (skus.isNotEmpty()) {
-            performQueryPurchases(activity, listener)
+            performQueryPurchases(activity, isCharged, listener)
         } else {
             performConsent(activity, listener)
         }
     }
 
-    private fun performQueryPurchases(activity: Activity, listener: AdsInitializeListener) {
-        val billingManager = BillingManager(activity)
+    private fun performQueryPurchases(activity: Activity, isCharged: Boolean = false, listener: AdsInitializeListener) {
+        val billingManager = BillingManager(activity, isCharged)
         billingManager.purchaseListener = object : PurchaseListener {
             override fun onResult(purchases: List<BillingPurchase>, pending: List<BillingPurchase>) {
                 val skus = purchaseSkuForRemovingAds ?: listOf()
