@@ -91,11 +91,11 @@
         {
           "name": "AdsSdk-v2.2.5.aar",
           "url": "AdsSdk-v2.2.5.aar",
-          "size": 706093,
-          "sha512": "729d324fc0525954f02a87aa305182079a06a8395395c0877ca560a8389e8e82d00c72e310d1bb2cf8e498ed90390e3eade9e908c9623ab555c0c6d0fe8b8f95",
-          "sha256": "9fa58eacdc13d1fcf8fb1c5bc041bcdf98d7dd021c8403eed307c2e57051458b",
-          "sha1": "6b06928b158d3e32e564c1dd79df98c47341f883",
-          "md5": "5e420b1a47eabc5ab19d65eb0cbb03ae"
+          "size": 707287,
+          "sha512": "e0bc331c4b9ef02d28a93cfc1a878bb9bfe9491946664b346be504e42c2870fd8ea8b7d61ee3678296e5e4c1f33f17cdbd3a0bdaf725218a96f1939d12e3e944",
+          "sha256": "327bcb5f59a947e1db0300d53d39e9576674afe57228cf64dc4687b1744d0979",
+          "sha1": "5a9e74cdee952ead3927b5a96c4bff80888af11a",
+          "md5": "ae3839e133f1c06c1c358acab27bea84"
         }
       ]
     },
@@ -267,11 +267,11 @@
         {
           "name": "AdsSdk-v2.2.5.aar",
           "url": "AdsSdk-v2.2.5.aar",
-          "size": 706093,
-          "sha512": "729d324fc0525954f02a87aa305182079a06a8395395c0877ca560a8389e8e82d00c72e310d1bb2cf8e498ed90390e3eade9e908c9623ab555c0c6d0fe8b8f95",
-          "sha256": "9fa58eacdc13d1fcf8fb1c5bc041bcdf98d7dd021c8403eed307c2e57051458b",
-          "sha1": "6b06928b158d3e32e564c1dd79df98c47341f883",
-          "md5": "5e420b1a47eabc5ab19d65eb0cbb03ae"
+          "size": 707287,
+          "sha512": "e0bc331c4b9ef02d28a93cfc1a878bb9bfe9491946664b346be504e42c2870fd8ea8b7d61ee3678296e5e4c1f33f17cdbd3a0bdaf725218a96f1939d12e3e944",
+          "sha256": "327bcb5f59a947e1db0300d53d39e9576674afe57228cf64dc4687b1744d0979",
+          "sha1": "5a9e74cdee952ead3927b5a96c4bff80888af11a",
+          "md5": "ae3839e133f1c06c1c358acab27bea84"
         }
       ]
     },
@@ -290,11 +290,11 @@
         {
           "name": "AdsSdk-v2.2.5-sources.jar",
           "url": "AdsSdk-v2.2.5-sources.jar",
-          "size": 67697,
-          "sha512": "189cd58847e4a5dbc66bbcc6cd77d7112fc831ecbc400397215fe9fc438334b083c1a78d622209a958358c57464513ca606a70cb7730f767e00d57c0912409f3",
-          "sha256": "5efad6cfce83f8ab7d36eb3074a08b6c8292afc531ad372851a53520997b06cb",
-          "sha1": "916cd99abfcc992d37b5e2ae65f7bd5185a41c5e",
-          "md5": "a796b9d9aec90e144d71b603b30797de"
+          "size": 67865,
+          "sha512": "0d45fefea85a65dfdf1a4a2591cc1da86236bd6c4e2d31ea5c65f2562c5b1e96c4aa780f750615edd6c34165ec1128a08a4713d0be53f9d7cc8a1098331a7012",
+          "sha256": "01bc6ae3eeadb03d73a31e5a6bda50083cf69673d6ebb881f5127a0867e7790a",
+          "sha1": "c29f4639804748a631c8802b177bdffaaf76ba02",
+          "md5": "7959faa5743791004502eebe8409092f"
         }
       ]
     }
