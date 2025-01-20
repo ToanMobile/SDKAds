@@ -57,6 +57,8 @@ class BillingManager(activity: Activity) {
 
     // region Private Variables
 
+    private var currentStatus = ""
+
     private var activity: WeakReference<Activity> = WeakReference(activity)
 
     private val billingClient: BillingClient by lazy {
@@ -263,7 +265,10 @@ class BillingManager(activity: Activity) {
 
         billingClient.acknowledgePurchase(params) { billingResult ->
             if (billingResult.responseCode == OK) {
-                logEvent(BillingStatus.iap_Chargeable.name)
+                if (currentStatus != BillingStatus.iap_Chargeable.name) {
+                    logEvent(BillingStatus.iap_Chargeable.name)
+                    currentStatus = BillingStatus.iap_Chargeable.name
+                }
             }
         }
     }
@@ -284,12 +289,21 @@ class BillingManager(activity: Activity) {
         if (purchased.isNotEmpty()) {
             val isCharged = purchased.filter { it.isAcknowledged }
             if (isCharged.isNotEmpty()) {
-                logEvent(BillingStatus.iap_Charged.name)
+                if (currentStatus != BillingStatus.iap_Charged.name) {
+                    logEvent(BillingStatus.iap_Charged.name)
+                    currentStatus = BillingStatus.iap_Charged.name
+                }
             } else {
-                logEvent(BillingStatus.iap_OrderReceived.name)
+                if (currentStatus != BillingStatus.iap_OrderReceived.name) {
+                    logEvent(BillingStatus.iap_OrderReceived.name)
+                    currentStatus = BillingStatus.iap_OrderReceived.name
+                }
             }
         } else if (pending.isNotEmpty()) {
-            logEvent(BillingStatus.iap_Pending.name)
+            if (currentStatus != BillingStatus.iap_Pending.name) {
+                logEvent(BillingStatus.iap_Pending.name)
+                currentStatus = BillingStatus.iap_Pending.name
+            }
         }
         purchaseListener?.onResult(purchased.asBillingPurchases, pending.asBillingPurchases)
     }
