@@ -33,22 +33,22 @@ import kotlinx.coroutines.runBlocking
 import java.lang.ref.WeakReference
 
 enum class BillingStatus {
-    OrderReceived, Chargeable, Charged, Pending
+    iap_OrderReceived, iap_Chargeable, iap_Charged, iap_Pending
 }
 
 class BillingManager(activity: Activity) {
 
-    companion object {
-        const val IAP_PURCHASING_ORDER_RECEIVED = "iap_purchasing_orderReceived"
-        const val IAP_PURCHASING_CHARGEABLE = "iap_purchasing_chargeable"
-        const val IAP_PURCHASING_CHARGED = "iap_purchasing_charged"
-        const val IAP_PURCHASING_PENDING = "iap_purchasing_pending"
-
-        const val IAP_ORDER_RECEIVED = "iap_OrderReceived"
-        const val IAP_CHARGEABLE = "iap_Chargeable"
-        const val IAP_CHARGED = "iap_Charged"
-        const val IAP_PENDING = "iap_Pending"
-    }
+//    companion object {
+//        const val IAP_PURCHASING_ORDER_RECEIVED = "iap_purchasing_orderReceived"
+//        const val IAP_PURCHASING_CHARGEABLE = "iap_purchasing_chargeable"
+//        const val IAP_PURCHASING_CHARGED = "iap_purchasing_charged"
+//        const val IAP_PURCHASING_PENDING = "iap_purchasing_pending"
+//
+//        const val IAP_ORDER_RECEIVED = "iap_OrderReceived"
+//        const val IAP_CHARGEABLE = "iap_Chargeable"
+//        const val IAP_CHARGED = "iap_Charged"
+//        const val IAP_PENDING = "iap_Pending"
+//    }
 
     // region Public Variables
 
@@ -263,7 +263,7 @@ class BillingManager(activity: Activity) {
 
         billingClient.acknowledgePurchase(params) { billingResult ->
             if (billingResult.responseCode == OK) {
-                logEvent(IAP_CHARGEABLE)
+                logEvent(BillingStatus.iap_Chargeable.name)
             }
         }
     }
@@ -284,12 +284,12 @@ class BillingManager(activity: Activity) {
         if (purchased.isNotEmpty()) {
             val isCharged = purchased.filter { it.isAcknowledged }
             if (isCharged.isNotEmpty()) {
-                logEvent(IAP_CHARGED)
+                logEvent(BillingStatus.iap_Charged.name)
             } else {
-                logEvent(IAP_ORDER_RECEIVED)
+                logEvent(BillingStatus.iap_OrderReceived.name)
             }
         } else if (pending.isNotEmpty()) {
-            logEvent(IAP_PENDING)
+            logEvent(BillingStatus.iap_Pending.name)
         }
         purchaseListener?.onResult(purchased.asBillingPurchases, pending.asBillingPurchases)
     }
