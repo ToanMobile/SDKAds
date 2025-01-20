@@ -1,6 +1,7 @@
 package com.sdk.ads.billing
 
 import android.app.Activity
+import android.util.Log
 import com.android.billingclient.api.AcknowledgePurchaseParams
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED
@@ -36,6 +37,18 @@ enum class BillingStatus {
 }
 
 class BillingManager(activity: Activity) {
+
+    companion object {
+        const val IAP_PURCHASING_ORDER_RECEIVED = "iap_purchasing_orderReceived"
+        const val IAP_PURCHASING_CHARGEABLE = "iap_purchasing_chargeable"
+        const val IAP_PURCHASING_CHARGED = "iap_purchasing_charged"
+        const val IAP_PURCHASING_PENDING = "iap_purchasing_pending"
+
+        const val IAP_ORDER_RECEIVED = "iap_OrderReceived"
+        const val IAP_CHARGEABLE = "iap_Chargeable"
+        const val IAP_CHARGED = "iap_Charged"
+        const val IAP_PENDING = "iap_Pending"
+    }
 
     // region Public Variables
 
@@ -250,7 +263,7 @@ class BillingManager(activity: Activity) {
 
         billingClient.acknowledgePurchase(params) { billingResult ->
             if (billingResult.responseCode == OK) {
-                logEvent(BillingStatus.Chargeable.name)
+                logEvent(IAP_CHARGEABLE)
             }
         }
     }
@@ -271,12 +284,12 @@ class BillingManager(activity: Activity) {
         if (purchased.isNotEmpty()) {
             val isCharged = purchased.filter { it.isAcknowledged }
             if (isCharged.isNotEmpty()) {
-                logEvent(BillingStatus.Charged.name)
+                logEvent(IAP_CHARGED)
             } else {
-                logEvent(BillingStatus.OrderReceived.name)
+                logEvent(IAP_ORDER_RECEIVED)
             }
         } else if (pending.isNotEmpty()) {
-            logEvent(BillingStatus.Pending.name)
+            logEvent(IAP_PENDING)
         }
         purchaseListener?.onResult(purchased.asBillingPurchases, pending.asBillingPurchases)
     }
