@@ -36,11 +36,7 @@ enum class BillingStatus {
     iap_OrderReceived, iap_Chargeable, iap_Charged, iap_Pending
 }
 
-class BillingManager(activity: Activity, val isCharged: Boolean = false) {
-
-    init {
-        if (isCharged) currentStatus = BillingStatus.iap_Charged.name
-    }
+class BillingManager(activity: Activity, currentIapStatus: String = "", val isLogIap: Boolean = false, val callback: (BillingStatus) -> Unit) {
 
     companion object {
 //        const val IAP_PURCHASING_ORDER_RECEIVED = "iap_purchasing_orderReceived"
@@ -54,6 +50,10 @@ class BillingManager(activity: Activity, val isCharged: Boolean = false) {
 //        const val IAP_PENDING = "iap_Pending"
 
         private var currentStatus = ""
+    }
+
+    init {
+        currentStatus = currentIapStatus
     }
 
     // region Public Variables
@@ -269,9 +269,12 @@ class BillingManager(activity: Activity, val isCharged: Boolean = false) {
 
         billingClient.acknowledgePurchase(params) { billingResult ->
             if (billingResult.responseCode == OK) {
-                if (currentStatus != BillingStatus.iap_Chargeable.name) {
-                    logEvent(BillingStatus.iap_Chargeable.name)
-                    currentStatus = BillingStatus.iap_Chargeable.name
+                if (isLogIap) {
+                    if (currentStatus != BillingStatus.iap_Chargeable.name) {
+                        logEvent(BillingStatus.iap_Chargeable.name)
+                        callback(BillingStatus.iap_Chargeable)
+                        currentStatus = BillingStatus.iap_Chargeable.name
+                    }
                 }
             }
         }
@@ -290,23 +293,27 @@ class BillingManager(activity: Activity, val isCharged: Boolean = false) {
         }
 
         val pendingList = list.filter { it.purchaseState == PENDING }
-        if (pendingList.isNotEmpty()) {
-            if (currentStatus != BillingStatus.iap_Pending.name) {
-                logEvent(BillingStatus.iap_Pending.name)
-                currentStatus = BillingStatus.iap_Pending.name
-            }
-        }
-        if (purchased.isNotEmpty()) {
-            val chargedCount = purchased.count { it.isAcknowledged }
-            if (chargedCount > 0) {
-                if (currentStatus != BillingStatus.iap_Charged.name) {
-                    logEvent(BillingStatus.iap_Charged.name)
-                    currentStatus = BillingStatus.iap_Charged.name
+        if (isLogIap) {
+            if (purchased.isNotEmpty()) {
+                val chargedCount = purchased.count { it.isAcknowledged }
+                if (chargedCount > 0) {
+                    if (currentStatus != BillingStatus.iap_Charged.name) {
+                        logEvent(BillingStatus.iap_Charged.name)
+                        callback(BillingStatus.iap_Charged)
+                        currentStatus = BillingStatus.iap_Charged.name
+                    }
+                } else {
+                    if (currentStatus != BillingStatus.iap_OrderReceived.name) {
+                        logEvent(BillingStatus.iap_OrderReceived.name)
+                        callback(BillingStatus.iap_OrderReceived)
+                        currentStatus = BillingStatus.iap_OrderReceived.name
+                    }
                 }
-            } else {
-                if (currentStatus != BillingStatus.iap_OrderReceived.name) {
-                    logEvent(BillingStatus.iap_OrderReceived.name)
-                    currentStatus = BillingStatus.iap_OrderReceived.name
+            } else if (pendingList.isNotEmpty()) {
+                if (currentStatus != BillingStatus.iap_Pending.name) {
+                    logEvent(BillingStatus.iap_Pending.name)
+                    callback(BillingStatus.iap_Pending)
+                    currentStatus = BillingStatus.iap_Pending.name
                 }
             }
         }
