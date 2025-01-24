@@ -136,6 +136,7 @@ class GdprConsent(val context: Context, private val language: String) {
                             logEvent(evenName = "GDPR3_showFormGDPR_$language")
                         } else {
                             logEvent(evenName = "GDPR_showFormGDPR_$language")
+                            logEvent(evenName = "GDPR_showForm")
                         }
                         consentForm?.show(
                             activity,

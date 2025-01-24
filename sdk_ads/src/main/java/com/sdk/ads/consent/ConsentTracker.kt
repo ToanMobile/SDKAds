@@ -111,22 +111,30 @@ class ConsentTracker(val context: Context) {
         if (isGdpr && canShowPersonAds && canShowAds) {
             if (isShowForceAgain) {
                 logEvent(evenName = "GDPR3_acceptAll_$language")
+                logEvent(evenName = "GDPR3_acceptAll")
             } else {
                 logEvent(evenName = "GDPR_acceptAll_$language")
+                logEvent(evenName = "GDPR_acceptAll")
             }
         } else if (!isGdpr && !canShowPersonAds && !canShowAds) {
             if (isShowForceAgain) {
                 logEvent(evenName = "GDPR3_denyAll_$language")
+                logEvent(evenName = "GDPR3_denyAll")
             } else {
                 logEvent(evenName = "GDPR_denyAll_$language")
+                logEvent(evenName = "GDPR_denyAll")
             }
         } else {
             if (isShowForceAgain) {
                 logEvent(evenName = "GDPR3_acceptAPart_$language")
                 logEvent(evenName = "GDPR3_accept_${language}_${purposeConsent}")
+                logEvent(evenName = "GDPR3_acceptAPart")
+                // logEvent(evenName = "GDPR3_accept")
             } else {
                 logEvent(evenName = "GDPR_acceptAPart_$language")
                 logEvent(evenName = "GDPR_acceptAPart_${language}_${purposeConsent}")
+                logEvent(evenName = "GDPR_acceptAPart")
+                // logEvent(evenName = "GDPR_accept")
             }
         }
     }
