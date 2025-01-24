@@ -108,6 +108,7 @@ class ConsentTracker(val context: Context) {
 
     private fun sendLogTracking(prefs: SharedPreferences, isGdpr: Boolean, canShowPersonAds: Boolean, canShowAds: Boolean) {
         val purposeConsent = prefs.getString("IABTCF_PurposeConsents", "") ?: ""
+        val purposeLegitimate = prefs.getString("IABTCF_PurposeLegitimateInterests", "") ?: ""
         if (isGdpr && canShowPersonAds && canShowAds) {
             if (isShowForceAgain) {
                 logEvent(evenName = "GDPR3_acceptAll_$language")
@@ -116,26 +117,27 @@ class ConsentTracker(val context: Context) {
                 logEvent(evenName = "GDPR_acceptAll_$language")
                 logEvent(evenName = "GDPR_acceptAll")
             }
-        } else if (!isGdpr && !canShowPersonAds && !canShowAds) {
-            //TODO check isFirst return now not send log
-            if (isShowForceAgain) {
-                logEvent(evenName = "GDPR3_denyAll_$language")
-                logEvent(evenName = "GDPR3_denyAll")
-            } else {
-                logEvent(evenName = "GDPR_denyAll_$language")
-                logEvent(evenName = "GDPR_denyAll")
-            }
         } else {
-            if (isShowForceAgain) {
-                logEvent(evenName = "GDPR3_acceptAPart_$language")
-                logEvent(evenName = "GDPR3_accept_${language}_${purposeConsent}")
-                logEvent(evenName = "GDPR3_acceptAPart")
-                // logEvent(evenName = "GDPR3_accept")
+            if (purposeConsent.contains("1") || purposeLegitimate.contains("1")) {
+                val consentData = if (purposeConsent.contains("1")) purposeConsent else purposeLegitimate
+                if (isShowForceAgain) {
+                    logEvent(evenName = "GDPR3_acceptAPart_$language")
+                    logEvent(evenName = "GDPR3_accept_${language}_${consentData}")
+                    logEvent(evenName = "GDPR3_acceptAPart")
+                } else {
+                    logEvent(evenName = "GDPR_acceptAPart_$language")
+                    logEvent(evenName = "GDPR_acceptAPart_${language}_${consentData}")
+                    logEvent(evenName = "GDPR_acceptAPart")
+                }
             } else {
-                logEvent(evenName = "GDPR_acceptAPart_$language")
-                logEvent(evenName = "GDPR_acceptAPart_${language}_${purposeConsent}")
-                logEvent(evenName = "GDPR_acceptAPart")
-                // logEvent(evenName = "GDPR_accept")
+                //TODO check isFirst return now not send log
+                if (isShowForceAgain) {
+                    logEvent(evenName = "GDPR3_denyAll_$language")
+                    logEvent(evenName = "GDPR3_denyAll")
+                } else {
+                    logEvent(evenName = "GDPR_denyAll_$language")
+                    logEvent(evenName = "GDPR_denyAll")
+                }
             }
         }
     }
