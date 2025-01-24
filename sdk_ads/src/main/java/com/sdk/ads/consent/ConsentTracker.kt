@@ -115,6 +115,7 @@ class ConsentTracker(val context: Context) {
                 logEvent(evenName = "GDPR_acceptAll_$language")
             }
         } else if (!isGdpr && !canShowPersonAds && !canShowAds) {
+            //TODO check isFirst return now not send log
             if (isShowForceAgain) {
                 logEvent(evenName = "GDPR3_denyAll_$language")
             } else {
