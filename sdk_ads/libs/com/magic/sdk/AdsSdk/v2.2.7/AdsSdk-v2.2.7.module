@@ -3,14 +3,14 @@
   "component": {
     "group": "com.magic.sdk",
     "module": "AdsSdk",
-    "version": "v2.2.1",
+    "version": "v2.2.7",
     "attributes": {
       "org.gradle.status": "release"
     }
   },
   "createdBy": {
     "gradle": {
-      "version": "8.12"
+      "version": "8.12.1"
     }
   },
   "variants": [
@@ -89,13 +89,13 @@
       ],
       "files": [
         {
-          "name": "AdsSdk-v2.2.1.aar",
-          "url": "AdsSdk-v2.2.1.aar",
-          "size": 705941,
-          "sha512": "254af8a589a689a8bd52d626d23c1c7ae1d5bed56767f6e5c93f7130391206cba2beb07d071735dccb0e638fe084321e83b0d8e7b5aba50a29394431abf57482",
-          "sha256": "e3b0d04ee56fdacddda460fd16191fac4ccae7217241626567ce396228c55da6",
-          "sha1": "b5c3c057e1dbbc658535759adfb08a53e58ed5d2",
-          "md5": "6f2bd914bc2d926100be99548912b42a"
+          "name": "AdsSdk-v2.2.7.aar",
+          "url": "AdsSdk-v2.2.7.aar",
+          "size": 707915,
+          "sha512": "b2c984c79b0c66f0f12848c9baf64b060107ede831c7bea30c95a93277167556b6b9ec1bf150f4dee4a6069d8e184f48ca5b07b4bd8b9918a9d54f9ebe2520fe",
+          "sha256": "8d2f8ff2c6c4b3c8d2bb83d0a05c924497b6cd9b922d596f442fac1ccd650ead",
+          "sha1": "7890c2d6bc8c3c8376a11b74c0095dd410687fd4",
+          "md5": "4bae10a875245fa770a5850fa2957b82"
         }
       ]
     },
@@ -193,13 +193,6 @@
           }
         },
         {
-          "group": "com.blankj",
-          "module": "utilcodex",
-          "version": {
-            "requires": "1.31.1"
-          }
-        },
-        {
           "group": "com.android.billingclient",
           "module": "billing-ktx",
           "version": {
@@ -265,13 +258,13 @@
       ],
       "files": [
         {
-          "name": "AdsSdk-v2.2.1.aar",
-          "url": "AdsSdk-v2.2.1.aar",
-          "size": 705941,
-          "sha512": "254af8a589a689a8bd52d626d23c1c7ae1d5bed56767f6e5c93f7130391206cba2beb07d071735dccb0e638fe084321e83b0d8e7b5aba50a29394431abf57482",
-          "sha256": "e3b0d04ee56fdacddda460fd16191fac4ccae7217241626567ce396228c55da6",
-          "sha1": "b5c3c057e1dbbc658535759adfb08a53e58ed5d2",
-          "md5": "6f2bd914bc2d926100be99548912b42a"
+          "name": "AdsSdk-v2.2.7.aar",
+          "url": "AdsSdk-v2.2.7.aar",
+          "size": 707915,
+          "sha512": "b2c984c79b0c66f0f12848c9baf64b060107ede831c7bea30c95a93277167556b6b9ec1bf150f4dee4a6069d8e184f48ca5b07b4bd8b9918a9d54f9ebe2520fe",
+          "sha256": "8d2f8ff2c6c4b3c8d2bb83d0a05c924497b6cd9b922d596f442fac1ccd650ead",
+          "sha1": "7890c2d6bc8c3c8376a11b74c0095dd410687fd4",
+          "md5": "4bae10a875245fa770a5850fa2957b82"
         }
       ]
     },
@@ -288,13 +281,13 @@
       },
       "files": [
         {
-          "name": "AdsSdk-v2.2.1-sources.jar",
-          "url": "AdsSdk-v2.2.1-sources.jar",
-          "size": 67325,
-          "sha512": "63dedd89a4c30007c764f67e427b76608d997649a722bd183ddbe25a82935a7826d2a61ab841588b387cb32c9df35a82c223adda4dfce892c501af55f4d28763",
-          "sha256": "e8b3dfb78542b72b5ead41b0d87639a82afa49b538e2855a2f033b44aa75ed06",
-          "sha1": "db5864a451e865218880a7ebadcd074f0ec3fbb3",
-          "md5": "e0943dbf903a08c627f4e70775a91e2b"
+          "name": "AdsSdk-v2.2.7-sources.jar",
+          "url": "AdsSdk-v2.2.7-sources.jar",
+          "size": 68213,
+          "sha512": "2cfca5ea4d1f8f3ec42b22015c6425290dc5f3ac54eedb12697bcdbeb3ab5bcb24b045ec752f2ee78fcc0d827322f7b9b69bf187e00ef7d3db5fc3ca0ad6985b",
+          "sha256": "4eaed37c1d6b3568840c95cb859934087dfd74fb67f4cb5f31d787204d5bc391",
+          "sha1": "8665e7b6cd86809ff8b5365199c368e699a93431",
+          "md5": "47da93d66b65df4bb6a9423eb79880e0"
         }
       ]
     }

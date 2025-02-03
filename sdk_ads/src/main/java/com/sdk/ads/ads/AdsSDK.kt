@@ -7,7 +7,6 @@ import android.util.Log
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
-import com.blankj.utilcode.util.LanguageUtils
 import com.google.android.gms.ads.AdActivity
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.LoadAdError
@@ -29,6 +28,7 @@ import com.sdk.ads.utils.TAdCallback
 import com.sdk.ads.utils.adLogger
 import com.sdk.ads.utils.logAdClicked
 import com.sdk.ads.utils.logParams
+import java.util.Locale
 
 object AdsSDK {
 
@@ -333,7 +333,7 @@ object AdsSDK {
         //performInitializeAds(activity, listener)
         //return
         adsType = AdsType.SHOW_CONSENT
-        val language = LanguageUtils.getSystemLanguage().language
+        val language = Locale.getDefault().language
         val consentTracker = ConsentTracker(activity)
         val gdprConsent = GdprConsent(activity, language)
         consentTracker.updateState(isShowForceAgain = false, language = language)
