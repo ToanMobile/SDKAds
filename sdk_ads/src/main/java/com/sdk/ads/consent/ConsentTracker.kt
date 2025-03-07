@@ -126,7 +126,7 @@ class ConsentTracker(val context: Context) {
                     logEvent(evenName = "GDPR3_acceptAPart")
                 } else {
                     logEvent(evenName = "GDPR_acceptAPart_$language")
-                    logEvent(evenName = "GDPR_acceptAPart_${language}_${consentData}")
+                    logEvent(evenName = "GDPR_accept_${language}_${consentData}")
                     logEvent(evenName = "GDPR_acceptAPart")
                 }
             } else {
