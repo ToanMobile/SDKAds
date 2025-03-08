@@ -49,8 +49,14 @@ fun logAdImpression(adTag: String) {
 
 fun logEvent(evenName: String) {
     if (!AdsSDK.isEnableAds) return
-    val result = evenName.trim().replace("-", "_")
-    Log.e("logEvent::", evenName)
+    var result = evenName.trim()
+        .replace("-", "_") // Thay thế "-" bằng "_"
+        .replace("\\s+".toRegex(), "_") // Thay thế tất cả khoảng trắng bằng "_"
+        .replace("[^a-zA-Z0-9_]".toRegex(), "_") // Thay thế mọi ký tự không hợp lệ bằng "_"
+    if (result.length > 40) {
+        result = result.substring(0, 40) // Giới hạn độ dài tối đa 40 ký tự
+    }
+    Log.e("Tracking:::", evenName)
     tracker.logEvent(result, null)
 }
 
