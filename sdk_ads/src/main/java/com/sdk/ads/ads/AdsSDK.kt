@@ -65,6 +65,7 @@ object AdsSDK {
     private var purchaseSkuForRemovingAds: List<String>? = null
     private var listTestDeviceIDs: List<String>? = null
     private var adsType = AdsType.NONE
+    var appType = AppType.TODO
     val getAdsType get() = adsType
     val checkAdsShow get() = adsType == AdsType.SHOW_ADS
     val checkAdsFail get() = adsType == AdsType.FAIL_ADS
@@ -192,6 +193,11 @@ object AdsSDK {
         app = application
         ProcessLifecycleOwner.get().lifecycle.addObserver(applicationStateObserver)
         application.registerActivityLifecycleCallbacks(activityLifecycleCallbacks)
+        return this
+    }
+
+    fun setAppType(appType: AppType): AdsSDK {
+        this.appType = appType
         return this
     }
 
@@ -354,7 +360,8 @@ object AdsSDK {
                     listener.formError(it)
                 })
         } else {
-            gdprConsent.updateConsentInfo(activity = activity, underAge = false, consentPermit = {
+            gdprConsent.updateConsentInfo(
+                activity = activity, underAge = false, consentPermit = {
                 adsType = if (it) AdsType.SHOW_ADS else AdsType.FAIL_ADS
             }, consentTracker = consentTracker, isShowForceAgain = false, initAds = {
                 performInitializeAds(activity, listener)
@@ -395,7 +402,8 @@ object AdsSDK {
                         listener.formError(it)
                     })
             } else {
-                gdprConsent.updateConsentInfo(activity = activity, underAge = false, consentPermit = {
+                gdprConsent.updateConsentInfo(
+                    activity = activity, underAge = false, consentPermit = {
                     adsType = if (it) AdsType.SHOW_ADS else AdsType.FAIL_ADS
                 }, consentTracker = consentTracker, isShowForceAgain = true, initAds = {
                     performInitializeAds(activity, listener)

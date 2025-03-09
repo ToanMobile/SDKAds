@@ -10,6 +10,8 @@ import com.google.android.ump.ConsentInformation
 import com.google.android.ump.ConsentRequestParameters
 import com.google.android.ump.FormError
 import com.google.android.ump.UserMessagingPlatform
+import com.sdk.ads.ads.AdsSDK
+import com.sdk.ads.ads.AppType
 import com.sdk.ads.utils.logEvent
 
 class GdprConsent(val context: Context, private val language: String) {
@@ -17,6 +19,7 @@ class GdprConsent(val context: Context, private val language: String) {
     private val TAG = "GdprConsent"
     private val consentInformation = UserMessagingPlatform.getConsentInformation(context)
     private var consentForm: ConsentForm? = null
+
     /**IN PRODUCTION CALL AT ONCREATE FOR CONSENT FORM CHECK*/
     fun updateConsentInfo(
         activity: Activity,
@@ -132,11 +135,16 @@ class GdprConsent(val context: Context, private val language: String) {
                 when (consentInformation.consentStatus) {
                     ConsentInformation.ConsentStatus.REQUIRED -> {
                         Log.e(TAG, "consentForm is required to show:::${consentForm}")
-                        if (isShowForceAgain) {
-                            logEvent(evenName = "GDPR3_showFormGDPR_$language")
-                        } else {
+                        if (AdsSDK.appType == AppType.PDF) {
                             logEvent(evenName = "GDPR_showFormGDPR_$language")
-                            logEvent(evenName = "GDPR_showForm")
+                            logEvent(evenName = "GDPR_showFormGDPR")
+                        } else {
+                            if (isShowForceAgain) {
+                                logEvent(evenName = "GDPR3_showFormGDPR_$language")
+                            } else {
+                                logEvent(evenName = "GDPR_showFormGDPR_$language")
+                                logEvent(evenName = "GDPR_showForm")
+                            }
                         }
                         consentForm?.show(
                             activity,
@@ -144,10 +152,15 @@ class GdprConsent(val context: Context, private val language: String) {
                             // Log error
                             if (formError != null) {
                                 Log.e(TAG, "consentForm show ${formError.message}")
-                                if (isShowForceAgain) {
-                                    logEvent(evenName = "GDPR3_formError_${formError.errorCode}_${formError.message}_$language")
-                                } else {
+                                if (AdsSDK.appType == AppType.PDF) {
+                                    logEvent(evenName = "GDPR_formError_${formError.errorCode}_${formError.message}")
                                     logEvent(evenName = "GDPR_formError_${formError.errorCode}_${formError.message}_$language")
+                                } else {
+                                    if (isShowForceAgain) {
+                                        logEvent(evenName = "GDPR3_formError_${formError.errorCode}_${formError.message}_$language")
+                                    } else {
+                                        logEvent(evenName = "GDPR_formError_${formError.errorCode}_${formError.message}_$language")
+                                    }
                                 }
                                 callBackFormError(formError)
                             }
@@ -170,10 +183,15 @@ class GdprConsent(val context: Context, private val language: String) {
             },
             { formError ->
                 Log.e(TAG, "loadForm Failure: ${formError.message}")
-                if (isShowForceAgain) {
-                    logEvent(evenName = "GDPR3_formError_${formError.errorCode}_${formError.message}_$language")
-                } else {
+                if (AdsSDK.appType == AppType.PDF) {
+                    logEvent(evenName = "GDPR_formError_${formError.errorCode}_${formError.message}")
                     logEvent(evenName = "GDPR_formError_${formError.errorCode}_${formError.message}_$language")
+                } else {
+                    if (isShowForceAgain) {
+                        logEvent(evenName = "GDPR3_formError_${formError.errorCode}_${formError.message}_$language")
+                    } else {
+                        logEvent(evenName = "GDPR_formError_${formError.errorCode}_${formError.message}_$language")
+                    }
                 }
                 callBackFormError(formError)
             },
