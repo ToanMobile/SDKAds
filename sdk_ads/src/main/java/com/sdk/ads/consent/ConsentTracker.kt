@@ -116,32 +116,21 @@ class ConsentTracker(val context: Context) {
                 logEvent(evenName = "GDPR_acceptAll")
                 logEvent(evenName = "GDPR_acceptAll_$language")
             } else {
-                if (isShowForceAgain) {
-                    logEvent(evenName = "GDPR3_acceptAll_$language")
-                    logEvent(evenName = "GDPR3_acceptAll")
-                } else {
-                    logEvent(evenName = "GDPR_acceptAll_$language")
-                    logEvent(evenName = "GDPR_acceptAll")
-                }
+                logEvent(evenName = "GDPR_acceptAll")
+                logEvent(evenName = "GDPR_acceptAll_$language")
             }
         } else {
             if (purposeConsent.contains("1") || purposeLegitimate.contains("1")) {
                 val consentData = if (purposeConsent.contains("1")) purposeConsent else purposeLegitimate
                 if (AdsSDK.appType == AppType.PDF) {
                     logEvent(evenName = "GDPR_acceptAPart")
-                    logEvent(evenName = "GDPR_accept${purposeConsent}")
                     logEvent(evenName = "GDPR_acceptAPart_$language")
                     logEvent(evenName = "GDPR_accept_${language}_$purposeConsent")
+                    logEvent(evenName = "GDPR_accept${purposeConsent}")
                 } else {
-                    if (isShowForceAgain) {
-                        logEvent(evenName = "GDPR3_acceptAPart_$language")
-                        logEvent(evenName = "GDPR3_accept_${language}_${consentData}")
-                        logEvent(evenName = "GDPR3_acceptAPart")
-                    } else {
-                        logEvent(evenName = "GDPR_acceptAPart_$language")
-                        logEvent(evenName = "GDPR_accept_${language}_${consentData}")
-                        logEvent(evenName = "GDPR_acceptAPart")
-                    }
+                    logEvent(evenName = "GDPR_acceptAPart")
+                    logEvent(evenName = "GDPR_acceptAPart_$language")
+                    logEvent(evenName = "GDPR_accept_${language}_${consentData}")
                 }
             } else {
                 //TODO check isFirst return now not send log
@@ -149,13 +138,8 @@ class ConsentTracker(val context: Context) {
                     logEvent(evenName = "GDPR_denyAll_$language")
                     logEvent(evenName = "GDPR_denyAll")
                 } else {
-                    if (isShowForceAgain) {
-                        logEvent(evenName = "GDPR3_denyAll_$language")
-                        logEvent(evenName = "GDPR3_denyAll")
-                    } else {
-                        logEvent(evenName = "GDPR_denyAll_$language")
-                        logEvent(evenName = "GDPR_denyAll")
-                    }
+                    logEvent(evenName = "GDPR_denyAll_$language")
+                    logEvent(evenName = "GDPR_denyAll")
                 }
             }
         }

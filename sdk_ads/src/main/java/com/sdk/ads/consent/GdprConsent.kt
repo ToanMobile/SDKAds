@@ -139,12 +139,8 @@ class GdprConsent(val context: Context, private val language: String) {
                             logEvent(evenName = "GDPR_showFormGDPR_$language")
                             logEvent(evenName = "GDPR_showFormGDPR")
                         } else {
-                            if (isShowForceAgain) {
-                                logEvent(evenName = "GDPR3_showFormGDPR_$language")
-                            } else {
-                                logEvent(evenName = "GDPR_showFormGDPR_$language")
-                                logEvent(evenName = "GDPR_showForm")
-                            }
+                            logEvent(evenName = "GDPR_showFormGDPR_$language")
+                            logEvent(evenName = "GDPR_showForm")
                         }
                         consentForm?.show(
                             activity,
@@ -156,11 +152,7 @@ class GdprConsent(val context: Context, private val language: String) {
                                     logEvent(evenName = "GDPR_formError_${formError.errorCode}_${formError.message}")
                                     logEvent(evenName = "GDPR_formError_${formError.errorCode}_${formError.message}_$language")
                                 } else {
-                                    if (isShowForceAgain) {
-                                        logEvent(evenName = "GDPR3_formError_${formError.errorCode}_${formError.message}_$language")
-                                    } else {
-                                        logEvent(evenName = "GDPR_formError_${formError.errorCode}_${formError.message}_$language")
-                                    }
+                                    logEvent(evenName = "GDPR_formError_${formError.errorCode}_${formError.message}_$language")
                                 }
                                 callBackFormError(formError)
                             }
@@ -187,11 +179,7 @@ class GdprConsent(val context: Context, private val language: String) {
                     logEvent(evenName = "GDPR_formError_${formError.errorCode}_${formError.message}")
                     logEvent(evenName = "GDPR_formError_${formError.errorCode}_${formError.message}_$language")
                 } else {
-                    if (isShowForceAgain) {
-                        logEvent(evenName = "GDPR3_formError_${formError.errorCode}_${formError.message}_$language")
-                    } else {
-                        logEvent(evenName = "GDPR_formError_${formError.errorCode}_${formError.message}_$language")
-                    }
+                    logEvent(evenName = "GDPR_formError_${formError.errorCode}_${formError.message}_$language")
                 }
                 callBackFormError(formError)
             },
@@ -207,8 +195,14 @@ class GdprConsent(val context: Context, private val language: String) {
     ) {
         resetConsent()
         if (consentInformation.isConsentFormAvailable) {
-            Log.e(TAG, "reUseExistingConsentForm" + consentForm.toString())
-            logEvent("GDPR3_showFormGDPR_$language")
+            Log.e(TAG, "reUseExistingConsentForm$consentForm")
+            if (AdsSDK.appType == AppType.PDF) {
+                logEvent(evenName = "GDPR_showFormGDPR_$language")
+                logEvent(evenName = "GDPR_showFormGDPR")
+            } else {
+                logEvent(evenName = "GDPR_showFormGDPR_$language")
+                logEvent(evenName = "GDPR_showForm")
+            }
             consentForm?.show(
                 activity,
             ) { formError ->
