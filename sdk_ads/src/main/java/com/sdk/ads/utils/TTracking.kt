@@ -11,7 +11,7 @@ import com.sdk.ads.ads.AdsSDK
 private val tracker get() = Firebase.analytics
 
 fun logAdClicked(adType: AdType, adID: String? = null) {
-    if (!AdsSDK.isEnableAds || !AdsSDK.isEnableGDPRTracking) return
+    if (!AdsSDK.isEnableAds || !AdsSDK.isEnableTracking) return
     logParams("ad_click_custom") {
         val clazz = AdsSDK.getClazzOnTop()
 
@@ -39,7 +39,7 @@ fun logAdClicked(adType: AdType, adID: String? = null) {
 }
 
 fun logAdImpression(adTag: String) {
-    if (!AdsSDK.isEnableAds || !AdsSDK.isEnableGDPRTracking) return
+    if (!AdsSDK.isEnableAds || !AdsSDK.isEnableTracking) return
     AdsSDK.getClazzOnTop()?.let {
         logParams(adTag + "_impression") {
             param("screen", "$it")
@@ -48,7 +48,7 @@ fun logAdImpression(adTag: String) {
 }
 
 fun logEvent(evenName: String) {
-    if (!AdsSDK.isEnableAds || !AdsSDK.isEnableGDPRTracking) return
+    if (!AdsSDK.isEnableAds || !AdsSDK.isEnableTracking) return
     var result = evenName.trim()
         .replace("-", "_") // Thay thế "-" bằng "_"
         .replace("\\s+".toRegex(), "_") // Thay thế tất cả khoảng trắng bằng "_"
@@ -61,14 +61,14 @@ fun logEvent(evenName: String) {
 }
 
 fun logProperty(evenName: String, data: String?) {
-    if (!AdsSDK.isEnableAds || !AdsSDK.isEnableGDPRTracking) return
+    if (!AdsSDK.isEnableAds || !AdsSDK.isEnableTracking) return
     val result = evenName.trim().replace("-", "_")
     Log.e("logProperty::", evenName)
     tracker.setUserProperty(result, data)
 }
 
 fun logScreen(screenName: String) {
-    if (!AdsSDK.isEnableAds || !AdsSDK.isEnableGDPRTracking) return
+    if (!AdsSDK.isEnableAds || !AdsSDK.isEnableTracking) return
     val result = screenName.trim().replace("-", "_")
     Log.e("logScreen::", result)
     tracker.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW) {
@@ -77,7 +77,7 @@ fun logScreen(screenName: String) {
 }
 
 fun logParams(eventName: String, block: ParametersBuilder.() -> Unit) {
-    if (!AdsSDK.isEnableAds || !AdsSDK.isEnableGDPRTracking) return
+    if (!AdsSDK.isEnableAds || !AdsSDK.isEnableTracking) return
     runCatching {
         val result = eventName.trim().replace("-", "_")
         tracker.logEvent(result) { block() }
@@ -85,7 +85,7 @@ fun logParams(eventName: String, block: ParametersBuilder.() -> Unit) {
 }
 
 fun logNote(eventName: String, noteTitle: String, note: String) {
-    if (!AdsSDK.isEnableAds || !AdsSDK.isEnableGDPRTracking) return
+    if (!AdsSDK.isEnableAds || !AdsSDK.isEnableTracking) return
     logParams(eventName) {
         param(noteTitle, note)
     }

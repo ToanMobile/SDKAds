@@ -33,7 +33,7 @@ import java.util.Locale
 object AdsSDK {
 
     internal lateinit var app: Application
-    var isEnableGDPRTracking = true
+    var isEnableTracking = true
         private set
 
     var isEnableAds = true
@@ -220,8 +220,8 @@ object AdsSDK {
         preventShowResumeAd = true
     }
 
-    fun setEnableGDPRTracking(isEnable: Boolean) {
-        isEnableGDPRTracking = isEnable
+    fun setEnableTracking(isEnable: Boolean) {
+        isEnableTracking = isEnable
     }
 
     fun setEnableBanner(isEnable: Boolean) {
@@ -266,7 +266,7 @@ object AdsSDK {
     fun initialize(activity: Activity, currentIapStatus: String = "", listener: AdsInitializeListener) {
         Log.e("initialize:::", "initialize")
         setDebugConfiguration()
-        if (!isEnableAds || !isEnableGDPRTracking) {
+        if (!isEnableAds) {
             listener.onFail("Ads is not allowed.")
             listener.always()
             return
