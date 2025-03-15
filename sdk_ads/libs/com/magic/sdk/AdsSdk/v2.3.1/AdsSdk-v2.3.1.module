@@ -1,0 +1,295 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.magic.sdk",
+    "module": "AdsSdk",
+    "version": "v2.3.1",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.12.1"
+    }
+  },
+  "variants": [
+    {
+      "name": "releaseApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "android",
+        "org.gradle.usage": "java-api",
+        "org.jetbrains.kotlin.platform.type": "androidJvm"
+      },
+      "dependencies": [
+        {
+          "group": "com.android.billingclient",
+          "module": "billing-ktx",
+          "version": {
+            "requires": "7.1.1"
+          }
+        },
+        {
+          "group": "com.google.android.gms",
+          "module": "play-services-ads-identifier",
+          "version": {
+            "requires": "18.2.0"
+          }
+        },
+        {
+          "group": "com.google.android.gms",
+          "module": "play-services-ads-lite",
+          "version": {
+            "requires": "23.6.0"
+          }
+        },
+        {
+          "group": "com.google.firebase",
+          "module": "firebase-crashlytics-ktx",
+          "version": {
+            "requires": "19.3.0"
+          }
+        },
+        {
+          "group": "androidx.databinding",
+          "module": "databinding-common",
+          "version": {
+            "requires": "8.9.0"
+          }
+        },
+        {
+          "group": "androidx.databinding",
+          "module": "databinding-runtime",
+          "version": {
+            "requires": "8.9.0"
+          }
+        },
+        {
+          "group": "androidx.databinding",
+          "module": "databinding-adapters",
+          "version": {
+            "requires": "8.9.0"
+          }
+        },
+        {
+          "group": "androidx.databinding",
+          "module": "databinding-ktx",
+          "version": {
+            "requires": "8.9.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "2.0.21"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "AdsSdk-v2.3.1.aar",
+          "url": "AdsSdk-v2.3.1.aar",
+          "size": 709545,
+          "sha512": "b0fdfb72654ec9296d12df027308ad763e627bf610704b6ecd259d4e8f2b9e124d7a0f6858fef3f3a32d70245e898b3690d37acb5d0ddaf0357033f08ff9bf14",
+          "sha256": "1d065413c2c94a1d7e84dd0643964d0af15b64dde241baf35754e77623d46016",
+          "sha1": "5c9974655bc57fdd31e91e435576a30f93beed0a",
+          "md5": "3cff7aa1b4abb00fdcaca4a79fde48ad"
+        }
+      ]
+    },
+    {
+      "name": "releaseRuntimeElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "android",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.platform.type": "androidJvm"
+      },
+      "dependencies": [
+        {
+          "group": "com.google.firebase",
+          "module": "firebase-analytics-ktx",
+          "version": {
+            "requires": "22.1.2"
+          }
+        },
+        {
+          "group": "com.google.android.ump",
+          "module": "user-messaging-platform",
+          "version": {
+            "requires": "3.1.0"
+          }
+        },
+        {
+          "group": "com.google.firebase",
+          "module": "firebase-ads",
+          "version": {
+            "requires": "23.6.0"
+          }
+        },
+        {
+          "group": "androidx.core",
+          "module": "core-ktx",
+          "version": {
+            "requires": "1.15.0"
+          }
+        },
+        {
+          "group": "androidx.appcompat",
+          "module": "appcompat",
+          "version": {
+            "requires": "1.7.0"
+          }
+        },
+        {
+          "group": "androidx.preference",
+          "module": "preference-ktx",
+          "version": {
+            "requires": "1.2.1"
+          }
+        },
+        {
+          "group": "com.google.android.material",
+          "module": "material",
+          "version": {
+            "requires": "1.12.0"
+          }
+        },
+        {
+          "group": "androidx.navigation",
+          "module": "navigation-fragment-ktx",
+          "version": {
+            "requires": "2.8.5"
+          }
+        },
+        {
+          "group": "androidx.lifecycle",
+          "module": "lifecycle-livedata-ktx",
+          "version": {
+            "requires": "2.8.7"
+          }
+        },
+        {
+          "group": "androidx.lifecycle",
+          "module": "lifecycle-viewmodel-ktx",
+          "version": {
+            "requires": "2.8.7"
+          }
+        },
+        {
+          "group": "androidx.lifecycle",
+          "module": "lifecycle-process",
+          "version": {
+            "requires": "2.8.7"
+          }
+        },
+        {
+          "group": "com.facebook.shimmer",
+          "module": "shimmer",
+          "version": {
+            "requires": "0.5.0"
+          }
+        },
+        {
+          "group": "com.android.billingclient",
+          "module": "billing-ktx",
+          "version": {
+            "requires": "7.1.1"
+          }
+        },
+        {
+          "group": "com.google.android.gms",
+          "module": "play-services-ads-identifier",
+          "version": {
+            "requires": "18.2.0"
+          }
+        },
+        {
+          "group": "com.google.android.gms",
+          "module": "play-services-ads-lite",
+          "version": {
+            "requires": "23.6.0"
+          }
+        },
+        {
+          "group": "com.google.firebase",
+          "module": "firebase-crashlytics-ktx",
+          "version": {
+            "requires": "19.3.0"
+          }
+        },
+        {
+          "group": "androidx.databinding",
+          "module": "databinding-common",
+          "version": {
+            "requires": "8.9.0"
+          }
+        },
+        {
+          "group": "androidx.databinding",
+          "module": "databinding-runtime",
+          "version": {
+            "requires": "8.9.0"
+          }
+        },
+        {
+          "group": "androidx.databinding",
+          "module": "databinding-adapters",
+          "version": {
+            "requires": "8.9.0"
+          }
+        },
+        {
+          "group": "androidx.databinding",
+          "module": "databinding-ktx",
+          "version": {
+            "requires": "8.9.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "2.0.21"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "AdsSdk-v2.3.1.aar",
+          "url": "AdsSdk-v2.3.1.aar",
+          "size": 709545,
+          "sha512": "b0fdfb72654ec9296d12df027308ad763e627bf610704b6ecd259d4e8f2b9e124d7a0f6858fef3f3a32d70245e898b3690d37acb5d0ddaf0357033f08ff9bf14",
+          "sha256": "1d065413c2c94a1d7e84dd0643964d0af15b64dde241baf35754e77623d46016",
+          "sha1": "5c9974655bc57fdd31e91e435576a30f93beed0a",
+          "md5": "3cff7aa1b4abb00fdcaca4a79fde48ad"
+        }
+      ]
+    },
+    {
+      "name": "releaseSourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.jvm.environment": "android",
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.platform.type": "androidJvm"
+      },
+      "files": [
+        {
+          "name": "AdsSdk-v2.3.1-sources.jar",
+          "url": "AdsSdk-v2.3.1-sources.jar",
+          "size": 69301,
+          "sha512": "b471ca58c61e58a6f7e45e0e82738d8fc542f8f2b64a4e9b6fc3f49fa61bc4427312db360f413082500e1f5c8b32fa2bab75a881a144b83dde8494750c1cf96c",
+          "sha256": "4e1ef57b53294fcb2a8d29748d6fc1964a69030c987203f6f8ba227d650045e1",
+          "sha1": "3c00267b8e463298540ff94ff339e58fdfa4a50a",
+          "md5": "c944110c39edcd38bc44d111e9f055cf"
+        }
+      ]
+    }
+  ]
+}

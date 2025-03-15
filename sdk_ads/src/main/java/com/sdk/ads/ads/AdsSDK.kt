@@ -33,6 +33,9 @@ import java.util.Locale
 object AdsSDK {
 
     internal lateinit var app: Application
+    var isEnableGDPRTracking = true
+        private set
+
     var isEnableAds = true
         private set
 
@@ -217,6 +220,10 @@ object AdsSDK {
         preventShowResumeAd = true
     }
 
+    fun setEnableGDPRTracking(isEnable: Boolean) {
+        isEnableGDPRTracking = isEnable
+    }
+
     fun setEnableBanner(isEnable: Boolean) {
         isEnableBanner = isEnable
         AdmobBanner.setEnableBanner(isEnable)
@@ -259,7 +266,7 @@ object AdsSDK {
     fun initialize(activity: Activity, currentIapStatus: String = "", listener: AdsInitializeListener) {
         Log.e("initialize:::", "initialize")
         setDebugConfiguration()
-        if (!isEnableAds) {
+        if (!isEnableAds || !isEnableGDPRTracking) {
             listener.onFail("Ads is not allowed.")
             listener.always()
             return
@@ -362,10 +369,10 @@ object AdsSDK {
         } else {
             gdprConsent.updateConsentInfo(
                 activity = activity, underAge = false, consentPermit = {
-                adsType = if (it) AdsType.SHOW_ADS else AdsType.FAIL_ADS
-            }, consentTracker = consentTracker, isShowForceAgain = false, initAds = {
-                performInitializeAds(activity, listener)
-            },
+                    adsType = if (it) AdsType.SHOW_ADS else AdsType.FAIL_ADS
+                }, consentTracker = consentTracker, isShowForceAgain = false, initAds = {
+                    performInitializeAds(activity, listener)
+                },
                 callBackFormError = {
                     listener.formError(it)
                 })
@@ -404,10 +411,10 @@ object AdsSDK {
             } else {
                 gdprConsent.updateConsentInfo(
                     activity = activity, underAge = false, consentPermit = {
-                    adsType = if (it) AdsType.SHOW_ADS else AdsType.FAIL_ADS
-                }, consentTracker = consentTracker, isShowForceAgain = true, initAds = {
-                    performInitializeAds(activity, listener)
-                },
+                        adsType = if (it) AdsType.SHOW_ADS else AdsType.FAIL_ADS
+                    }, consentTracker = consentTracker, isShowForceAgain = true, initAds = {
+                        performInitializeAds(activity, listener)
+                    },
                     callBackFormError = {
                         listener.formError(it)
                     })
