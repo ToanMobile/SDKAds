@@ -49,10 +49,9 @@ fun logAdImpression(adTag: String) {
 
 fun logEvent(evenName: String) {
     if (!AdsSDK.isEnableAds || !AdsSDK.isEnableTracking) return
-    var result = evenName.trim()
-        .replace("-", "_") // Thay thế "-" bằng "_"
-        .replace("\\s+".toRegex(), "_") // Thay thế tất cả khoảng trắng bằng "_"
-        .replace("[^a-zA-Z0-9_]".toRegex(), "_") // Thay thế mọi ký tự không hợp lệ bằng "_"
+    var result = removeEmojis(evenName.trim())
+        .replace("\\s+".toRegex(), "_")
+        .replace("[^a-zA-Z0-9_\\p{IsArabic}]+".toRegex(), "_")
     if (result.length > 40) {
         result = result.substring(0, 40) // Giới hạn độ dài tối đa 40 ký tự
     }
@@ -89,4 +88,9 @@ fun logNote(eventName: String, noteTitle: String, note: String) {
     logParams(eventName) {
         param(noteTitle, note)
     }
+}
+
+private fun removeEmojis(text: String): String {
+    val emojiRegex = "[\\p{So}\\p{Cn}]".toRegex()  // Unicode Symbol & Private Use Area
+    return text.replace(emojiRegex, "")
 }
