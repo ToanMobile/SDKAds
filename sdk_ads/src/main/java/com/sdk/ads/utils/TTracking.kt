@@ -53,9 +53,9 @@ fun logEvent(evenName: String) {
         .replace("\\s+".toRegex(), "_")
         .replace("[^a-zA-Z0-9_\\p{IsArabic}]+".toRegex(), "_")
     if (result.length > 40) {
-        result = result.substring(0, 40) // Giới hạn độ dài tối đa 40 ký tự
+        result = result.substring(0, 40)
     }
-    Log.e("Tracking:::", evenName)
+    Log.e("Tracking:::", result)
     tracker.logEvent(result, null)
 }
 
