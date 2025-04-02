@@ -112,35 +112,24 @@ class ConsentTracker(val context: Context) {
         val purposeConsent = prefs.getString("IABTCF_PurposeConsents", "") ?: ""
         val purposeLegitimate = prefs.getString("IABTCF_PurposeLegitimateInterests", "") ?: ""
         if (isGdpr && canShowPersonAds && canShowAds) {
-            if (AdsSDK.appType == AppType.PDF) {
-                logEvent(evenName = "GDPR_acceptAll")
-                logEvent(evenName = "GDPR_acceptAll_$language")
-            } else {
-                logEvent(evenName = "GDPR_acceptAll")
-                logEvent(evenName = "GDPR_acceptAll_$language")
-            }
+            logEvent(eventName ="GDPR_acceptAll")
+            logEvent(eventName ="GDPR_acceptAll_$language")
         } else {
             if (purposeConsent.contains("1") || purposeLegitimate.contains("1")) {
                 val consentData = if (purposeConsent.contains("1")) purposeConsent else purposeLegitimate
                 if (AdsSDK.appType == AppType.PDF) {
-                    logEvent(evenName = "GDPR_acceptAPart")
-                    logEvent(evenName = "GDPR_acceptAPart_$language")
-                    logEvent(evenName = "GDPR_accept_${language}_$purposeConsent")
-                    logEvent(evenName = "GDPR_accept${purposeConsent}")
+                    logEvent(eventName ="GDPR_acceptAPart")
+                    logEvent(eventName ="GDPR_acceptAPart_$language")
+                    logEvent(eventName ="GDPR_accept_${language}_$consentData")
+                    logEvent(eventName ="GDPR_accept${consentData}")
                 } else {
-                    logEvent(evenName = "GDPR_acceptAPart")
-                    logEvent(evenName = "GDPR_acceptAPart_$language")
-                    logEvent(evenName = "GDPR_accept_${language}_${consentData}")
+                    logEvent(eventName ="GDPR_acceptAPart")
+                    logEvent(eventName ="GDPR_acceptAPart_$language")
+                    logEvent(eventName ="GDPR_accept_${language}_${consentData}")
                 }
             } else {
-                //TODO check isFirst return now not send log
-                if (AdsSDK.appType == AppType.PDF) {
-                    logEvent(evenName = "GDPR_denyAll_$language")
-                    logEvent(evenName = "GDPR_denyAll")
-                } else {
-                    logEvent(evenName = "GDPR_denyAll_$language")
-                    logEvent(evenName = "GDPR_denyAll")
-                }
+                logEvent(eventName ="GDPR_denyAll_$language")
+                logEvent(eventName ="GDPR_denyAll")
             }
         }
     }

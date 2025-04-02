@@ -3,7 +3,7 @@
   "component": {
     "group": "com.magic.sdk",
     "module": "AdsSdk",
-    "version": "v2.2.9",
+    "version": "v2.3.4",
     "attributes": {
       "org.gradle.status": "release"
     }
@@ -55,28 +55,28 @@
           "group": "androidx.databinding",
           "module": "databinding-common",
           "version": {
-            "requires": "8.9.0"
+            "requires": "8.9.1"
           }
         },
         {
           "group": "androidx.databinding",
           "module": "databinding-runtime",
           "version": {
-            "requires": "8.9.0"
+            "requires": "8.9.1"
           }
         },
         {
           "group": "androidx.databinding",
           "module": "databinding-adapters",
           "version": {
-            "requires": "8.9.0"
+            "requires": "8.9.1"
           }
         },
         {
           "group": "androidx.databinding",
           "module": "databinding-ktx",
           "version": {
-            "requires": "8.9.0"
+            "requires": "8.9.1"
           }
         },
         {
@@ -89,13 +89,13 @@
       ],
       "files": [
         {
-          "name": "AdsSdk-v2.2.9.aar",
-          "url": "AdsSdk-v2.2.9.aar",
-          "size": 709652,
-          "sha512": "2d4f4236dede76c6ca35b8eaf18bfeca5cc772917dbebcd041aee70c06a4ef6f3a261c253a81fc6faec23460dc1bb9563bc09482302da11f1e8c368fae8bb9ff",
-          "sha256": "5cecb1fc7e17cd2dd02e6585f0a704a4d55c46f5f380088993ff802c3dbf1250",
-          "sha1": "313c7a69bf376a8a5da17b06f9a3a529e7f865cb",
-          "md5": "f4a9dacb5f1176515802800f76933ff6"
+          "name": "AdsSdk-v2.3.4.aar",
+          "url": "AdsSdk-v2.3.4.aar",
+          "size": 709863,
+          "sha512": "fee5bab3ebf0a95cccc842a33fcd5306d86df71ec7399c4449f67c3bf019b4d4af789a2df488b35ef96e463602d99c2a14829bceede63949b0d159c47c7f5573",
+          "sha256": "14eb2791aa011b2cc53f43ddd1faafb1d2060d20e8220d783a2af91eb4f9d25e",
+          "sha1": "e6e65c2ff60dae8b41cccb68ce9a29ead4019420",
+          "md5": "fa2df2a15b775dd0bc1a6bf7f06c2ca9"
         }
       ]
     },
@@ -224,28 +224,28 @@
           "group": "androidx.databinding",
           "module": "databinding-common",
           "version": {
-            "requires": "8.9.0"
+            "requires": "8.9.1"
           }
         },
         {
           "group": "androidx.databinding",
           "module": "databinding-runtime",
           "version": {
-            "requires": "8.9.0"
+            "requires": "8.9.1"
           }
         },
         {
           "group": "androidx.databinding",
           "module": "databinding-adapters",
           "version": {
-            "requires": "8.9.0"
+            "requires": "8.9.1"
           }
         },
         {
           "group": "androidx.databinding",
           "module": "databinding-ktx",
           "version": {
-            "requires": "8.9.0"
+            "requires": "8.9.1"
           }
         },
         {
@@ -258,13 +258,13 @@
       ],
       "files": [
         {
-          "name": "AdsSdk-v2.2.9.aar",
-          "url": "AdsSdk-v2.2.9.aar",
-          "size": 709652,
-          "sha512": "2d4f4236dede76c6ca35b8eaf18bfeca5cc772917dbebcd041aee70c06a4ef6f3a261c253a81fc6faec23460dc1bb9563bc09482302da11f1e8c368fae8bb9ff",
-          "sha256": "5cecb1fc7e17cd2dd02e6585f0a704a4d55c46f5f380088993ff802c3dbf1250",
-          "sha1": "313c7a69bf376a8a5da17b06f9a3a529e7f865cb",
-          "md5": "f4a9dacb5f1176515802800f76933ff6"
+          "name": "AdsSdk-v2.3.4.aar",
+          "url": "AdsSdk-v2.3.4.aar",
+          "size": 709863,
+          "sha512": "fee5bab3ebf0a95cccc842a33fcd5306d86df71ec7399c4449f67c3bf019b4d4af789a2df488b35ef96e463602d99c2a14829bceede63949b0d159c47c7f5573",
+          "sha256": "14eb2791aa011b2cc53f43ddd1faafb1d2060d20e8220d783a2af91eb4f9d25e",
+          "sha1": "e6e65c2ff60dae8b41cccb68ce9a29ead4019420",
+          "md5": "fa2df2a15b775dd0bc1a6bf7f06c2ca9"
         }
       ]
     },
@@ -281,13 +281,13 @@
       },
       "files": [
         {
-          "name": "AdsSdk-v2.2.9-sources.jar",
-          "url": "AdsSdk-v2.2.9-sources.jar",
-          "size": 69453,
-          "sha512": "6bd2414a07a0f93ebc4aded2b51049eec7342a42099ea4be65812aa603a32912ae22595773a459f2213149c6a94fc9380b6804d80cc91c99a68ccaa2c868cf79",
-          "sha256": "9ed1c4c7cae11dbf92736dc5234c20f85a87a23fbf4208cb2a47617214748874",
-          "sha1": "bd6448aba568cce7a0e903accf3daa667e5cf567",
-          "md5": "8a09cb9222ff695a1742e71685387a35"
+          "name": "AdsSdk-v2.3.4-sources.jar",
+          "url": "AdsSdk-v2.3.4-sources.jar",
+          "size": 69303,
+          "sha512": "3b05f04433e544265d80811803a52f87c8221d0ff65ab151c4a1b62ec8fcaac493ca9339118794bb866d073862efba3c9784594d82e440f275948dd14f011c23",
+          "sha256": "9602899a88d7d9403155ef512f3253eb08f667b5d3e59626f0ee2d721bf09ba6",
+          "sha1": "fba8a7fc5219fbb8669f65229e84692f0b9b827e",
+          "md5": "0e43ec21a6feb5b8f1a919fd67ab881a"
         }
       ]
     }

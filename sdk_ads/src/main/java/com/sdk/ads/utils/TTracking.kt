@@ -47,16 +47,23 @@ fun logAdImpression(adTag: String) {
     }
 }
 
-fun logEvent(evenName: String) {
-    if (!AdsSDK.isEnableAds || !AdsSDK.isEnableTracking) return
-    var result = removeEmojis(evenName.trim())
-        .replace("\\s+".toRegex(), "_")
-        .replace("[^a-zA-Z0-9_\\p{IsArabic}]+".toRegex(), "_")
-    if (result.length > 40) {
-        result = result.substring(0, 40)
+fun logEvent(eventName: String) {
+    try {
+        if (!AdsSDK.isEnableAds || !AdsSDK.isEnableTracking) return
+        var result = removeEmojis(eventName)
+            .trim()
+            .replace("\\s+".toRegex(), "_")
+            .replace("[^\\p{L}0-9_]+".toRegex(), "_")
+            .replace("_+".toRegex(), "_")
+            .trim('_')
+        if (result.length > 40) {
+            result = result.substring(0, 40)
+        }
+        Log.e("Tracking:::", result)
+        tracker.logEvent(result, null)
+    } catch (e: Exception) {
+        e.printStackTrace()
     }
-    Log.e("Tracking:::", result)
-    tracker.logEvent(result, null)
 }
 
 fun logProperty(evenName: String, data: String?) {
@@ -91,6 +98,11 @@ fun logNote(eventName: String, noteTitle: String, note: String) {
 }
 
 private fun removeEmojis(text: String): String {
-    val emojiRegex = "[\\p{So}\\p{Cn}]".toRegex()  // Unicode Symbol & Private Use Area
-    return text.replace(emojiRegex, "")
+    try {
+        val emojiRegex = "[\\p{So}\\p{Cn}]".toRegex()  // Unicode Symbol & Private Use Area
+        return text.replace(emojiRegex, "")
+    } catch (e: Exception) {
+        e.printStackTrace()
+        return ""
+    }
 }

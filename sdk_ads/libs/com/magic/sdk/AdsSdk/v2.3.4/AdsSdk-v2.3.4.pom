@@ -9,7 +9,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.magic.sdk</groupId>
   <artifactId>AdsSdk</artifactId>
-  <version>v2.2.6</version>
+  <version>v2.3.4</version>
   <packaging>aar</packaging>
   <dependencies>
     <dependency>
@@ -39,25 +39,25 @@
     <dependency>
       <groupId>androidx.databinding</groupId>
       <artifactId>databinding-common</artifactId>
-      <version>8.8.0</version>
+      <version>8.9.1</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>androidx.databinding</groupId>
       <artifactId>databinding-runtime</artifactId>
-      <version>8.8.0</version>
+      <version>8.9.1</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>androidx.databinding</groupId>
       <artifactId>databinding-adapters</artifactId>
-      <version>8.8.0</version>
+      <version>8.9.1</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>androidx.databinding</groupId>
       <artifactId>databinding-ktx</artifactId>
-      <version>8.8.0</version>
+      <version>8.9.1</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -136,12 +136,6 @@
       <groupId>com.facebook.shimmer</groupId>
       <artifactId>shimmer</artifactId>
       <version>0.5.0</version>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.blankj</groupId>
-      <artifactId>utilcodex</artifactId>
-      <version>1.31.1</version>
       <scope>runtime</scope>
     </dependency>
   </dependencies>
