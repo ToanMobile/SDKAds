@@ -33,6 +33,7 @@ object AdmobInterSplash {
         isForceShowNow: Boolean = false,
         isShowLoading: Boolean = false,
         isDelayNextAds: Boolean = true,
+        isForceShow: Boolean = false,
         timeout: Long = 30000,
         nextAction: () -> Unit,
         adLoaded: () -> Unit = {},
@@ -51,7 +52,7 @@ object AdmobInterSplash {
                 adLoaded()
                 dismissLoading(dialogShowLoadingAds)
                 if (isForceShowNow) {
-                    showAds(adUnitId, isShowLoading, isDelayNextAds, this, nextAction)
+                    showAds(adUnitId, isShowLoading, isDelayNextAds, isForceShow, this, nextAction)
                 }
             }
 
@@ -74,7 +75,7 @@ object AdmobInterSplash {
             timer?.cancel()
             timer = object : CountDownTimer(timeout, 1000) {
                 override fun onTick(millisUntilFinished: Long) {
-                    showAds(adUnitId, isShowLoading, isDelayNextAds, callback, nextAction)
+                    showAds(adUnitId, isShowLoading, isDelayNextAds, isForceShow, callback, nextAction)
                 }
 
                 override fun onFinish() {
@@ -85,28 +86,45 @@ object AdmobInterSplash {
         }
     }
 
-    private fun showAds(adUnitId: String, isShowLoading: Boolean = false, isDelayNextAds: Boolean = true, callback: TAdCallback, nextAction: () -> Unit) {
+    private fun showAds(
+        adUnitId: String,
+        isShowLoading: Boolean = false,
+        isDelayNextAds: Boolean = true,
+        isForceShow: Boolean = false,
+        callback: TAdCallback,
+        nextAction: () -> Unit,
+    ) {
         try {
             if (!AdsSDK.isEnableInter) {
                 timer?.cancel()
                 nextAction.invoke()
                 return
             }
-            Log.d("AdmobInterSplash:", AdmobInter.checkShowInterCondition(adUnitId, !isDelayNextAds).toString())
             if (AdmobInter.checkShowInterCondition(adUnitId, !isDelayNextAds)) {
                 timer?.cancel()
-                onNextActionWhenResume {
-                    AdsSDK.getAppCompatActivityOnTop()?.waitActivityResumed {
-                        Log.d("AdmobInterSplash:", "waitActivityResumed")
-                        AdmobInter.show(
-                            adUnitId = adUnitId,
-                            showLoadingInter = isShowLoading,
-                            forceShow = true,
-                            loadAfterDismiss = false,
-                            loadIfNotAvailable = false,
-                            callback = callback,
-                            nextAction = nextAction,
-                        )
+                if (isForceShow) {
+                    AdmobInter.show(
+                        adUnitId = adUnitId,
+                        showLoadingInter = isShowLoading,
+                        forceShow = true,
+                        loadAfterDismiss = false,
+                        loadIfNotAvailable = false,
+                        callback = callback,
+                        nextAction = nextAction,
+                    )
+                } else {
+                    onNextActionWhenResume {
+                        AdsSDK.getAppCompatActivityOnTop()?.waitActivityResumed {
+                            AdmobInter.show(
+                                adUnitId = adUnitId,
+                                showLoadingInter = isShowLoading,
+                                forceShow = true,
+                                loadAfterDismiss = false,
+                                loadIfNotAvailable = false,
+                                callback = callback,
+                                nextAction = nextAction,
+                            )
+                        }
                     }
                 }
             }
