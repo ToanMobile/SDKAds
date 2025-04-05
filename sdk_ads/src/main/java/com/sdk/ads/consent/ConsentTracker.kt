@@ -112,24 +112,24 @@ class ConsentTracker(val context: Context) {
         val purposeConsent = prefs.getString("IABTCF_PurposeConsents", "") ?: ""
         val purposeLegitimate = prefs.getString("IABTCF_PurposeLegitimateInterests", "") ?: ""
         if (isGdpr && canShowPersonAds && canShowAds) {
-            logEvent(eventName ="GDPR_acceptAll")
-            logEvent(eventName ="GDPR_acceptAll_$language")
+            logEvent(eventName = "GDPR_acceptAll")
+            logEvent(eventName = "GDPR_acceptAll_$language")
         } else {
             if (purposeConsent.contains("1") || purposeLegitimate.contains("1")) {
                 val consentData = if (purposeConsent.contains("1")) purposeConsent else purposeLegitimate
                 if (AdsSDK.appType == AppType.PDF) {
-                    logEvent(eventName ="GDPR_acceptAPart")
-                    logEvent(eventName ="GDPR_acceptAPart_$language")
-                    logEvent(eventName ="GDPR_accept_${language}_$consentData")
-                    logEvent(eventName ="GDPR_accept${consentData}")
+                    logEvent(eventName = "GDPR_acceptAPart")
+                    logEvent(eventName = "GDPR_acceptAPart_$language")
+                    logEvent(eventName = "GDPR_accept_${language}_$consentData")
+                    logEvent(eventName = "GDPR_accept${consentData}")
                 } else {
-                    logEvent(eventName ="GDPR_acceptAPart")
-                    logEvent(eventName ="GDPR_acceptAPart_$language")
-                    logEvent(eventName ="GDPR_accept_${language}_${consentData}")
+                    logEvent(eventName = "GDPR_acceptAPart")
+                    logEvent(eventName = "GDPR_acceptAPart_$language")
+                    logEvent(eventName = "GDPR_accept_${language}_${consentData}")
                 }
             } else {
-                logEvent(eventName ="GDPR_denyAll_$language")
-                logEvent(eventName ="GDPR_denyAll")
+                logEvent(eventName = "GDPR_denyAll_$language")
+                logEvent(eventName = "GDPR_denyAll")
             }
         }
     }

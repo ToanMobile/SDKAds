@@ -1,15 +1,14 @@
 package com.sdk.ads.ads.interstitial
 
 import android.app.Activity
+import android.util.Log
 import androidx.lifecycle.Lifecycle
 import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
-import com.google.android.gms.ads.ResponseInfo
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
-import com.google.android.gms.ads.zzc
 import com.sdk.ads.ads.AdsSDK
 import com.sdk.ads.ui.dialogs.DialogShowLoadingAds
 import com.sdk.ads.utils.AdType
@@ -264,16 +263,39 @@ object AdmobInter {
      * 5.   Nếu Activity đang resume => ẩn dialog/ next action
      * 6.   Nếu Activity không resume => đợi resume thì ẩn dialog / nextAction
      */
-    fun showLoadingBeforeInter(nextAction: () -> Unit) {
+    fun showLoadingBeforeInter(isIgnoreMainActivity: Boolean = false, nextAction: () -> Unit) {
         val topActivity = AdsSDK.getAppCompatActivityOnTop()
-
         if (topActivity == null) {
             nextAction.invoke()
             return
         }
-
         val dialog = DialogShowLoadingAds(topActivity)
-
+        if (isIgnoreMainActivity) {
+            if (!dialog.isShowing) {
+                dialog.show()
+                topActivity.waitActivityStop {
+                    if (dialog.isShowing) {
+                        dialog.dismiss()
+                    }
+                }
+                delay(timeShowLoading) {
+                    if (topActivity.lifecycle.currentState == Lifecycle.State.RESUMED) {
+                        if (dialog.isShowing) {
+                            dialog.dismiss()
+                        }
+                        nextAction.invoke()
+                    } else {
+                        topActivity.waitActivityResumed {
+                            if (dialog.isShowing) {
+                                dialog.dismiss()
+                            }
+                            nextAction.invoke()
+                        }
+                    }
+                }
+            }
+            return
+        }
         if (topActivity.lifecycle.currentState == Lifecycle.State.RESUMED) {
             if (!dialog.isShowing) {
                 dialog.show()
@@ -309,15 +331,24 @@ object AdmobInter {
         }
     }
 
-    fun showLoadingBeforeInter(): DialogShowLoadingAds? {
+    fun showLoadingBeforeInter(isIgnoreMainActivity: Boolean = false): DialogShowLoadingAds? {
         val topActivity = AdsSDK.getAppCompatActivityOnTop() ?: return null
-
         val dialog = DialogShowLoadingAds(topActivity)
-
+        if (isIgnoreMainActivity) {
+            Log.d("showLoadingBeforeInter", "11111")
+            if (!dialog.isShowing) {
+                dialog.show()
+                topActivity.waitActivityStop {
+                    if (dialog.isShowing) {
+                        Log.d("showLoadingBeforeInter", "444444")
+                        dialog.dismiss()
+                    }
+                }
+            }
+        }
         if (topActivity.lifecycle.currentState == Lifecycle.State.RESUMED) {
             if (!dialog.isShowing) {
                 dialog.show()
-
                 topActivity.waitActivityStop {
                     if (dialog.isShowing) {
                         dialog.dismiss()
