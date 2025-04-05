@@ -32,6 +32,8 @@ object AdmobInterSplash {
         isForceShowNow: Boolean = false, // Show liền ads
         isShowLoading: Boolean = false, // Show loading ads
         isDelayNextAds: Boolean = true, // Time delay ads
+        handleNextActionDuringInterShow: Boolean = true,
+        delayTimeToActionAfterShowInter: Int = 300,
         timeout: Long = 30000,
         nextAction: () -> Unit,
         adLoaded: () -> Unit = {},
@@ -49,7 +51,7 @@ object AdmobInterSplash {
                 super.onAdLoaded(adUnit, adType)
                 adLoaded()
                 if (isForceShowNow) {
-                    showAds(adUnitId, isShowLoading, isDelayNextAds, this, nextAction)
+                    showAds(adUnitId, isShowLoading, isDelayNextAds, handleNextActionDuringInterShow, delayTimeToActionAfterShowInter, this, nextAction)
                 }
             }
 
@@ -72,7 +74,7 @@ object AdmobInterSplash {
             timer?.cancel()
             timer = object : CountDownTimer(timeout, 1000) {
                 override fun onTick(millisUntilFinished: Long) {
-                    showAds(adUnitId, isShowLoading, isDelayNextAds, callback, nextAction)
+                    showAds(adUnitId, isShowLoading, isDelayNextAds, handleNextActionDuringInterShow, delayTimeToActionAfterShowInter, callback, nextAction)
                 }
 
                 override fun onFinish() {
@@ -87,6 +89,8 @@ object AdmobInterSplash {
         adUnitId: String,
         isShowLoading: Boolean = false,
         isDelayNextAds: Boolean = true,
+        handleNextActionDuringInterShow: Boolean,
+        delayTimeToActionAfterShowInter: Int,
         callback: TAdCallback,
         nextAction: () -> Unit,
     ) {
@@ -106,6 +110,8 @@ object AdmobInterSplash {
                             forceShow = true,
                             loadAfterDismiss = false,
                             loadIfNotAvailable = false,
+                            handleNextActionDuringInterShow = handleNextActionDuringInterShow,
+                            delayTimeToActionAfterShowInter = delayTimeToActionAfterShowInter,
                             callback = callback,
                             nextAction = nextAction,
                         )
