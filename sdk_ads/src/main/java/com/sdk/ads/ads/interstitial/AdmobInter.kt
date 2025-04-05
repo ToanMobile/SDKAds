@@ -29,6 +29,27 @@ object AdmobInter {
     private val intersLoading = mutableListOf<String>()
     private var timeShowLoading = 1_000
 
+    private var nextActionDuringInterShow = false
+    private var timeToActionAfterShowInter = 300
+
+    /**
+     * Config when show InterAd.
+     * Usually we will take the next action after Inter dismiss
+     * But InterAd's onDismissFullContent is suffering from a callback bug that is several hundred milliseconds late.
+     * Therefore, the screen change delay is not happening as expected.
+     * This function will fix that error.
+     * We will handle nextAction while InterAd starting showing
+     * @param handleNextActionDuringInterShow: if set {true} => fix bug delay onDismiss of Inter
+     * @param delayTimeToActionAfterShowInter: time to delay start from showInter. Recommend 0 if startActivity , 300 with navigateFragment
+     */
+    fun setNextWhileInterShowing(
+        handleNextActionDuringInterShow: Boolean,
+        delayTimeToActionAfterShowInter: Int = 300,
+    ) {
+        nextActionDuringInterShow = handleNextActionDuringInterShow
+        timeToActionAfterShowInter = delayTimeToActionAfterShowInter
+    }
+
     /**
      * Step1: Không có mạng => Không load
      * Step2: Có sẵn quảng cáo => Không load
@@ -117,6 +138,7 @@ object AdmobInter {
         callback: TAdCallback? = null,
         nextAction: () -> Unit,
     ) {
+        setNextWhileInterShowing(handleNextActionDuringInterShow, delayTimeToActionAfterShowInter)
         if (!AdsSDK.isEnableInter) {
             nextAction.invoke()
             return
@@ -147,7 +169,7 @@ object AdmobInter {
         if (currActivity == null) {
             nextAction.invoke()
         } else {
-            invokeShowInter(interAd, currActivity, loadAfterDismiss, handleNextActionDuringInterShow, delayTimeToActionAfterShowInter, callback, nextAction)
+            invokeShowInter(interAd, currActivity, loadAfterDismiss, callback, nextAction)
             //TODO
             /*if (showLoadingInter) {
                 showLoadingBeforeInter {
@@ -178,8 +200,6 @@ object AdmobInter {
         interstitialAd: InterstitialAd,
         activity: Activity,
         loadAfterDismiss: Boolean,
-        handleNextActionDuringInterShow: Boolean,
-        delayTimeToActionAfterShowInter: Int,
         callback: TAdCallback? = null,
         nextAction: () -> Unit,
     ) {
@@ -201,7 +221,7 @@ object AdmobInter {
 
                 interTimeShown[adUnitId] = System.currentTimeMillis()
 
-                if (!handleNextActionDuringInterShow) {
+                if (!nextActionDuringInterShow) {
                     nextAction.invoke()
                 }
 
@@ -231,8 +251,8 @@ object AdmobInter {
             }
         }
 
-        if (handleNextActionDuringInterShow) {
-            delay(delayTimeToActionAfterShowInter) {
+        if (nextActionDuringInterShow) {
+            delay(timeToActionAfterShowInter) {
                 nextAction.invoke()
             }
         }
@@ -316,21 +336,9 @@ object AdmobInter {
         }
     }
 
-    fun showLoadingBeforeInter(isIgnoreMainActivity: Boolean = false): DialogShowLoadingAds? {
+    fun showLoadingBeforeInter(): DialogShowLoadingAds? {
         val topActivity = AdsSDK.getAppCompatActivityOnTop() ?: return null
         val dialog = DialogShowLoadingAds(topActivity)
-        if (isIgnoreMainActivity) {
-            Log.d("showLoadingBeforeInter", "11111")
-            if (!dialog.isShowing) {
-                dialog.show()
-                topActivity.waitActivityStop {
-                    if (dialog.isShowing) {
-                        Log.d("showLoadingBeforeInter", "444444")
-                        dialog.dismiss()
-                    }
-                }
-            }
-        }
         if (topActivity.lifecycle.currentState == Lifecycle.State.RESUMED) {
             if (!dialog.isShowing) {
                 dialog.show()
