@@ -14,10 +14,8 @@ fun logAdClicked(adType: AdType, adID: String? = null) {
     if (!AdsSDK.isEnableAds || !AdsSDK.isEnableTracking) return
     logParams("ad_click_custom") {
         val clazz = AdsSDK.getClazzOnTop()
-
         if (clazz != null) {
             runCatching { param("screen", clazz::class.java.simpleName) }
-
             val adFormat = when (adType) {
                 AdType.OpenApp -> {
                     if (adID != null && adID == com.sdk.ads.ads.open.AdmobOpenResume.adUnitId) {
@@ -32,7 +30,6 @@ fun logAdClicked(adType: AdType, adID: String? = null) {
                 AdType.Native -> "ad_native"
                 AdType.Rewarded -> "ad_rewarded"
             }
-
             runCatching { param("ad_format", adFormat) }
         }
     }
@@ -50,43 +47,28 @@ fun logAdImpression(adTag: String) {
 fun logEvent(eventName: String) {
     try {
         if (!AdsSDK.isEnableAds || !AdsSDK.isEnableTracking) return
-        var result = removeEmojis(eventName)
-            .trim()
-            .replace("\\s+".toRegex(), "_")
-            .replace("[^\\p{L}0-9_]+".toRegex(), "_")
-            .replace("_+".toRegex(), "_")
-            .trim('_')
-        if (result.length > 40) {
-            result = result.substring(0, 40)
-        }
-        Log.e("Tracking:::", result)
-        tracker.logEvent(result, null)
+        tracker.logEvent(convertString(eventName = eventName), null)
     } catch (e: Exception) {
         e.printStackTrace()
     }
 }
 
-fun logProperty(evenName: String, data: String?) {
+fun logProperty(eventName: String, data: String?) {
     if (!AdsSDK.isEnableAds || !AdsSDK.isEnableTracking) return
-    val result = evenName.trim().replace("-", "_")
-    Log.e("logProperty::", evenName)
-    tracker.setUserProperty(result, data)
+    tracker.setUserProperty(convertString(eventName = eventName), data)
 }
 
 fun logScreen(screenName: String) {
     if (!AdsSDK.isEnableAds || !AdsSDK.isEnableTracking) return
-    val result = screenName.trim().replace("-", "_")
-    Log.e("logScreen::", result)
     tracker.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW) {
-        param(FirebaseAnalytics.Param.SCREEN_NAME, result)
+        param(FirebaseAnalytics.Param.SCREEN_NAME, convertString(eventName = screenName))
     }
 }
 
 fun logParams(eventName: String, block: ParametersBuilder.() -> Unit) {
     if (!AdsSDK.isEnableAds || !AdsSDK.isEnableTracking) return
     runCatching {
-        val result = eventName.trim().replace("-", "_")
-        tracker.logEvent(result) { block() }
+        tracker.logEvent(convertString(eventName = eventName)) { block() }
     }
 }
 
@@ -95,6 +77,20 @@ fun logNote(eventName: String, noteTitle: String, note: String) {
     logParams(eventName) {
         param(noteTitle, note)
     }
+}
+
+private fun convertString(eventName: String): String {
+    var result = removeEmojis(eventName)
+        .trim()
+        .replace("\\s+".toRegex(), "_")
+        .replace("[^\\p{L}0-9_]+".toRegex(), "_")
+        .replace("_+".toRegex(), "_")
+        .trim('_')
+    if (result.length > 40) {
+        result = result.substring(0, 40)
+    }
+    Log.e("Tracking:::", result)
+    return result
 }
 
 private fun removeEmojis(text: String): String {

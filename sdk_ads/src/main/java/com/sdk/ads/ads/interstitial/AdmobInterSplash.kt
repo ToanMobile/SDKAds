@@ -92,10 +92,12 @@ object AdmobInterSplash {
                 nextAction.invoke()
                 return
             }
+            Log.d("AdmobInterSplash:", AdmobInter.checkShowInterCondition(adUnitId, !isDelayNextAds).toString())
             if (AdmobInter.checkShowInterCondition(adUnitId, !isDelayNextAds)) {
                 timer?.cancel()
                 onNextActionWhenResume {
                     AdsSDK.getAppCompatActivityOnTop()?.waitActivityResumed {
+                        Log.d("AdmobInterSplash:", "waitActivityResumed")
                         AdmobInter.show(
                             adUnitId = adUnitId,
                             showLoadingInter = isShowLoading,
