@@ -29,7 +29,7 @@ object AdmobInter {
     private val intersLoading = mutableListOf<String>()
     private var timeShowLoading = 1_000
 
-    private var nextActionDuringInterShow = false
+    private var autoActionDuringInterShow = false
     private var timeToActionAfterShowInter = 300
 
     /**
@@ -43,10 +43,10 @@ object AdmobInter {
      * @param delayTimeToActionAfterShowInter: time to delay start from showInter. Recommend 0 if startActivity , 300 with navigateFragment
      */
     fun setNextWhileInterShowing(
-        handleNextActionDuringInterShow: Boolean,
+        autoActionDuringInterShowInter: Boolean,
         delayTimeToActionAfterShowInter: Int = 300,
     ) {
-        nextActionDuringInterShow = handleNextActionDuringInterShow
+        autoActionDuringInterShow = autoActionDuringInterShowInter
         timeToActionAfterShowInter = delayTimeToActionAfterShowInter
     }
 
@@ -129,16 +129,15 @@ object AdmobInter {
      */
     fun show(
         adUnitId: String,
-        showLoadingInter: Boolean = true,
         forceShow: Boolean = false,
         loadAfterDismiss: Boolean = false,
         loadIfNotAvailable: Boolean = true,
-        handleNextActionDuringInterShow: Boolean = true,
+        autoNextActionDuringInterShow: Boolean = false,
         delayTimeToActionAfterShowInter: Int = 300,
         callback: TAdCallback? = null,
         nextAction: () -> Unit,
     ) {
-        setNextWhileInterShowing(handleNextActionDuringInterShow, delayTimeToActionAfterShowInter)
+        setNextWhileInterShowing(autoNextActionDuringInterShow, delayTimeToActionAfterShowInter)
         if (!AdsSDK.isEnableInter) {
             nextAction.invoke()
             return
@@ -221,9 +220,7 @@ object AdmobInter {
 
                 interTimeShown[adUnitId] = System.currentTimeMillis()
 
-                if (!nextActionDuringInterShow) {
-                    nextAction.invoke()
-                }
+                nextAction.invoke()
 
                 if (loadAfterDismiss) {
                     load(adUnitId, callback)
@@ -251,7 +248,7 @@ object AdmobInter {
             }
         }
 
-        if (nextActionDuringInterShow) {
+        if (autoActionDuringInterShow) {
             delay(timeToActionAfterShowInter) {
                 nextAction.invoke()
             }

@@ -47,7 +47,6 @@ object AdmobInterResume {
             if (AdmobInter.checkShowInterCondition(adUnitId, true)) {
                 AdmobInter.show(
                     adUnitId = adUnitId,
-                    showLoadingInter = false,
                     forceShow = true,
                     loadAfterDismiss = true,
                     loadIfNotAvailable = true,

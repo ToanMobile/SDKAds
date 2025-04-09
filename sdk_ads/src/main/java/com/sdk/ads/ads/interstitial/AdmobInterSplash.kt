@@ -32,7 +32,7 @@ object AdmobInterSplash {
         isForceShowNow: Boolean = false, // Show liền ads
         isShowLoading: Boolean = false, // Show loading ads
         isDelayNextAds: Boolean = true, // Time delay ads
-        handleNextActionDuringInterShow: Boolean = true,
+        autoNextActionDuringInterShow: Boolean = false,
         delayTimeToActionAfterShowInter: Int = 300,
         timeout: Long = 30000,
         nextAction: () -> Unit,
@@ -50,8 +50,9 @@ object AdmobInterSplash {
             override fun onAdLoaded(adUnit: String, adType: AdType) {
                 super.onAdLoaded(adUnit, adType)
                 adLoaded()
+                AdmobInter.dismissLoading(dialogShowLoadingAds)
                 if (isForceShowNow) {
-                    showAds(adUnitId, isShowLoading, isDelayNextAds, handleNextActionDuringInterShow, delayTimeToActionAfterShowInter, this, nextAction)
+                    showAds(adUnitId, isDelayNextAds, autoNextActionDuringInterShow, delayTimeToActionAfterShowInter, this, nextAction)
                 }
             }
 
@@ -74,7 +75,7 @@ object AdmobInterSplash {
             timer?.cancel()
             timer = object : CountDownTimer(timeout, 1000) {
                 override fun onTick(millisUntilFinished: Long) {
-                    showAds(adUnitId, isShowLoading, isDelayNextAds, handleNextActionDuringInterShow, delayTimeToActionAfterShowInter, callback, nextAction)
+                    showAds(adUnitId, isDelayNextAds, autoNextActionDuringInterShow, delayTimeToActionAfterShowInter, callback, nextAction)
                 }
 
                 override fun onFinish() {
@@ -87,9 +88,8 @@ object AdmobInterSplash {
 
     private fun showAds(
         adUnitId: String,
-        isShowLoading: Boolean = false,
         isDelayNextAds: Boolean = true,
-        handleNextActionDuringInterShow: Boolean,
+        autoNextActionDuringInterShow: Boolean,
         delayTimeToActionAfterShowInter: Int,
         callback: TAdCallback,
         nextAction: () -> Unit,
@@ -106,11 +106,10 @@ object AdmobInterSplash {
                     AdsSDK.getAppCompatActivityOnTop()?.waitActivityResumed {
                         AdmobInter.show(
                             adUnitId = adUnitId,
-                            showLoadingInter = isShowLoading,
                             forceShow = true,
                             loadAfterDismiss = false,
                             loadIfNotAvailable = false,
-                            handleNextActionDuringInterShow = handleNextActionDuringInterShow,
+                            autoNextActionDuringInterShow = autoNextActionDuringInterShow,
                             delayTimeToActionAfterShowInter = delayTimeToActionAfterShowInter,
                             callback = callback,
                             nextAction = nextAction,
