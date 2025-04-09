@@ -32,7 +32,7 @@ object AdmobInterSplash {
         isForceShowNow: Boolean = false, // Show liền ads
         isShowLoading: Boolean = false, // Show loading ads
         isDelayNextAds: Boolean = true, // Time delay ads
-        autoNextActionDuringInterShow: Boolean = false,
+        autoNextActionDuringInterShow: Boolean = true,
         delayTimeToActionAfterShowInter: Int = 300,
         timeout: Long = 30000,
         nextAction: () -> Unit,
