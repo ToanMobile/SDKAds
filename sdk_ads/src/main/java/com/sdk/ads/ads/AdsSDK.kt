@@ -286,7 +286,7 @@ object AdsSDK {
                 val skus = purchaseSkuForRemovingAds ?: listOf()
                 //Log.e("performQueryPurchases:", "purchases:$purchases skus=$skus")
                 if (!purchases.containsAnySKU(skus)) {
-                    //Log.e("performQueryPurchases:", "ok")
+                    Log.e("performQueryPurchases:", "ok")
                     listener.onPurchase(isPurchase = false)
                     performConsent(activity = activity, listener = listener)
                     adsType = AdsType.NONE
@@ -346,6 +346,7 @@ object AdsSDK {
         //performInitializeAds(activity, listener)
         //return
         adsType = AdsType.SHOW_CONSENT
+        Log.e("initialize:::", "performConsent:adsType:$adsType")
         val language = Locale.getDefault().language
         val consentTracker = ConsentTracker(activity)
         val gdprConsent = GdprConsent(activity, language)
@@ -355,6 +356,7 @@ object AdsSDK {
             gdprConsent.updateConsentInfoWithDebugGeoGraphics(
                 activity = activity,
                 consentPermit = {
+                    Log.d("initialize:::", "performConsent:000::$it")
                     adsType = if (it) AdsType.SHOW_ADS else AdsType.FAIL_ADS
                 },
                 isShowForceAgain = false,
@@ -369,6 +371,7 @@ object AdsSDK {
         } else {
             gdprConsent.updateConsentInfo(
                 activity = activity, underAge = false, consentPermit = {
+                    Log.d("initialize:::", "performConsent:111::$it")
                     adsType = if (it) AdsType.SHOW_ADS else AdsType.FAIL_ADS
                 }, consentTracker = consentTracker, isShowForceAgain = false, initAds = {
                     performInitializeAds(activity, listener)
@@ -397,6 +400,7 @@ object AdsSDK {
                 gdprConsent.updateConsentInfoWithDebugGeoGraphics(
                     activity = activity,
                     consentPermit = {
+                        Log.d("initialize:::", "performConsent:222::$it")
                         adsType = if (it) AdsType.SHOW_ADS else AdsType.FAIL_ADS
                     },
                     consentTracker = consentTracker,
@@ -411,6 +415,7 @@ object AdsSDK {
             } else {
                 gdprConsent.updateConsentInfo(
                     activity = activity, underAge = false, consentPermit = {
+                        Log.d("initialize:::", "performConsent:333::$it")
                         adsType = if (it) AdsType.SHOW_ADS else AdsType.FAIL_ADS
                     }, consentTracker = consentTracker, isShowForceAgain = true, initAds = {
                         performInitializeAds(activity, listener)
