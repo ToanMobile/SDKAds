@@ -58,6 +58,7 @@ object AdmobInterSplash {
 
             override fun onAdFailedToLoad(adUnit: String, adType: AdType, error: LoadAdError?) {
                 super.onAdFailedToLoad(adUnit, adType, error)
+                AdmobInter.dismissLoading(dialogShowLoadingAds)
                 Log.e("onAdFailedToLoad::", "error:$error")
                 timer?.cancel()
                 onNextActionWhenResume(nextAction)
@@ -65,6 +66,7 @@ object AdmobInterSplash {
 
             override fun onAdFailedToShowFullScreenContent(adUnit: String, adType: AdType) {
                 super.onAdFailedToShowFullScreenContent(adUnit, adType)
+                AdmobInter.dismissLoading(dialogShowLoadingAds)
                 timer?.cancel()
                 onNextActionWhenResume(nextAction)
             }
