@@ -2,13 +2,12 @@ package com.sdk.ads.ui.dialogs
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.ViewGroup
-import com.admob.ui.BaseDialog
 import com.sdk.ads.databinding.DialogBackgroundOpenResumeBinding
+import com.sdk.ads.ui.BaseDialog
 
 class DialogBackgroundOpenApp(
     context: Context,
-) : BaseDialog<DialogBackgroundOpenResumeBinding>(context, height = ViewGroup.LayoutParams.MATCH_PARENT) {
+) : BaseDialog<DialogBackgroundOpenResumeBinding>(context) {
 
     override fun getWidthPercent() = 1f
 

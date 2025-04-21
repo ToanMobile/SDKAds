@@ -1,4 +1,4 @@
-package com.admob.ui
+package com.sdk.ads.ui
 
 import android.app.Dialog
 import android.content.Context
@@ -12,7 +12,7 @@ import androidx.databinding.ViewDataBinding
 abstract class BaseDialog<V : ViewDataBinding>(
     context: Context,
     private val gravity: Int = Gravity.CENTER,
-    private val height: Int = ViewGroup.LayoutParams.WRAP_CONTENT,
+    private val height: Int = ViewGroup.LayoutParams.MATCH_PARENT,
 ) : Dialog(context) {
 
     open val isCancelable = false
@@ -46,8 +46,10 @@ abstract class BaseDialog<V : ViewDataBinding>(
         super.show()
         val screenWidth = Resources.getSystem().displayMetrics.widthPixels
         val width = screenWidth * getWidthPercent()
-        window?.setLayout(width.toInt(), height)
-        window?.setBackgroundDrawableResource(android.R.color.transparent)
-        window?.setGravity(gravity)
+        window?.let {
+            it.setLayout(width.toInt(), height)
+            it.setBackgroundDrawableResource(android.R.color.transparent)
+            it.setGravity(gravity)
+        }
     }
 }
