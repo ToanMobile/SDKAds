@@ -1,5 +1,7 @@
 package com.sdk.ads.ads.nativead
 
+import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,12 +11,13 @@ import android.widget.RatingBar
 import android.widget.TextView
 import androidx.annotation.LayoutRes
 import androidx.core.view.isVisible
+import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdLoader
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.VideoController
 import com.google.android.gms.ads.VideoOptions
-import com.google.android.gms.ads.nativead.MediaView
 import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.gms.ads.nativead.NativeAdOptions
 import com.google.android.gms.ads.nativead.NativeAdView
@@ -56,7 +59,7 @@ object AdmobNative {
     fun show(
         adContainer: ViewGroup,
         adUnitId: String,
-        @LayoutRes nativeContentLayoutId: Int,
+        @LayoutRes nativeContentLayoutId: Int? = null,
         forceRefresh: Boolean = false,
         callback: TAdCallback? = null,
     ) {
@@ -65,17 +68,18 @@ object AdmobNative {
             adContainer.isVisible = false
             return
         }
-
-        addLoadingLayout(adContainer)
-
         if (!adContainer.context.isNetworkAvailable()) {
+            Log.e(TAG, "No internet connection")
+            val adError = LoadAdError(0, "No Fill", "com.google.android.gms.ads", AdError(0, "No Fill", "com.google.android.gms.ads"), null)
+            AdsSDK.adCallback.onAdFailedToLoad(adUnitId, AdType.Native, adError)
+            callback?.onAdFailedToLoad(adUnitId, AdType.Native, adError)
+            nativesLoading.remove(adUnitId)
+            natives[adUnitId] = null
             return
         }
-
+        addLoadingLayout(adContainer)
         val nativeAd = natives[adUnitId]
-
         val nativeIsStillLoading = nativesLoading.contains(adUnitId)
-
         // Native vẫn tiếp tục loading
         if (nativeIsStillLoading) {
             nativesLoading[adUnitId] = object : INativeLoadCallback {
@@ -83,8 +87,8 @@ object AdmobNative {
                     fillNative(
                         adContainer,
                         nativeAd,
-                        nativeContentLayoutId,
                         adUnitId,
+                        nativeContentLayoutId,
                     )
                 }
             }
@@ -99,8 +103,8 @@ object AdmobNative {
                             fillNative(
                                 adContainer,
                                 nativeAd,
-                                nativeContentLayoutId,
                                 adUnitId,
+                                nativeContentLayoutId,
                             )
                         }
                     },
@@ -110,8 +114,8 @@ object AdmobNative {
                 fillNative(
                     adContainer,
                     nativeAd,
-                    nativeContentLayoutId,
                     adUnitId,
+                    nativeContentLayoutId,
                 )
 
                 // Nếu forceRefresh thì load quảng cáo mới
@@ -124,8 +128,8 @@ object AdmobNative {
                                 fillNative(
                                     adContainer,
                                     nativeAd,
-                                    nativeContentLayoutId,
                                     adUnitId,
+                                    nativeContentLayoutId,
                                 )
                             }
                         },
@@ -135,6 +139,7 @@ object AdmobNative {
         }
     }
 
+    @SuppressLint("MissingPermission")
     private fun load(
         adUnitId: String,
         callback: TAdCallback? = null,
@@ -154,6 +159,24 @@ object AdmobNative {
                     AdsSDK.adCallback.onPaidValueListener(bundle)
                     callback?.onPaidValueListener(bundle)
                 }
+                if (ad.mediaContent?.hasVideoContent() == true) {
+                    Log.d(TAG, "Native ad contains video content.")
+                } else {
+                    Log.d(TAG, "Native ad is image-only.")
+                }
+                ad.mediaContent?.videoController?.apply {
+                    videoLifecycleCallbacks = object : VideoController.VideoLifecycleCallbacks() {
+                        override fun onVideoEnd() {
+                            super.onVideoEnd()
+                            Log.d("AdmobNative", "Video ended for $adUnitId")
+                        }
+
+                        override fun onVideoStart() {
+                            super.onVideoStart()
+                            Log.d("AdmobNative", "Video started for $adUnitId")
+                        }
+                    }
+                }
             }
             .withAdListener(object : AdListener() {
                 override fun onAdFailedToLoad(adError: LoadAdError) {
@@ -161,6 +184,7 @@ object AdmobNative {
                     callback?.onAdFailedToLoad(adUnitId, AdType.Native, adError)
                     nativesLoading.remove(adUnitId)
                     natives[adUnitId] = null
+                    Log.e(TAG, "Native Ad Failed to Load: $adError")
                     runCatching { Throwable(adError.message) }
                 }
 
@@ -203,186 +227,108 @@ object AdmobNative {
     private fun fillNative(
         viewGroup: ViewGroup,
         nativeAd: NativeAd,
-        @LayoutRes nativeContentLayoutId: Int,
         adUnitId: String,
+        @LayoutRes nativeContentLayoutId: Int? = null,
     ) {
         try {
-            val contentNativeView = LayoutInflater
-                .from(viewGroup.context)
-                .inflate(nativeContentLayoutId, null, false)
-
-            val unifiedNativeAdView = NativeAdView(AdsSDK.app)
-
-            unifiedNativeAdView.layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT,
-            )
-
-            contentNativeView.parent?.let {
-                (it as ViewGroup).removeView(contentNativeView)
+            val context = viewGroup.context
+            val layoutId = nativeContentLayoutId ?: R.layout.ad_sdk_native_view
+            val contentNativeView = LayoutInflater.from(context).inflate(layoutId, null, false)
+            // NativeAdView dùng đúng context gốc
+            val nativeAdView = NativeAdView(context).apply {
+                layoutParams = ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                )
+                addView(contentNativeView)
             }
-
-            unifiedNativeAdView.addView(contentNativeView)
+            // Clear view cũ & add mới
             viewGroup.removeAllViews()
-            populateUnifiedNativeAdView(nativeAd, unifiedNativeAdView)
-            viewGroup.addView(unifiedNativeAdView)
-
+            viewGroup.addView(nativeAdView)
+            // Gán dữ liệu vào các view bên trong NativeAdView
+            populateUnifiedNativeAdView(nativeAd, nativeAdView)
+            // Lưu lại mapping
             nativeWithViewGroup[adUnitId] = viewGroup
+            // Cleanup khi view bị detach
+            viewGroup.addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
+                override fun onViewDetachedFromWindow(v: View) {
+                    nativeAd.destroy()
+                    natives.remove(adUnitId)
+                    nativeWithViewGroup.remove(adUnitId)
+                    v.removeOnAttachStateChangeListener(this)
+                    Log.d(TAG, "NativeAd for [$adUnitId] destroyed on detach")
+                }
+
+                override fun onViewAttachedToWindow(v: View) {
+                    // No-op
+                }
+            })
         } catch (e: Exception) {
-            e.printStackTrace()
+            Log.e(TAG, "Error in fillNative: ${e.message}", e)
         }
     }
 
     private fun populateUnifiedNativeAdView(nativeAd: NativeAd, adView: NativeAdView) {
-        // Set the media view.
-        val viewGroup = adView.findViewById<ViewGroup>(R.id.ad_media)
-        if (viewGroup != null) {
-            val mediaView = MediaView(adView.context)
-            viewGroup.addView(
-                mediaView,
-                ViewGroup.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                ),
-            )
-            adView.mediaView = mediaView
-        }
-
-        try {
-            val viewGroupIcon = adView.findViewById<View>(R.id.ad_app_icon)
-            if (viewGroupIcon != null) {
-                if (viewGroupIcon is ViewGroup) {
-                    val nativeAdIcon = ImageView(adView.context)
-                    viewGroupIcon.addView(
-                        nativeAdIcon,
-                        ViewGroup.LayoutParams(
-                            ViewGroup.LayoutParams.MATCH_PARENT,
-                            ViewGroup.LayoutParams.MATCH_PARENT,
-                        ),
-                    )
-                    adView.iconView = nativeAdIcon
-                } else {
-                    adView.iconView = viewGroupIcon
-                }
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
+        // Bắt buộc gắn các view có ID khớp với layout
+        adView.mediaView = adView.findViewById(R.id.ad_media)
         adView.headlineView = adView.findViewById(R.id.ad_headline)
         adView.bodyView = adView.findViewById(R.id.ad_body)
         adView.callToActionView = adView.findViewById(R.id.ad_call_to_action)
+        adView.iconView = adView.findViewById(R.id.ad_app_icon) // bạn có thể bổ sung nếu cần
         adView.priceView = adView.findViewById(R.id.ad_price)
         adView.starRatingView = adView.findViewById(R.id.ad_stars)
         adView.storeView = adView.findViewById(R.id.ad_store)
         adView.advertiserView = adView.findViewById(R.id.ad_advertiser)
 
-        try {
-            (adView.headlineView as TextView).text = nativeAd.headline
-            if (adView.mediaView != null && nativeAd.mediaContent != null) {
-                adView.mediaView!!.mediaContent = nativeAd.mediaContent!!
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
+        // Gán nội dung vào các view, kiểm tra null
+        (adView.headlineView as? TextView)?.text = nativeAd.headline
+
+        nativeAd.mediaContent?.let {
+            adView.mediaView?.mediaContent = it
+            adView.mediaView?.visibility = View.VISIBLE
+        } ?: run {
+            adView.mediaView?.visibility = View.GONE
         }
 
-        try {
-            if (nativeAd.body == null) {
-                adView.bodyView!!.visibility = View.INVISIBLE
-            } else {
-                adView.bodyView!!.visibility = View.VISIBLE
-                (adView.bodyView as TextView).text = nativeAd.body
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
+        (adView.bodyView as? TextView)?.apply {
+            text = nativeAd.body
+            visibility = if (nativeAd.body != null) View.VISIBLE else View.INVISIBLE
         }
 
-        try {
-            if (adView.callToActionView != null) {
-                if (adView.callToActionView != null) {
-                    if (nativeAd.callToAction == null) {
-                        adView.callToActionView!!.visibility = View.INVISIBLE
-                    } else {
-                        adView.callToActionView!!.visibility = View.VISIBLE
-                        if (adView.callToActionView is Button) {
-                            (adView.callToActionView as Button).text = nativeAd.callToAction
-                        } else {
-                            (adView.callToActionView as TextView).text = nativeAd.callToAction
-                        }
-                    }
-                }
+        (adView.callToActionView)?.apply {
+            visibility = if (nativeAd.callToAction != null) View.VISIBLE else View.INVISIBLE
+            when (this) {
+                is Button -> text = nativeAd.callToAction
+                is TextView -> text = nativeAd.callToAction
             }
-        } catch (e: Exception) {
-            e.printStackTrace()
         }
 
-        try {
-            if (adView.iconView != null) {
-                if (nativeAd.icon == null) {
-                    adView.iconView!!.visibility = View.INVISIBLE
-                } else {
-                    (adView.iconView as ImageView).setImageDrawable(
-                        nativeAd.icon!!.drawable,
-                    )
-                    adView.iconView!!.visibility = View.VISIBLE
-                }
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
+        (adView.iconView as? ImageView)?.apply {
+            setImageDrawable(nativeAd.icon?.drawable)
+            visibility = if (nativeAd.icon != null) View.VISIBLE else View.GONE
         }
 
-        try {
-            if (adView.priceView != null) {
-                if (nativeAd.price == null) {
-                    adView.priceView!!.visibility = View.INVISIBLE
-                } else {
-                    adView.priceView!!.visibility = View.VISIBLE
-                    (adView.priceView as TextView).text = nativeAd.price
-                }
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
+        (adView.priceView as? TextView)?.apply {
+            text = nativeAd.price
+            visibility = if (nativeAd.price != null) View.VISIBLE else View.GONE
         }
 
-        try {
-            if (adView.storeView != null) {
-                if (nativeAd.store == null) {
-                    adView.storeView!!.visibility = View.INVISIBLE
-                } else {
-                    adView.storeView!!.visibility = View.VISIBLE
-                    (adView.storeView as TextView).text = nativeAd.store
-                }
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
+        (adView.storeView as? TextView)?.apply {
+            text = nativeAd.store
+            visibility = if (nativeAd.store != null) View.VISIBLE else View.GONE
         }
 
-        try {
-            if (adView.starRatingView != null) {
-                if (nativeAd.starRating == null) {
-                    adView.starRatingView!!.visibility = View.GONE
-                } else {
-                    (adView.starRatingView as RatingBar).rating = nativeAd.starRating!!.toFloat()
-                    adView.starRatingView!!.visibility = View.VISIBLE
-                }
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
+        (adView.starRatingView as? RatingBar)?.apply {
+            rating = nativeAd.starRating?.toFloat() ?: 0f
+            visibility = if (nativeAd.starRating != null) View.VISIBLE else View.GONE
         }
 
-        try {
-            if (adView.advertiserView != null) {
-                if (nativeAd.advertiser == null) {
-                    adView.advertiserView!!.visibility = View.INVISIBLE
-                } else {
-                    (adView.advertiserView as TextView).text = nativeAd.advertiser
-                    adView.advertiserView!!.visibility = View.VISIBLE
-                }
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
+        (adView.advertiserView as? TextView)?.apply {
+            text = nativeAd.advertiser
+            visibility = if (nativeAd.advertiser != null) View.VISIBLE else View.GONE
         }
 
+        Log.d(TAG, "Native ad populated: ${nativeAd.headline}")
         adView.setNativeAd(nativeAd)
     }
 

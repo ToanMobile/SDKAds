@@ -1,5 +1,6 @@
 package com.sdk.ads.ads.banner
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.ViewGroup
 import androidx.core.view.isVisible
@@ -12,9 +13,9 @@ import com.google.android.gms.ads.LoadAdError
 import com.sdk.ads.ads.AdsSDK
 import com.sdk.ads.ads.AdsSDK.isEnableBanner
 import com.sdk.ads.utils.TAdCallback
-import com.sdk.ads.utils.adaptiveBannerSize
 import com.sdk.ads.utils.addLoadingView
 import com.sdk.ads.utils.addLoadingView300x250
+import com.sdk.ads.utils.getAdaptiveBannerSizeFromView
 import com.sdk.ads.utils.getPaidTrackingBundle
 import com.sdk.ads.utils.isNetworkAvailable
 
@@ -84,6 +85,7 @@ object AdmobBanner {
         callback,
     )
 
+    @SuppressLint("MissingPermission")
     private fun show(
         adContainer: ViewGroup,
         adUnitId: String,
@@ -97,36 +99,37 @@ object AdmobBanner {
             return
         }
 
-        val adSize = getAdSize(bannerType)
-        addLoadingLayout(adContainer, adSize, bannerType)
-
-        if (!adContainer.context.isNetworkAvailable()) {
-            return
-        }
-
-        val adView = banners[adUnitId]
-
-        if (adView == null || forceRefresh) {
-            val context =
-                if (bannerType == BannerAdSize.BannerCollapsibleBottom || bannerType == BannerAdSize.BannerCollapsibleTop) {
-                    adContainer.context
-                } else
-                    AdsSDK.app
-
-            AdView(context).let {
-                it.adUnitId = adUnitId
-                it.setAdSize(adSize)
-                it.setAdCallback(it, callback) { addExistBanner(adContainer, it) }
-                it.loadAd(getAdRequest(bannerType))
+        adContainer.post {
+            val adSize = getAdSize(adContainer, bannerType)
+            addLoadingLayout(adContainer, bannerType)
+            if (!adContainer.context.isNetworkAvailable()) {
+                return@post
             }
-        }
 
-        if (adView != null) {
-            addExistBanner(adContainer, adView)
-            adView.setAdCallback(adView, callback) {
-                addExistBanner(adContainer, adView)
+            val existingAd = banners[adUnitId]
+
+            if (existingAd == null || forceRefresh) {
+                val context = when (bannerType) {
+                    BannerAdSize.BannerCollapsibleBottom,
+                    BannerAdSize.BannerCollapsibleTop -> adContainer.context
+
+                    else -> AdsSDK.app
+                }
+
+                AdView(context).apply {
+                    this.adUnitId = adUnitId
+                    this.setAdSize(adSize)
+                    this.setAdCallback(this, callback) {
+                        addExistBanner(adContainer, this)
+                    }
+                    this.loadAd(getAdRequest(bannerType))
+                }
+            } else {
+                addExistBanner(adContainer, existingAd)
+                existingAd.setAdCallback(existingAd, callback) {
+                    addExistBanner(adContainer, existingAd)
+                }
             }
-            return
         }
     }
 
@@ -135,28 +138,22 @@ object AdmobBanner {
         if (bannerView.parent is ViewGroup && bannerView.parent != null) {
             (bannerView.parent as ViewGroup).removeAllViews()
         }
-
         adContainer.addView(bannerView)
     }
 
-    private fun addLoadingLayout(adContainer: ViewGroup, adSize: AdSize, bannerType: BannerAdSize) {
-        val lp = adContainer.layoutParams
-        lp.width = adSize.getWidthInPixels(adContainer.context)
-        lp.height = adSize.getHeightInPixels(adContainer.context)
-        adContainer.layoutParams = lp
-        adContainer.requestLayout()
-        if (bannerType == BannerAdSize.Banner300x250) {
-            adContainer.addLoadingView300x250()
-        } else {
-            adContainer.addLoadingView()
+    private fun addLoadingLayout(adContainer: ViewGroup, bannerType: BannerAdSize) {
+        adContainer.removeAllViews()
+        when (bannerType) {
+            BannerAdSize.Banner300x250 -> adContainer.addLoadingView300x250()
+            else -> adContainer.addLoadingView()
         }
     }
 
-    private fun getAdSize(bannerAdSize: BannerAdSize): AdSize {
+    private fun getAdSize(adContainer: ViewGroup, bannerAdSize: BannerAdSize): AdSize {
         return when (bannerAdSize) {
-            BannerAdSize.BannerAdaptive -> adaptiveBannerSize
-            BannerAdSize.BannerCollapsibleTop -> adaptiveBannerSize
-            BannerAdSize.BannerCollapsibleBottom -> adaptiveBannerSize
+            BannerAdSize.BannerAdaptive -> getAdaptiveBannerSizeFromView(adContainer)
+            BannerAdSize.BannerCollapsibleTop -> getAdaptiveBannerSizeFromView(adContainer)
+            BannerAdSize.BannerCollapsibleBottom -> getAdaptiveBannerSizeFromView(adContainer)
             BannerAdSize.Banner300x250 -> AdSize.MEDIUM_RECTANGLE
         }
     }
@@ -185,34 +182,34 @@ object AdmobBanner {
     ) {
         adListener = object : AdListener() {
             override fun onAdClicked() {
-                com.sdk.ads.ads.AdsSDK.adCallback.onAdClicked(adUnitId, com.sdk.ads.utils.AdType.Banner)
+                AdsSDK.adCallback.onAdClicked(adUnitId, com.sdk.ads.utils.AdType.Banner)
                 tAdCallback?.onAdClicked(adUnitId, com.sdk.ads.utils.AdType.Banner)
             }
 
             override fun onAdClosed() {
-                com.sdk.ads.ads.AdsSDK.adCallback.onAdClosed(adUnitId, com.sdk.ads.utils.AdType.Banner)
+                AdsSDK.adCallback.onAdClosed(adUnitId, com.sdk.ads.utils.AdType.Banner)
                 tAdCallback?.onAdClosed(adUnitId, com.sdk.ads.utils.AdType.Banner)
             }
 
             override fun onAdFailedToLoad(var1: LoadAdError) {
                 banners[adView.adUnitId] = null
-                com.sdk.ads.ads.AdsSDK.adCallback.onAdFailedToLoad(adUnitId, com.sdk.ads.utils.AdType.Banner, var1)
+                AdsSDK.adCallback.onAdFailedToLoad(adUnitId, com.sdk.ads.utils.AdType.Banner, var1)
                 tAdCallback?.onAdFailedToLoad(adUnitId, com.sdk.ads.utils.AdType.Banner, var1)
                 runCatching { Throwable(var1.message) }
             }
 
             override fun onAdImpression() {
-                com.sdk.ads.ads.AdsSDK.adCallback.onAdImpression(adUnitId, com.sdk.ads.utils.AdType.Banner)
+                AdsSDK.adCallback.onAdImpression(adUnitId, com.sdk.ads.utils.AdType.Banner)
                 tAdCallback?.onAdImpression(adUnitId, com.sdk.ads.utils.AdType.Banner)
             }
 
             override fun onAdLoaded() {
-                com.sdk.ads.ads.AdsSDK.adCallback.onAdLoaded(adUnitId, com.sdk.ads.utils.AdType.Banner)
+                AdsSDK.adCallback.onAdLoaded(adUnitId, com.sdk.ads.utils.AdType.Banner)
                 tAdCallback?.onAdLoaded(adUnitId, com.sdk.ads.utils.AdType.Banner)
 
                 adView.setOnPaidEventListener { adValue ->
                     val bundle = getPaidTrackingBundle(adValue, adUnitId, "Banner", adView.responseInfo)
-                    com.sdk.ads.ads.AdsSDK.adCallback.onPaidValueListener(bundle)
+                    AdsSDK.adCallback.onPaidValueListener(bundle)
                     tAdCallback?.onPaidValueListener(bundle)
                 }
 

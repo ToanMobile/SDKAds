@@ -2,14 +2,12 @@ package com.sdk.ads.utils
 
 import android.app.Activity
 import android.content.Context
-import android.content.res.Resources
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -26,17 +24,18 @@ import com.sdk.ads.ads.AdsSDK
 import com.sdk.ads.databinding.AdLoadingBanner300250Binding
 import com.sdk.ads.databinding.AdLoadingViewBinding
 
-val displayMetrics: DisplayMetrics get() = Resources.getSystem().displayMetrics
-
-val screenWidth: Int get() = Resources.getSystem().displayMetrics.widthPixels
-
-val screenHeight: Int get() = Resources.getSystem().displayMetrics.heightPixels
-
-val adaptiveBannerSize: AdSize
-    get() {
-        val adWidth = (screenWidth / displayMetrics.density).toInt()
-        return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(AdsSDK.app, adWidth)
+fun getAdaptiveBannerSizeFromView(viewGroup: ViewGroup): AdSize {
+    val context = viewGroup.context
+    val displayMetrics = context.resources.displayMetrics
+    val viewWidthPx = if (viewGroup.width > 0) {
+        viewGroup.width
+    } else {
+        // fallback khi view chưa layout xong
+        displayMetrics.widthPixels
     }
+    val adWidth = (viewWidthPx / displayMetrics.density).toInt()
+    return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(context, adWidth)
+}
 
 fun getPaidTrackingBundle(
     adValue: AdValue,

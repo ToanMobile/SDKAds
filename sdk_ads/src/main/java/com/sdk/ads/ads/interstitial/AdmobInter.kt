@@ -1,7 +1,6 @@
 package com.sdk.ads.ads.interstitial
 
 import android.app.Activity
-import android.util.Log
 import androidx.lifecycle.Lifecycle
 import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest

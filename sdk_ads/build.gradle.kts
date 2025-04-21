@@ -41,7 +41,7 @@ afterEvaluate {
                 from(components.findByName("release"))
                 groupId = "com.magic.sdk"
                 artifactId = "AdsSdk"
-                version = "v2.4.0"
+                version = "v2.4.1"
             }
         }
     }
