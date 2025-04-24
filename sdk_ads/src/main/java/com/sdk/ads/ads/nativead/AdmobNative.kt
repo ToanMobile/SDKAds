@@ -232,8 +232,12 @@ object AdmobNative {
     ) {
         try {
             val context = viewGroup.context
-            val layoutId = nativeContentLayoutId ?: R.layout.ad_sdk_native_view
-            val contentNativeView = LayoutInflater.from(context).inflate(layoutId, null, false)
+            val layout = if (nativeAd.mediaContent?.hasVideoContent() == true) {
+                R.layout.ad_sdk_native_view_video
+            } else {
+                nativeContentLayoutId ?: R.layout.ad_sdk_native_view_image
+            }
+            val contentNativeView = LayoutInflater.from(context).inflate(layout, null, false)
             // NativeAdView dùng đúng context gốc
             val nativeAdView = NativeAdView(context).apply {
                 layoutParams = ViewGroup.LayoutParams(
@@ -270,7 +274,6 @@ object AdmobNative {
 
     private fun populateUnifiedNativeAdView(nativeAd: NativeAd, adView: NativeAdView) {
         // Bắt buộc gắn các view có ID khớp với layout
-        adView.mediaView = adView.findViewById(R.id.ad_media)
         adView.headlineView = adView.findViewById(R.id.ad_headline)
         adView.bodyView = adView.findViewById(R.id.ad_body)
         adView.callToActionView = adView.findViewById(R.id.ad_call_to_action)
@@ -283,11 +286,20 @@ object AdmobNative {
         // Gán nội dung vào các view, kiểm tra null
         (adView.headlineView as? TextView)?.text = nativeAd.headline
 
-        nativeAd.mediaContent?.let {
-            adView.mediaView?.mediaContent = it
-            adView.mediaView?.visibility = View.VISIBLE
-        } ?: run {
-            adView.mediaView?.visibility = View.GONE
+        val mediaContent = nativeAd.mediaContent
+        if (mediaContent?.hasVideoContent() == true) {
+            adView.mediaView = adView.findViewById(R.id.ad_media)
+            adView.mediaView?.mediaContent = mediaContent
+        } else {
+            try {
+                val image = nativeAd.images.firstOrNull()?.drawable
+                if (image != null) {
+                    val mediaView = adView.findViewById<ImageView>(R.id.ad_media)
+                    mediaView.setImageDrawable(image)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
 
         (adView.bodyView as? TextView)?.apply {

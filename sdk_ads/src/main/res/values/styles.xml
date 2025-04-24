@@ -160,6 +160,7 @@
         <item name="android:textColor">#FFFFFF</item>
         <item name="android:textSize">@dimen/sp_10</item>
         <item name="android:text">Ad</item>
+        <item name="android:gravity">center</item>
         <item name="android:background">#FFCC66</item>
         <item name="android:width">@dimen/dp_15</item>
         <item name="android:height">@dimen/dp_15</item>
