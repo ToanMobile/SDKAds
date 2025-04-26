@@ -55,28 +55,28 @@
           "group": "androidx.databinding",
           "module": "databinding-common",
           "version": {
-            "requires": "8.9.1"
+            "requires": "8.9.2"
           }
         },
         {
           "group": "androidx.databinding",
           "module": "databinding-runtime",
           "version": {
-            "requires": "8.9.1"
+            "requires": "8.9.2"
           }
         },
         {
           "group": "androidx.databinding",
           "module": "databinding-adapters",
           "version": {
-            "requires": "8.9.1"
+            "requires": "8.9.2"
           }
         },
         {
           "group": "androidx.databinding",
           "module": "databinding-ktx",
           "version": {
-            "requires": "8.9.1"
+            "requires": "8.9.2"
           }
         },
         {
@@ -91,11 +91,11 @@
         {
           "name": "AdsSdk-v2.4.3.aar",
           "url": "AdsSdk-v2.4.3.aar",
-          "size": 715283,
-          "sha512": "5eb4bbac3f4ece8b05e2e26f2cd851e69e662e79bb78e0de36cd4af94e0d0890d439e8d253dbb69c66a4db456c2edbdc26040aee368805609899e975b16d54fd",
-          "sha256": "00ceaca9a16c1fb166556be4365b3b581a1cc108a720088b11a485631ffe8218",
-          "sha1": "90de40a8c4966dd28685d96557f91d495bc59b83",
-          "md5": "e2322957358b84a1b2ce0cb5aac0f320"
+          "size": 715286,
+          "sha512": "cbb75cf2184bddeedb81b7ee30f7bd6e9cc3128df85c40f18a2b72dcc75d9a3eccc1a7885910dde812378d61824c25dc667e70f89795471f0352fc75073fbb48",
+          "sha256": "671edd48b5b0ae656ed86d4c6000a61a7ee36df55f89cc1b4196943fd86ba5cf",
+          "sha1": "69ab6d37f9e7ef3541c9a723a974a2f44adf9d62",
+          "md5": "e36ada0dcdc927ecaaf133ced638405d"
         }
       ]
     },
@@ -224,28 +224,28 @@
           "group": "androidx.databinding",
           "module": "databinding-common",
           "version": {
-            "requires": "8.9.1"
+            "requires": "8.9.2"
           }
         },
         {
           "group": "androidx.databinding",
           "module": "databinding-runtime",
           "version": {
-            "requires": "8.9.1"
+            "requires": "8.9.2"
           }
         },
         {
           "group": "androidx.databinding",
           "module": "databinding-adapters",
           "version": {
-            "requires": "8.9.1"
+            "requires": "8.9.2"
           }
         },
         {
           "group": "androidx.databinding",
           "module": "databinding-ktx",
           "version": {
-            "requires": "8.9.1"
+            "requires": "8.9.2"
           }
         },
         {
@@ -260,11 +260,11 @@
         {
           "name": "AdsSdk-v2.4.3.aar",
           "url": "AdsSdk-v2.4.3.aar",
-          "size": 715283,
-          "sha512": "5eb4bbac3f4ece8b05e2e26f2cd851e69e662e79bb78e0de36cd4af94e0d0890d439e8d253dbb69c66a4db456c2edbdc26040aee368805609899e975b16d54fd",
-          "sha256": "00ceaca9a16c1fb166556be4365b3b581a1cc108a720088b11a485631ffe8218",
-          "sha1": "90de40a8c4966dd28685d96557f91d495bc59b83",
-          "md5": "e2322957358b84a1b2ce0cb5aac0f320"
+          "size": 715286,
+          "sha512": "cbb75cf2184bddeedb81b7ee30f7bd6e9cc3128df85c40f18a2b72dcc75d9a3eccc1a7885910dde812378d61824c25dc667e70f89795471f0352fc75073fbb48",
+          "sha256": "671edd48b5b0ae656ed86d4c6000a61a7ee36df55f89cc1b4196943fd86ba5cf",
+          "sha1": "69ab6d37f9e7ef3541c9a723a974a2f44adf9d62",
+          "md5": "e36ada0dcdc927ecaaf133ced638405d"
         }
       ]
     },
@@ -283,11 +283,11 @@
         {
           "name": "AdsSdk-v2.4.3-sources.jar",
           "url": "AdsSdk-v2.4.3-sources.jar",
-          "size": 70291,
-          "sha512": "6dbee0b0eed08f8cd77affdbbe0fa9acdc4a7275c6c90e217c34779c3817e6e673211393721b3f2d373ddff8bc2eef7d0e1814dc17bb8003f400ffa6285e7bc0",
-          "sha256": "fc65180bc07e6029364864d43a2096c74ef7f4cf7081b2151de2d9d156321331",
-          "sha1": "9aaa24badeb1cd2ca14cfa42cce78539cab7b4e7",
-          "md5": "c14ba3801afeb1f1950b3a752c119cc4"
+          "size": 70285,
+          "sha512": "82bb4423cdb7b7a041ffff0264a9cf63246f8999199273225627969d8c144c88beb7f4c54956af9eeea26b34955d77b62b839e4fc52e6438525369c1cf1b9d73",
+          "sha256": "8cdb9bdec916627b517e6691ad27d849b905d92876355adb1ce95f7b7c7a453e",
+          "sha1": "60c87dfa917f2167939d495e7bd044f5add09ff1",
+          "md5": "b6cb5170375b7cefe19c51cb58b1a361"
         }
       ]
     }

@@ -3,7 +3,6 @@ package com.sdk.ads.consent
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
-import androidx.preference.PreferenceManager
 import com.sdk.ads.ads.AdsSDK
 import com.sdk.ads.ads.AppType
 import com.sdk.ads.utils.logEvent
@@ -19,7 +18,7 @@ class ConsentTracker(val context: Context) {
     }
 
     fun isUserConsentValid(isTracking: Boolean = false): Boolean {
-        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+        val prefs = context.getSharedPreferences("GDPR", Context.MODE_PRIVATE)
         val isGdpr = isGDPR(prefs)
         val canShowPersonAds = canShowPersonalizedAds(prefs)
         val canShowAds = canShowAds(prefs)
@@ -34,7 +33,7 @@ class ConsentTracker(val context: Context) {
     }
 
     fun isRequestAdsFail(): Boolean {
-        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+        val prefs = context.getSharedPreferences("GDPR", Context.MODE_PRIVATE)
         val isGdpr = isGDPR(prefs)
         val canShowPersonAds = canShowPersonalizedAds(prefs)
         val canShowAds = canShowAds(prefs)
