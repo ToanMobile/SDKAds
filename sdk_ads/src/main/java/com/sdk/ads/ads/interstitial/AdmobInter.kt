@@ -1,6 +1,7 @@
 package com.sdk.ads.ads.interstitial
 
 import android.app.Activity
+import android.util.Log
 import androidx.lifecycle.Lifecycle
 import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
@@ -152,6 +153,7 @@ object AdmobInter {
         val currActivity = AdsSDK.getActivityOnTop()
 
         if (interAd == null) {
+            Log.e("AdmobInterSplash::", "4444444")
             nextAction.invoke()
             if (loadIfNotAvailable && !intersLoading.contains(adUnitId)) {
                 load(adUnitId, callback)
@@ -160,11 +162,13 @@ object AdmobInter {
         }
 
         if (!checkTimeShowValid(adUnitId, forceShow)) {
+            Log.e("AdmobInterSplash::", "55555555")
             nextAction.invoke()
             return
         }
 
         if (currActivity == null) {
+            Log.e("AdmobInterSplash::", "6666666")
             nextAction.invoke()
         } else {
             invokeShowInter(interAd, currActivity, loadAfterDismiss, callback, nextAction)
@@ -218,7 +222,7 @@ object AdmobInter {
                 callback?.onAdDismissedFullScreenContent(adUnitId, AdType.Inter)
 
                 interTimeShown[adUnitId] = System.currentTimeMillis()
-
+                Log.e("AdmobInterSplash::", "77777777")
                 nextAction.invoke()
 
                 if (loadAfterDismiss) {
@@ -249,6 +253,7 @@ object AdmobInter {
 
         if (autoActionDuringInterShow) {
             delay(timeToActionAfterShowInter) {
+                Log.e("AdmobInterSplash::", "888888888")
                 nextAction.invoke()
             }
         }

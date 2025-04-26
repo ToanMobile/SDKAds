@@ -40,6 +40,7 @@ object AdmobInterSplash {
     ) {
         var dialogShowLoadingAds: DialogShowLoadingAds? = null
         if (!AdsSDK.isEnableInter) {
+            Log.e("AdmobInterSplash::", "00000")
             nextAction.invoke()
             return
         }
@@ -59,13 +60,14 @@ object AdmobInterSplash {
             override fun onAdFailedToLoad(adUnit: String, adType: AdType, error: LoadAdError?) {
                 super.onAdFailedToLoad(adUnit, adType, error)
                 AdmobInter.dismissLoading(dialogShowLoadingAds)
-                Log.e("onAdFailedToLoad::", "error:$error")
+                Log.e("AdmobInterSplash::", "onAdFailedToLoad, error:$error")
                 timer?.cancel()
                 onNextActionWhenResume(nextAction)
             }
 
             override fun onAdFailedToShowFullScreenContent(adUnit: String, adType: AdType) {
                 super.onAdFailedToShowFullScreenContent(adUnit, adType)
+                Log.e("AdmobInterSplash::", "onAdFailedToShowFullScreenContent")
                 AdmobInter.dismissLoading(dialogShowLoadingAds)
                 timer?.cancel()
                 onNextActionWhenResume(nextAction)
@@ -81,6 +83,7 @@ object AdmobInterSplash {
                 }
 
                 override fun onFinish() {
+                    Log.e("AdmobInterSplash::", "2222222222")
                     timer?.cancel()
                     onNextActionWhenResume(nextAction)
                 }
@@ -120,6 +123,7 @@ object AdmobInterSplash {
                 }
             }
         } catch (e: Exception) {
+            Log.e("AdmobInterSplash::", "33333333")
             timer?.cancel()
             onNextActionWhenResume(nextAction)
         }
