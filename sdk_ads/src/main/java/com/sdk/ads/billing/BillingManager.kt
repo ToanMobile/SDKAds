@@ -160,13 +160,28 @@ class BillingManager(activity: Activity, currentIapStatus: String = "", val isLo
     }
 
     private fun performQueryPurchases() {
+        val allPurchases = mutableListOf<Purchase>()
+        // Query INAPP first
         billingClient.queryPurchasesAsync(
             QueryPurchasesParams.newBuilder()
-                .setProductType(INAPP) // SUBS
-                .build(),
-        ) { billingResult, list ->
-            if (billingResult.responseCode == OK) {
-                handlePurchases(list)
+                .setProductType(INAPP)
+                .build()
+        ) { inAppResult, inAppPurchases ->
+            if (inAppResult.responseCode == OK) {
+                allPurchases.addAll(inAppPurchases)
+            }
+
+            // Then query SUBS
+            billingClient.queryPurchasesAsync(
+                QueryPurchasesParams.newBuilder()
+                    .setProductType(SUBS)
+                    .build()
+            ) { subsResult, subsPurchases ->
+                if (subsResult.responseCode == OK) {
+                    allPurchases.addAll(subsPurchases)
+                }
+
+                handlePurchases(allPurchases)
             }
         }
     }
