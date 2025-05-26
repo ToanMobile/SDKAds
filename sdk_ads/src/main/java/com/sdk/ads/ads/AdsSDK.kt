@@ -264,7 +264,7 @@ object AdsSDK {
 
     // UMP
     fun initialize(activity: Activity, currentIapStatus: String = "", listener: AdsInitializeListener) {
-        Log.e("initialize:::", "initialize")
+        Log.e("initialize:::::::::::", "initialize")
         setDebugConfiguration()
         if (!isEnableAds) {
             listener.onFail("Ads is not allowed.")
@@ -277,6 +277,15 @@ object AdsSDK {
         } else {
             performConsent(activity, listener)
         }
+    }
+
+    fun forceShowGDPR(activity: Activity, listener: AdsInitializeListener) {
+        Log.e("initialize:::", "initialize")
+        setDebugConfiguration()
+        val language = Locale.getDefault().language
+        val consentTracker = ConsentTracker(activity)
+        val gdprConsent = GdprConsent(activity, language)
+        forceReShowGDPR(activity, gdprConsent, consentTracker, language, listener)
     }
 
     private fun performQueryPurchases(activity: Activity, currentIapStatus: String = "", listener: AdsInitializeListener) {
@@ -380,10 +389,11 @@ object AdsSDK {
                     listener.formError(it)
                 })
         }
-        Log.e("isUserConsentValid:::", "User data consent couldn't be requested.")
+        Log.e("isUserConsentValid:::", consentTracker.isUserConsentValid().toString())
         if (consentTracker.isUserConsentValid()) {
             //performInitializeAds(activity, listener)
         }
+        Log.e("isRequestAdsFail:::", consentTracker.isRequestAdsFail().toString())
         if (consentTracker.isRequestAdsFail()) {
             forceReShowGDPR(activity, gdprConsent, consentTracker, language, listener)
             //reUseExistingConsentForm(activity, gdprConsent, consentTracker, listener)
