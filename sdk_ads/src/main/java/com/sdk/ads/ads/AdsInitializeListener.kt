@@ -12,4 +12,6 @@ abstract class AdsInitializeListener {
     open fun formError(formError: FormError?) {}
 
     open fun onPurchase(isPurchase: Boolean) {}
+
+    open fun onAcceptGDPR(isAccept: Boolean) {}
 }

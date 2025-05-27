@@ -35,7 +35,6 @@ class GdprConsent(val context: Context, private val language: String) {
         isShowGDPR = false
         val params = ConsentRequestParameters
             .Builder()
-            // .setAdMobAppId(context.getString(R.string.AdMob_App_ID))
             .setTagForUnderAgeOfConsent(underAge)
             .build()
         requestConsentInfoUpdate(
@@ -74,7 +73,6 @@ class GdprConsent(val context: Context, private val language: String) {
         val params = ConsentRequestParameters
             .Builder()
             .setConsentDebugSettings(debugSettings)
-            // .setAdMobAppId(context.getString(R.string.AdMob_App_ID))
             .build()
         requestConsentInfoUpdate(
             activity = activity,
@@ -224,7 +222,7 @@ class GdprConsent(val context: Context, private val language: String) {
                 }
                 // App can start requesting ads.
                 if (consentInformation.consentStatus == ConsentInformation.ConsentStatus.OBTAINED) {
-                    Log.e(TAG, "consentForm is Obtained")
+                    Log.d(TAG, "consentForm is Obtained")
                     consentPermit(isConsentObtained(consentTracker))
                     initAds()
                 }

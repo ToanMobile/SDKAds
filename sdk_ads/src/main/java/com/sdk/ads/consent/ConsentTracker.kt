@@ -3,14 +3,18 @@ package com.sdk.ads.consent
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
+import androidx.preference.PreferenceManager
 import com.sdk.ads.ads.AdsSDK
 import com.sdk.ads.ads.AppType
 import com.sdk.ads.utils.logEvent
 
 class ConsentTracker(val context: Context) {
     private var isShowForceAgain = false
+    private var isAcceptAll = false
     private var language = ""
     private val TAG = "ConsentTracker"
+
+    val getIsAcceptAll get() = isAcceptAll
 
     fun updateState(isShowForceAgain: Boolean, language: String) {
         this.isShowForceAgain = isShowForceAgain
@@ -18,7 +22,7 @@ class ConsentTracker(val context: Context) {
     }
 
     fun isUserConsentValid(isTracking: Boolean = false): Boolean {
-        val prefs = context.getSharedPreferences("GDPR", Context.MODE_PRIVATE)
+        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
         val isGdpr = isGDPR(prefs)
         val canShowPersonAds = canShowPersonalizedAds(prefs)
         val canShowAds = canShowAds(prefs)
@@ -28,12 +32,12 @@ class ConsentTracker(val context: Context) {
         if (isTracking) {
             sendLogTracking(prefs, isGdpr, canShowPersonAds, canShowAds)
         }
-        Log.e(TAG, "isUserConsentValid: $consentValidity, GDPR: $isGdpr, PersonAds: $canShowPersonAds, Ads: $canShowAds")
+        Log.d(TAG, "isUserConsentValid: $consentValidity isTracking:$isTracking, GDPR: $isGdpr, PersonAds: $canShowPersonAds, Ads: $canShowAds")
         return consentValidity
     }
 
     fun isRequestAdsFail(): Boolean {
-        val prefs = context.getSharedPreferences("GDPR", Context.MODE_PRIVATE)
+        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
         val isGdpr = isGDPR(prefs)
         val canShowPersonAds = canShowPersonalizedAds(prefs)
         val canShowAds = canShowAds(prefs)
@@ -110,25 +114,25 @@ class ConsentTracker(val context: Context) {
     private fun sendLogTracking(prefs: SharedPreferences, isGdpr: Boolean, canShowPersonAds: Boolean, canShowAds: Boolean) {
         val purposeConsent = prefs.getString("IABTCF_PurposeConsents", "") ?: ""
         val purposeLegitimate = prefs.getString("IABTCF_PurposeLegitimateInterests", "") ?: ""
-        if (isGdpr && canShowPersonAds && canShowAds) {
-            logEvent(eventName = "GDPR_acceptAll")
-            logEvent(eventName = "GDPR_acceptAll_$language")
-        } else {
-            if (purposeConsent.contains("1") || purposeLegitimate.contains("1")) {
-                val consentData = if (purposeConsent.contains("1")) purposeConsent else purposeLegitimate
-                if (AdsSDK.appType == AppType.PDF) {
-                    logEvent(eventName = "GDPR_acceptAPart")
-                    logEvent(eventName = "GDPR_acceptAPart_$language")
-                    logEvent(eventName = "GDPR_accept_${language}_$consentData")
-                    logEvent(eventName = "GDPR_accept${consentData}")
-                } else {
-                    logEvent(eventName = "GDPR_acceptAPart")
-                    logEvent(eventName = "GDPR_acceptAPart_$language")
-                    logEvent(eventName = "GDPR_accept_${language}_${consentData}")
-                }
+        Log.e(TAG, "sendLogTracking: $purposeConsent")
+        val consentStatus = when {
+            (isGdpr && canShowPersonAds && canShowAds) || (purposeConsent.all { it == '1' }) -> {
+                isAcceptAll = true
+                "GDPR_acceptAll"
+            }
+
+            purposeConsent.all { it == '0' } -> "GDPR_denyAll"
+            else -> "GDPR_acceptAPart"
+        }
+        Log.e(TAG, "consentStatus: $consentStatus")
+        logEvent(eventName = consentStatus)
+        logEvent(eventName = "${consentStatus}_$language")
+        if (consentStatus == "GDPR_acceptAPart") {
+            if (AdsSDK.appType == AppType.PDF) {
+                logEvent(eventName = "GDPR_accept_${language}_$purposeConsent")
+                logEvent(eventName = "GDPR_accept${purposeConsent}")
             } else {
-                logEvent(eventName = "GDPR_denyAll_$language")
-                logEvent(eventName = "GDPR_denyAll")
+                logEvent(eventName = "GDPR_accept_${language}_${purposeConsent}")
             }
         }
     }

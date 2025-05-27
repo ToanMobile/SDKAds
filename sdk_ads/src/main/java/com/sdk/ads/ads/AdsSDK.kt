@@ -264,13 +264,12 @@ object AdsSDK {
 
     // UMP
     fun initialize(activity: Activity, currentIapStatus: String = "", listener: AdsInitializeListener) {
-        Log.e("initialize:::::::::::", "initialize")
-        setDebugConfiguration()
         if (!isEnableAds) {
             listener.onFail("Ads is not allowed.")
             listener.always()
             return
         }
+        setDebugConfiguration()
         val skus = purchaseSkuForRemovingAds ?: listOf()
         if (skus.isNotEmpty()) {
             performQueryPurchases(activity, currentIapStatus, listener)
@@ -280,12 +279,21 @@ object AdsSDK {
     }
 
     fun forceShowGDPR(activity: Activity, listener: AdsInitializeListener) {
-        Log.e("initialize:::", "initialize")
+        if (!isEnableAds) {
+            listener.onFail("Ads is not allowed.")
+            listener.always()
+            return
+        }
         setDebugConfiguration()
-        val language = Locale.getDefault().language
-        val consentTracker = ConsentTracker(activity)
-        val gdprConsent = GdprConsent(activity, language)
-        forceReShowGDPR(activity, gdprConsent, consentTracker, language, listener)
+        val skus = purchaseSkuForRemovingAds ?: listOf()
+        if (skus.isNotEmpty()) {
+            performQueryPurchases(activity, "", listener)
+        } else {
+            val language = Locale.getDefault().language
+            val consentTracker = ConsentTracker(activity)
+            val gdprConsent = GdprConsent(activity, language)
+            forceReShowGDPR(activity, gdprConsent, consentTracker, language, listener)
+        }
     }
 
     private fun performQueryPurchases(activity: Activity, currentIapStatus: String = "", listener: AdsInitializeListener) {
@@ -365,13 +373,13 @@ object AdsSDK {
             gdprConsent.updateConsentInfoWithDebugGeoGraphics(
                 activity = activity,
                 consentPermit = {
-                    Log.d("initialize:::", "performConsent:000::$it")
                     adsType = if (it) AdsType.SHOW_ADS else AdsType.FAIL_ADS
                 },
                 isShowForceAgain = false,
                 consentTracker = consentTracker,
                 hashDeviceIdTest = listTestDeviceIDs,
                 initAds = {
+                    listener.onAcceptGDPR(consentTracker.getIsAcceptAll)
                     performInitializeAds(activity, listener)
                 },
                 callBackFormError = {
@@ -380,9 +388,9 @@ object AdsSDK {
         } else {
             gdprConsent.updateConsentInfo(
                 activity = activity, underAge = false, consentPermit = {
-                    Log.d("initialize:::", "performConsent:111::$it")
                     adsType = if (it) AdsType.SHOW_ADS else AdsType.FAIL_ADS
                 }, consentTracker = consentTracker, isShowForceAgain = false, initAds = {
+                    listener.onAcceptGDPR(consentTracker.getIsAcceptAll)
                     performInitializeAds(activity, listener)
                 },
                 callBackFormError = {
@@ -410,13 +418,13 @@ object AdsSDK {
                 gdprConsent.updateConsentInfoWithDebugGeoGraphics(
                     activity = activity,
                     consentPermit = {
-                        Log.d("initialize:::", "performConsent:222::$it")
                         adsType = if (it) AdsType.SHOW_ADS else AdsType.FAIL_ADS
                     },
                     consentTracker = consentTracker,
                     isShowForceAgain = true,
                     hashDeviceIdTest = listTestDeviceIDs,
                     initAds = {
+                        listener.onAcceptGDPR(consentTracker.getIsAcceptAll)
                         performInitializeAds(activity, listener)
                     },
                     callBackFormError = {
@@ -425,9 +433,9 @@ object AdsSDK {
             } else {
                 gdprConsent.updateConsentInfo(
                     activity = activity, underAge = false, consentPermit = {
-                        Log.d("initialize:::", "performConsent:333::$it")
                         adsType = if (it) AdsType.SHOW_ADS else AdsType.FAIL_ADS
                     }, consentTracker = consentTracker, isShowForceAgain = true, initAds = {
+                        listener.onAcceptGDPR(consentTracker.getIsAcceptAll)
                         performInitializeAds(activity, listener)
                     },
                     callBackFormError = {
