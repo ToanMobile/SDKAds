@@ -7,6 +7,6 @@ object AdsType {
     const val NONE = 0
     const val SHOW_ADS = 1
     const val FAIL_ADS = 2
-    const val PURCHARSE = 3
-    const val SHOW_CONSENT = 4
+    const val PURCHASE = 3
+    const val SHOW_GDPR = 4
 }

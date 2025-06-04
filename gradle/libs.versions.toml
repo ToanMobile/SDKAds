@@ -1,6 +1,6 @@
 [versions]
-agp = "8.10.0"
-kotlin = "2.0.21"
+agp = "8.10.1"
+kotlin = "2.1.21"
 google_service = "4.4.2"
 crashlyticsVersion = "3.0.3"
 preferenceVersion = "1.2.1"

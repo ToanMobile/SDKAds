@@ -70,10 +70,6 @@ object AdsSDK {
     private var adsType = AdsType.NONE
     var appType = AppType.TODO
     val getAdsType get() = adsType
-    val checkAdsShow get() = adsType == AdsType.SHOW_ADS
-    val checkAdsFail get() = adsType == AdsType.FAIL_ADS
-    val checkIsPurchase get() = adsType == AdsType.PURCHARSE
-    val checkIsShowConsent get() = adsType == AdsType.SHOW_CONSENT
 
     val adCallback: TAdCallback = object : TAdCallback {
         override fun onAdClicked(adUnit: String, adType: AdType) {
@@ -312,7 +308,7 @@ object AdsSDK {
                     listener.onFail("There are some purchases for removing ads.")
                     listener.onPurchase(isPurchase = true)
                     listener.always()
-                    adsType = AdsType.PURCHARSE
+                    adsType = AdsType.PURCHASE
                 }
             }
 
@@ -362,7 +358,7 @@ object AdsSDK {
     private fun performConsent(activity: Activity, listener: AdsInitializeListener) {
         //performInitializeAds(activity, listener)
         //return
-        adsType = AdsType.SHOW_CONSENT
+        adsType = AdsType.SHOW_GDPR
         Log.e("initialize:::", "performConsent:adsType:$adsType")
         val language = Locale.getDefault().language
         val consentTracker = ConsentTracker(activity)
@@ -410,7 +406,7 @@ object AdsSDK {
 
     private fun forceReShowGDPR(activity: Activity, gdprConsent: GdprConsent, consentTracker: ConsentTracker, language: String, listener: AdsInitializeListener) {
         try {
-            adsType = AdsType.SHOW_CONSENT
+            adsType = AdsType.SHOW_GDPR
             Log.e("isUserConsentValid:::", "canRequestAds:${gdprConsent.canRequestAds()}")
             gdprConsent.resetConsent()
             consentTracker.updateState(isShowForceAgain = true, language = language)

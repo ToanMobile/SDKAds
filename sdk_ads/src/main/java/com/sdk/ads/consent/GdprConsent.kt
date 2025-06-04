@@ -99,6 +99,7 @@ class GdprConsent(val context: Context, private val language: String) {
             params,
             { // The consent information state was updated, ready to check if a form is available.
                 if (consentInformation.isConsentFormAvailable) {
+                    Log.d(TAG, "loadForm:::00000")
                     loadForm(activity, consentTracker, isShowForceAgain, consentPermit, initAds = { initAds() }, callBackFormError = callBackFormError)
                 } else {
                     consentPermit(isConsentObtained(consentTracker))
@@ -131,7 +132,7 @@ class GdprConsent(val context: Context, private val language: String) {
             return
         }
         isFormLoading = true
-        Log.e(TAG, "requestConsentInfoUpdate:loadConsentForm")
+        Log.d(TAG, "requestConsentInfoUpdate:loadConsentForm")
         // Loads a consent form. Must be called on the main thread.
         UserMessagingPlatform.loadConsentForm(
             context,
@@ -171,6 +172,7 @@ class GdprConsent(val context: Context, private val language: String) {
                                 initAds()
                             }
                             Log.e(TAG, "consentForm is required to show${consentForm}")
+                            Log.d(TAG, "loadForm:::11111111")
                             // Handle dismissal by reloading form.
                             loadForm(activity, consentTracker, isShowForceAgain, consentPermit, initAds, callBackFormError = callBackFormError)
                         }
@@ -226,6 +228,7 @@ class GdprConsent(val context: Context, private val language: String) {
                     consentPermit(isConsentObtained(consentTracker))
                     initAds()
                 }
+                Log.d(TAG, "loadForm:::2222222222")
                 // Handle dismissal by reloading form.
                 loadForm(activity, consentTracker, true, consentPermit, initAds, callBackFormError = callBackFormError)
             }
