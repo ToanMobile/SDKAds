@@ -167,14 +167,19 @@ class GdprConsent(val context: Context, private val language: String) {
                             }
                             // App can start requesting ads.
                             if (consentInformation.consentStatus == ConsentInformation.ConsentStatus.OBTAINED) {
-                                Log.e(TAG, "consentForm is Obtained")
+                                Log.d(TAG, "loadForm:::3333333")
                                 consentPermit(isConsentObtained(consentTracker, isTracking = true))
                                 initAds()
+                            } else {
+                                Log.d(TAG, "loadForm:::4444444")
+                                consentPermit(isConsentObtained(consentTracker))
+                                initAds()
                             }
-                            Log.e(TAG, "consentForm is required to show${consentForm}")
-                            Log.d(TAG, "loadForm:::11111111")
-                            // Handle dismissal by reloading form.
-                            loadForm(activity, consentTracker, isShowForceAgain, consentPermit, initAds, callBackFormError = callBackFormError)
+                            // Chỉ reload nếu thật sự yêu cầu
+                            if (isShowForceAgain) {
+                                Log.d(TAG, "loadForm:::11111111")
+                                loadForm(activity, consentTracker, true, consentPermit, initAds, callBackFormError)
+                            }
                         }
                     }
 
