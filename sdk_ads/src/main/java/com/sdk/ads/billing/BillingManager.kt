@@ -37,7 +37,7 @@ enum class BillingStatus {
 }
 
 class BillingManager(activity: Activity, currentIapStatus: String = "", val isLogIap: Boolean = false, val callback: (BillingStatus) -> Unit) {
-
+    private val TAG = "BillingManager"
     companion object {
 //        const val IAP_PURCHASING_ORDER_RECEIVED = "iap_purchasing_orderReceived"
 //        const val IAP_PURCHASING_CHARGEABLE = "iap_purchasing_chargeable"
@@ -87,13 +87,14 @@ class BillingManager(activity: Activity, currentIapStatus: String = "", val isLo
         billingClient.startConnection(object : BillingClientStateListener {
             override fun onBillingSetupFinished(billingResult: BillingResult) {
                 listener?.response(billingResult.responseCode)
-
+                Log.e(TAG, "startConnection"+ billingResult.responseCode.toString())
                 when (billingResult.responseCode) {
                     OK -> listener?.onSuccess()
                 }
             }
 
             override fun onBillingServiceDisconnected() {
+                Log.e(TAG, "onBillingServiceDisconnected")
                 listener?.onDisconnected()
             }
         })
@@ -167,6 +168,7 @@ class BillingManager(activity: Activity, currentIapStatus: String = "", val isLo
                 .setProductType(INAPP)
                 .build()
         ) { inAppResult, inAppPurchases ->
+            Log.e(TAG, "performQueryPurchases"+ inAppResult.responseCode.toString())
             if (inAppResult.responseCode == OK) {
                 allPurchases.addAll(inAppPurchases)
             }
@@ -266,6 +268,7 @@ class BillingManager(activity: Activity, currentIapStatus: String = "", val isLo
             .build()
 
         billingClient.consumeAsync(consumeParams) { billingResult, outToken ->
+            Log.e(TAG, "consumeAsync"+ billingResult.responseCode.toString())
             if (billingResult.responseCode == OK) {
                 performQueryPurchases()
             }
@@ -283,6 +286,7 @@ class BillingManager(activity: Activity, currentIapStatus: String = "", val isLo
             .build()
 
         billingClient.acknowledgePurchase(params) { billingResult ->
+            Log.e(TAG, "acknowledgePurchase"+  billingResult.responseCode.toString() + "\ndebugMessage:"+ billingResult.debugMessage.toString())
             if (billingResult.responseCode == OK) {
                 if (isLogIap) {
                     if (currentStatus != BillingStatus.iap_Chargeable.name) {
@@ -336,7 +340,7 @@ class BillingManager(activity: Activity, currentIapStatus: String = "", val isLo
     }
 
     private fun onPurchasesUpdated(billingResult: BillingResult, purchases: List<Purchase>?) {
-        //Log.e("onPurchasesUpdated:::", billingResult.responseCode.toString() +"\npurchases:"+purchases)
+        Log.e(TAG, "onPurchasesUpdated"+ billingResult.responseCode.toString() +"\npurchases:"+purchases)
         when (billingResult.responseCode) {
             OK, ITEM_ALREADY_OWNED -> purchases?.let {
                 handlePurchases(it)

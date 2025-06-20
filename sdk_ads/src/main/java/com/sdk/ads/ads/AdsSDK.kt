@@ -297,7 +297,7 @@ object AdsSDK {
         billingManager.purchaseListener = object : PurchaseListener {
             override fun onResult(purchases: List<BillingPurchase>, pending: List<BillingPurchase>) {
                 val skus = purchaseSkuForRemovingAds ?: listOf()
-                //Log.e("performQueryPurchases:", "purchases:$purchases skus=$skus")
+                Log.e("performQueryPurchases:", "purchases:$purchases skus=$skus")
                 if (!purchases.containsAnySKU(skus)) {
                     Log.e("performQueryPurchases:", "ok")
                     listener.onPurchase(isPurchase = false)
