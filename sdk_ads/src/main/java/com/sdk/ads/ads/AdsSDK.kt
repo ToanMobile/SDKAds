@@ -268,7 +268,9 @@ object AdsSDK {
         setDebugConfiguration()
         val skus = purchaseSkuForRemovingAds ?: listOf()
         if (skus.isNotEmpty()) {
-            performQueryPurchases(activity, currentIapStatus, listener)
+            performQueryPurchases(activity, currentIapStatus, listener) {
+                performConsent(activity = activity, listener = listener)
+            }
         } else {
             performConsent(activity, listener)
         }
@@ -283,7 +285,12 @@ object AdsSDK {
         setDebugConfiguration()
         val skus = purchaseSkuForRemovingAds ?: listOf()
         if (skus.isNotEmpty()) {
-            performQueryPurchases(activity, "", listener)
+            performQueryPurchases(activity, "", listener) {
+                val language = Locale.getDefault().language
+                val consentTracker = ConsentTracker(activity)
+                val gdprConsent = GdprConsent(activity, language)
+                forceReShowGDPR(activity, gdprConsent, consentTracker, language, listener)
+            }
         } else {
             val language = Locale.getDefault().language
             val consentTracker = ConsentTracker(activity)
@@ -292,17 +299,17 @@ object AdsSDK {
         }
     }
 
-    private fun performQueryPurchases(activity: Activity, currentIapStatus: String = "", listener: AdsInitializeListener) {
+    private fun performQueryPurchases(activity: Activity, currentIapStatus: String = "", listener: AdsInitializeListener, callbackCheck: () -> Unit) {
         val billingManager = BillingManager(activity, currentIapStatus, false) {}
         billingManager.purchaseListener = object : PurchaseListener {
             override fun onResult(purchases: List<BillingPurchase>, pending: List<BillingPurchase>) {
                 val skus = purchaseSkuForRemovingAds ?: listOf()
                 Log.e("performQueryPurchases:", "purchases:$purchases skus=$skus")
                 if (!purchases.containsAnySKU(skus)) {
+                    adsType = AdsType.NONE
+                    callbackCheck()
                     Log.e("performQueryPurchases:", "ok")
                     listener.onPurchase(isPurchase = false)
-                    performConsent(activity = activity, listener = listener)
-                    adsType = AdsType.NONE
                 } else {
                     //Log.e("performQueryPurchases:", "There are some purchases for removing ads.")
                     listener.onFail("There are some purchases for removing ads.")

@@ -21,11 +21,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
+        jvmTarget = JavaVersion.VERSION_11.toString()
     }
 }
 
@@ -35,13 +35,11 @@ afterEvaluate {
             mavenLocal()
         }
         publications {
-            create<MavenPublication>("maven") {
-                // val variantName = project.name
-                // from(components[variantName])
+            create<MavenPublication>("release") {
                 from(components.findByName("release"))
                 groupId = "com.magic.sdk"
                 artifactId = "AdsSdk"
-                version = "v2.4.9"
+                version = "v2.5.0"
             }
         }
     }

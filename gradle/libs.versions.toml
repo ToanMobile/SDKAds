@@ -1,7 +1,7 @@
 [versions]
-agp = "8.10.1"
-kotlin = "2.1.21"
-google_service = "4.4.2"
+agp = "8.11.0"
+kotlin = "2.2.0"
+google_service = "4.4.3"
 crashlyticsVersion = "3.0.4"
 preferenceVersion = "1.2.1"
 core-ktx = "1.16.0"
@@ -17,7 +17,7 @@ playServicesAds = "23.6.0"
 playServicesAdsIdentifier = "18.2.0"
 gdprVersion = "3.2.0"
 billingVersion = "7.1.1"
-firebaseAnylatics = "22.4.0"
+firebaseAnylatics = "22.5.0"
 firebaseCrashlytics = "19.4.4"
 
 [libraries]
