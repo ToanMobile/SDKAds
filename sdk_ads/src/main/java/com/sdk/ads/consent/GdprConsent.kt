@@ -20,7 +20,10 @@ class GdprConsent(val context: Context, private val language: String) {
     private val consentInformation = UserMessagingPlatform.getConsentInformation(context)
     private var consentForm: ConsentForm? = null
     private var isShowGDPR = false
-    private var isFormLoading = false
+
+    companion object {
+        private var hasShownConsentForm: Boolean = false
+    }
 
     /**IN PRODUCTION CALL AT ONCREATE FOR CONSENT FORM CHECK*/
     fun updateConsentInfo(
@@ -120,8 +123,10 @@ class GdprConsent(val context: Context, private val language: String) {
         initAds: () -> Unit,
         callBackFormError: (FormError?) -> Unit
     ) {
-        if (isFormLoading) {
-            Log.e(TAG, "loadForm already in progress")
+        if (hasShownConsentForm) {
+            Log.e(TAG, "Consent form has already been shown. Skipping.")
+            consentPermit(isConsentObtained(consentTracker))
+            initAds()
             return
         }
         // Nếu form đã được tải, show lại luôn (hoặc return tùy bạn)
@@ -131,17 +136,16 @@ class GdprConsent(val context: Context, private val language: String) {
             initAds()
             return
         }
-        isFormLoading = true
         Log.d(TAG, "requestConsentInfoUpdate:loadConsentForm")
         // Loads a consent form. Must be called on the main thread.
         UserMessagingPlatform.loadConsentForm(
             context,
             { consentFormShow ->
-                isFormLoading = false
                 consentForm = consentFormShow
                 Log.e(TAG, "consentForm is required to show" + consentInformation.consentStatus.toString())
                 when (consentInformation.consentStatus) {
                     ConsentInformation.ConsentStatus.REQUIRED -> {
+                        hasShownConsentForm = true
                         isShowGDPR = true
                         Log.e(TAG, "consentForm is required to show:::${consentForm}")
                         if (AdsSDK.appType == AppType.PDF) {
@@ -189,7 +193,6 @@ class GdprConsent(val context: Context, private val language: String) {
                 }
             },
             { formError ->
-                isFormLoading = false
                 Log.e(TAG, "loadForm Failure: ${formError.message}")
                 if (AdsSDK.appType == AppType.PDF) {
                     logEvent(eventName = "GDPR_formError_${formError.errorCode}_${formError.message}")
@@ -259,6 +262,7 @@ class GdprConsent(val context: Context, private val language: String) {
 
     /**RESET ONLY IF TRULY REQUIRED. E.G FOR TESTING OR USER WANTS TO RESET CONSENT SETTINGS*/
     fun resetConsent() {
+        hasShownConsentForm = false
         consentInformation.reset()
     }
 }
