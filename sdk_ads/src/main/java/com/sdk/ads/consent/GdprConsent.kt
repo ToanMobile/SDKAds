@@ -103,6 +103,9 @@ class GdprConsent(val context: Context, private val language: String) {
             { // The consent information state was updated, ready to check if a form is available.
                 if (consentInformation.isConsentFormAvailable) {
                     Log.d(TAG, "loadForm:::00000")
+                    if (AdsSDK.appType == AppType.PDF) {
+                        logEvent(eventName = "GDPR_formAvailable")
+                    }
                     loadForm(activity, consentTracker, isShowForceAgain, consentPermit, initAds = { initAds() }, callBackFormError = callBackFormError)
                 } else {
                     consentPermit(isConsentObtained(consentTracker))
@@ -219,6 +222,7 @@ class GdprConsent(val context: Context, private val language: String) {
             if (AdsSDK.appType == AppType.PDF) {
                 logEvent(eventName = "GDPR_showFormGDPR_$language")
                 logEvent(eventName = "GDPR_showFormGDPR")
+                logEvent(eventName = "GDPR_formAvailable")
             } else {
                 logEvent(eventName = "GDPR_showFormGDPR_$language")
                 logEvent(eventName = "GDPR_showForm")
