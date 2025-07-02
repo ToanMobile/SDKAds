@@ -126,7 +126,7 @@ class GdprConsent(val context: Context, private val language: String) {
         initAds: () -> Unit,
         callBackFormError: (FormError?) -> Unit
     ) {
-        if (hasShownConsentForm) {
+        if (hasShownConsentForm || !activity.hasWindowFocus()) {
             Log.e(TAG, "Consent form has already been shown. Skipping.")
             consentPermit(isConsentObtained(consentTracker))
             initAds()
