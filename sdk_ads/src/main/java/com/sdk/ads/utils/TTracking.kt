@@ -1,6 +1,5 @@
 package com.sdk.ads.utils
 
-import android.util.Log
 import com.google.firebase.Firebase
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ParametersBuilder
@@ -89,7 +88,7 @@ private fun convertString(eventName: String): String {
     if (result.length > 40) {
         result = result.substring(0, 40)
     }
-    Log.e("Tracking:::", result)
+    logger(result)
     return result
 }
 

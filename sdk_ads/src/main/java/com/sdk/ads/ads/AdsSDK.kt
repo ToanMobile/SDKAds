@@ -3,7 +3,6 @@ package com.sdk.ads.ads
 import android.app.Activity
 import android.app.Application
 import android.os.Bundle
-import android.util.Log
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
@@ -28,6 +27,7 @@ import com.sdk.ads.utils.TAdCallback
 import com.sdk.ads.utils.adLogger
 import com.sdk.ads.utils.logAdClicked
 import com.sdk.ads.utils.logParams
+import com.sdk.ads.utils.logger
 import java.util.Locale
 
 object AdsSDK {
@@ -70,7 +70,7 @@ object AdsSDK {
     private var adsType = AdsType.NONE
     var appType = AppType.TODO
     val getAdsType get() = adsType
-
+    private val TAG = this::class.java.simpleName
     val adCallback: TAdCallback = object : TAdCallback {
         override fun onAdClicked(adUnit: String, adType: AdType) {
             super.onAdClicked(adUnit, adType)
@@ -166,9 +166,6 @@ object AdsSDK {
             AdmobOpenResume.onOpenAdAppResume()
         }
 
-        override fun onStop(owner: LifecycleOwner) {
-            super.onStop(owner)
-        }
     }
 
     private val activityLifecycleCallbacks = object : ActivityActivityLifecycleCallbacks() {
@@ -304,14 +301,14 @@ object AdsSDK {
         billingManager.purchaseListener = object : PurchaseListener {
             override fun onResult(purchases: List<BillingPurchase>, pending: List<BillingPurchase>) {
                 val skus = purchaseSkuForRemovingAds ?: listOf()
-                Log.e("performQueryPurchases:", "purchases:$purchases skus=$skus")
+                logger("purchases:$purchases skus=$skus", TAG)
                 if (!purchases.containsAnySKU(skus)) {
                     adsType = AdsType.NONE
                     callbackCheck()
-                    Log.e("performQueryPurchases:", "ok")
+                    logger("performQueryPurchases:ok", TAG)
                     listener.onPurchase(isPurchase = false)
                 } else {
-                    //Log.e("performQueryPurchases:", "There are some purchases for removing ads.")
+                    //logger("performQueryPurchases:", "There are some purchases for removing ads.")
                     listener.onFail("There are some purchases for removing ads.")
                     listener.onPurchase(isPurchase = true)
                     listener.always()
@@ -320,7 +317,7 @@ object AdsSDK {
             }
 
             override fun onUserCancelBilling() {
-                Log.e("performQueryPurchases:", "onUserCancelBilling")
+                logger("performQueryPurchases:onUserCancelBilling", TAG)
                 listener.onPurchase(isPurchase = false)
             }
         }
@@ -332,11 +329,11 @@ object AdsSDK {
         MobileAds.initialize(activity) {
             val isInitialized = it.adapterStatusMap.entries.any { entry -> entry.value.initializationState.name == "READY" }
             if (isInitialized) {
-                Log.e("performInitializeAds:::", "AdsType.SHOW_ADS")
+                logger("performInitializeAds:AdsType.SHOW_ADS", TAG)
                 MobileAds.setAppMuted(true)
                 listener.onInitialize()
             } else {
-                Log.e("performInitializeAds:::", "AdsType.FAIL_ADS")
+                logger("performInitializeAds:AdsType.FAIL_ADS", TAG)
                 val first = it.adapterStatusMap.entries.firstOrNull()?.value
                 listener.onFail(first?.description ?: first?.initializationState?.name ?: "Ads initialization fail.")
             }
@@ -366,7 +363,7 @@ object AdsSDK {
         //performInitializeAds(activity, listener)
         //return
         adsType = AdsType.SHOW_GDPR
-        Log.e("initialize:::", "performConsent:adsType:$adsType")
+        logger("performConsent:adsType:$adsType", TAG)
         val language = Locale.getDefault().language
         val consentTracker = ConsentTracker(activity)
         val gdprConsent = GdprConsent(activity, language)
@@ -400,11 +397,11 @@ object AdsSDK {
                     listener.formError(it)
                 })
         }
-        Log.e("isUserConsentValid:::", consentTracker.isUserConsentValid().toString())
+        logger("isUserConsentValid:${consentTracker.isUserConsentValid()}", TAG)
         if (consentTracker.isUserConsentValid()) {
             //performInitializeAds(activity, listener)
         }
-        Log.e("isRequestAdsFail:::", consentTracker.isRequestAdsFail().toString())
+        logger("isRequestAdsFail:${consentTracker.isRequestAdsFail()}", TAG)
         if (consentTracker.isRequestAdsFail()) {
             forceReShowGDPR(activity, gdprConsent, consentTracker, language, listener)
             //reUseExistingConsentForm(activity, gdprConsent, consentTracker, listener)
@@ -414,7 +411,7 @@ object AdsSDK {
     private fun forceReShowGDPR(activity: Activity, gdprConsent: GdprConsent, consentTracker: ConsentTracker, language: String, listener: AdsInitializeListener) {
         try {
             adsType = AdsType.SHOW_GDPR
-            Log.e("isUserConsentValid:::", "canRequestAds:${gdprConsent.canRequestAds()}")
+            logger("isUserConsentValid:canRequestAds:${gdprConsent.canRequestAds()}", TAG)
             gdprConsent.resetConsent()
             consentTracker.updateState(isShowForceAgain = true, language = language)
             if (isEnableDebugGDPR) {
@@ -452,7 +449,7 @@ object AdsSDK {
 
     private fun reUseExistingConsentForm(activity: Activity, gdprConsent: GdprConsent, consentTracker: ConsentTracker, listener: AdsInitializeListener) {
         try {
-            Log.e("reUseConsentForm:", "reUseExistingConsentForm")
+            logger("reUseConsentForm:reUseExistingConsentForm", TAG)
             gdprConsent.reUseExistingConsentForm(
                 activity = activity,
                 consentPermit = {

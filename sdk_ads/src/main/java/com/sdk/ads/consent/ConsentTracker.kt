@@ -2,11 +2,11 @@ package com.sdk.ads.consent
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.util.Log
 import androidx.preference.PreferenceManager
 import com.sdk.ads.ads.AdsSDK
 import com.sdk.ads.ads.AppType
 import com.sdk.ads.utils.logEvent
+import com.sdk.ads.utils.logger
 
 class ConsentTracker(val context: Context) {
     private var isShowForceAgain = false
@@ -32,7 +32,7 @@ class ConsentTracker(val context: Context) {
         if (isTracking) {
             sendLogTracking(prefs, isGdpr, canShowPersonAds, canShowAds)
         }
-        Log.d(TAG, "isUserConsentValid: $consentValidity isTracking:$isTracking, GDPR: $isGdpr, PersonAds: $canShowPersonAds, Ads: $canShowAds")
+        logger("isUserConsentValid: $consentValidity isTracking:$isTracking, GDPR: $isGdpr, PersonAds: $canShowPersonAds, Ads: $canShowAds", TAG)
         return consentValidity
     }
 
@@ -114,7 +114,7 @@ class ConsentTracker(val context: Context) {
     private fun sendLogTracking(prefs: SharedPreferences, isGdpr: Boolean, canShowPersonAds: Boolean, canShowAds: Boolean) {
         val purposeConsent = prefs.getString("IABTCF_PurposeConsents", "") ?: ""
         val purposeLegitimate = prefs.getString("IABTCF_PurposeLegitimateInterests", "") ?: ""
-        Log.e(TAG, "sendLogTracking: $purposeConsent")
+        logger("sendLogTracking: $purposeConsent", TAG)
         val consentStatus = when {
             (isGdpr && canShowPersonAds && canShowAds) || (purposeConsent.all { it == '1' }) -> {
                 isAcceptAll = true
@@ -124,7 +124,7 @@ class ConsentTracker(val context: Context) {
             purposeConsent.all { it == '0' } -> "GDPR_denyAll"
             else -> "GDPR_acceptAPart"
         }
-        Log.e(TAG, "consentStatus: $consentStatus")
+        logger("consentStatus: $consentStatus", TAG)
         logEvent(eventName = consentStatus)
         logEvent(eventName = "${consentStatus}_$language")
         if (consentStatus == "GDPR_acceptAPart") {

@@ -1,7 +1,6 @@
 package com.sdk.ads.ads.interstitial
 
 import android.os.CountDownTimer
-import android.util.Log
 import com.google.android.gms.ads.LoadAdError
 import com.sdk.ads.ads.AdsSDK
 import com.sdk.ads.ads.interstitial.AdmobInter.showLoadingBeforeInter
@@ -9,6 +8,7 @@ import com.sdk.ads.ui.dialogs.DialogShowLoadingAds
 import com.sdk.ads.utils.AdType
 import com.sdk.ads.utils.TAdCallback
 import com.sdk.ads.utils.getAppCompatActivityOnTop
+import com.sdk.ads.utils.logger
 import com.sdk.ads.utils.onNextActionWhenResume
 import com.sdk.ads.utils.waitActivityResumed
 
@@ -40,7 +40,6 @@ object AdmobInterSplash {
     ) {
         var dialogShowLoadingAds: DialogShowLoadingAds? = null
         if (!AdsSDK.isEnableInter) {
-            Log.e("AdmobInterSplash::", "00000")
             nextAction.invoke()
             return
         }
@@ -60,14 +59,14 @@ object AdmobInterSplash {
             override fun onAdFailedToLoad(adUnit: String, adType: AdType, error: LoadAdError?) {
                 super.onAdFailedToLoad(adUnit, adType, error)
                 AdmobInter.dismissLoading(dialogShowLoadingAds)
-                Log.e("AdmobInterSplash::", "onAdFailedToLoad, error:$error")
+                logger("AdmobInterSplash::onAdFailedToLoad, error:$error")
                 timer?.cancel()
                 onNextActionWhenResume(nextAction)
             }
 
             override fun onAdFailedToShowFullScreenContent(adUnit: String, adType: AdType) {
                 super.onAdFailedToShowFullScreenContent(adUnit, adType)
-                Log.e("AdmobInterSplash::", "onAdFailedToShowFullScreenContent")
+                logger("AdmobInterSplash::onAdFailedToShowFullScreenContent")
                 AdmobInter.dismissLoading(dialogShowLoadingAds)
                 timer?.cancel()
                 onNextActionWhenResume(nextAction)
@@ -83,7 +82,6 @@ object AdmobInterSplash {
                 }
 
                 override fun onFinish() {
-                    Log.e("AdmobInterSplash::", "2222222222")
                     timer?.cancel()
                     onNextActionWhenResume(nextAction)
                 }
@@ -123,7 +121,6 @@ object AdmobInterSplash {
                 }
             }
         } catch (e: Exception) {
-            Log.e("AdmobInterSplash::", "33333333")
             timer?.cancel()
             onNextActionWhenResume(nextAction)
         }

@@ -1,16 +1,20 @@
 package com.sdk.ads.utils
 
+import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
+import androidx.annotation.RequiresPermission
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.DefaultLifecycleObserver
@@ -159,6 +163,8 @@ fun safeRun(block: () -> Unit) {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.M)
+@RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
 fun Context.isInternetConnected(): Boolean {
     val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     return cm.activeNetwork != null && cm.getNetworkCapabilities(cm.activeNetwork) != null
@@ -226,6 +232,8 @@ fun AdsSDK.getClazzOnTop(): Class<*>? {
     return activity.javaClass
 }
 
+@RequiresApi(Build.VERSION_CODES.M)
+@RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
 fun Context.isNetworkAvailable(): Boolean {
     val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
     val network: Network? = connectivityManager!!.activeNetwork
@@ -275,4 +283,9 @@ fun adLogger(
     message: String,
 ) {
     Log.i("AdsSDK.ToanMobile.[$adType]", "[$adUnitId] => $message")
+}
+
+fun logger(message: String, tag: String? = "") {
+    return
+    Log.i("AdsSDK.ToanMobile:$tag=> ", message)
 }

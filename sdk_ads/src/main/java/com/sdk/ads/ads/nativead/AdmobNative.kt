@@ -1,7 +1,6 @@
 package com.sdk.ads.ads.nativead
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,6 +27,7 @@ import com.sdk.ads.utils.AdType
 import com.sdk.ads.utils.TAdCallback
 import com.sdk.ads.utils.getPaidTrackingBundle
 import com.sdk.ads.utils.isNetworkAvailable
+import com.sdk.ads.utils.logger
 
 object AdmobNative {
 
@@ -69,7 +69,7 @@ object AdmobNative {
             return
         }
         if (!adContainer.context.isNetworkAvailable()) {
-            Log.e(TAG, "No internet connection")
+            logger("No internet connection", TAG)
             val adError = LoadAdError(0, "No Fill", "com.google.android.gms.ads", AdError(0, "No Fill", "com.google.android.gms.ads"), null)
             AdsSDK.adCallback.onAdFailedToLoad(adUnitId, AdType.Native, adError)
             callback?.onAdFailedToLoad(adUnitId, AdType.Native, adError)
@@ -160,20 +160,20 @@ object AdmobNative {
                     callback?.onPaidValueListener(bundle)
                 }
                 if (ad.mediaContent?.hasVideoContent() == true) {
-                    Log.d(TAG, "Native ad contains video content.")
+                    logger("Native ad contains video content.", TAG)
                 } else {
-                    Log.d(TAG, "Native ad is image-only.")
+                    logger("Native ad is image-only.", TAG)
                 }
                 ad.mediaContent?.videoController?.apply {
                     videoLifecycleCallbacks = object : VideoController.VideoLifecycleCallbacks() {
                         override fun onVideoEnd() {
                             super.onVideoEnd()
-                            Log.d("AdmobNative", "Video ended for $adUnitId")
+                            logger("Video ended for $adUnitId", TAG)
                         }
 
                         override fun onVideoStart() {
                             super.onVideoStart()
-                            Log.d("AdmobNative", "Video started for $adUnitId")
+                            logger("Video started for $adUnitId", TAG)
                         }
                     }
                 }
@@ -184,7 +184,7 @@ object AdmobNative {
                     callback?.onAdFailedToLoad(adUnitId, AdType.Native, adError)
                     nativesLoading.remove(adUnitId)
                     natives[adUnitId] = null
-                    Log.e(TAG, "Native Ad Failed to Load: $adError")
+                    logger("Native Ad Failed to Load: $adError", TAG)
                     runCatching { Throwable(adError.message) }
                 }
 
@@ -260,7 +260,7 @@ object AdmobNative {
                     natives.remove(adUnitId)
                     nativeWithViewGroup.remove(adUnitId)
                     v.removeOnAttachStateChangeListener(this)
-                    Log.d(TAG, "NativeAd for [$adUnitId] destroyed on detach")
+                    logger("NativeAd for [$adUnitId] destroyed on detach", TAG)
                 }
 
                 override fun onViewAttachedToWindow(v: View) {
@@ -268,7 +268,7 @@ object AdmobNative {
                 }
             })
         } catch (e: Exception) {
-            Log.e(TAG, "Error in fillNative: ${e.message}", e)
+            logger("Error in fillNative: ${e.message}", TAG)
         }
     }
 
@@ -340,7 +340,7 @@ object AdmobNative {
             visibility = if (nativeAd.advertiser != null) View.VISIBLE else View.GONE
         }
 
-        Log.d(TAG, "Native ad populated: ${nativeAd.headline}")
+        logger(TAG, "Native ad populated: ${nativeAd.headline}")
         adView.setNativeAd(nativeAd)
     }
 

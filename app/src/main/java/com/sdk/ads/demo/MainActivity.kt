@@ -1,7 +1,6 @@
 package com.sdk.ads.demo
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.ads.LoadAdError
@@ -17,28 +16,28 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         AdsSDK.initialize(activity = this, listener = object : AdsInitializeListener() {
             override fun onInitialize() {
-                Log.e("AdsSDK:::", "onInitialize")
+                logger("AdsSDK:::", "onInitialize")
             }
 
             override fun onFail(message: String) {
                 super.onFail(message)
-                Log.e("AdsSDK:::", "onFail:$message")
+                logger("AdsSDK:::", "onFail:$message")
             }
 
             override fun onPurchase(isPurchase: Boolean) {
                 super.onPurchase(isPurchase)
-                Log.e("AdsSDK:::", "onPurchase")
+                logger("AdsSDK:::", "onPurchase")
             }
 
             override fun always() {
                 super.always()
-                Log.e("AdsSDK:::", "always")
+                logger("AdsSDK:::", "always")
             }
         })
         findViewById<TextView>(R.id.txtText).setOnClickListener {
             com.sdk.ads.utils.logEvent("txtTextClick")
             AdmobInterSplash.show(adUnitId = "ca-app-pub-2428922951355303/8012376174", timeout = 3000, nextAction = {
-                Log.e("callbackADS", "Ads")
+                logger("callbackADS", "Ads")
             })
         }
 
@@ -50,17 +49,17 @@ class MainActivity : AppCompatActivity() {
             callback = object : TAdCallback {
                 override fun onAdLoaded(adUnit: String, adType: AdType) {
                     super.onAdLoaded(adUnit, adType)
-                    Log.e("callbackADS", "onAdLoaded")
+                    logger("callbackADS", "onAdLoaded")
                 }
 
                 override fun onAdFailedToLoad(adUnit: String, adType: AdType, error: LoadAdError?) {
                     super.onAdFailedToLoad(adUnit, adType, error)
-                    Log.e("callbackADS", "onAdFailedToLoad")
+                    logger("callbackADS", "onAdFailedToLoad")
                 }
 
                 override fun onAdFailedToShowFullScreenContent(adUnit: String, adType: AdType) {
                     super.onAdFailedToShowFullScreenContent(adUnit, adType)
-                    Log.e("callbackADS", "onAdFailedToShowFullScreenContent")
+                    logger("callbackADS", "onAdFailedToShowFullScreenContent")
                 }
             },
         )
@@ -72,18 +71,18 @@ class MainActivity : AppCompatActivity() {
             callback = object : TAdCallback {
                 override fun onAdLoaded(adUnit: String, adType: AdType) {
                     super.onAdLoaded(adUnit, adType)
-                    Log.e("onAdLoaded::", adType.toString())
+                    logger("onAdLoaded::", adType.toString())
                     com.sdk.ads.utils.logScreen(this::class.java.simpleName)
                 }
 
                 override fun onAdFailedToLoad(adUnit: String, adType: AdType, error: LoadAdError?) {
                     super.onAdFailedToLoad(adUnit, adType, error)
-                    Log.e("onAdFailedToLoad::", adType.toString())
+                    logger("onAdFailedToLoad::", adType.toString())
                 }
 
                 override fun onAdOpened(adUnit: String, adType: AdType) {
                     super.onAdOpened(adUnit, adType)
-                    Log.e("onAdLoaded::", adType.toString())
+                    logger("onAdLoaded::", adType.toString())
                 }
             },
         )
@@ -95,18 +94,18 @@ class MainActivity : AppCompatActivity() {
             callback = object : TAdCallback {
                 override fun onAdLoaded(adUnit: String, adType: AdType) {
                     super.onAdLoaded(adUnit, adType)
-                    Log.e("onAdLoaded::", adType.toString())
+                    logger("onAdLoaded::", adType.toString())
                     com.sdk.ads.utils.logScreen(this::class.java.simpleName)
                 }
 
                 override fun onAdFailedToLoad(adUnit: String, adType: AdType, error: LoadAdError?) {
                     super.onAdFailedToLoad(adUnit, adType, error)
-                    Log.e("onAdFailedToLoad::", adType.toString())
+                    logger("onAdFailedToLoad::", adType.toString())
                 }
 
                 override fun onAdOpened(adUnit: String, adType: AdType) {
                     super.onAdOpened(adUnit, adType)
-                    Log.e("onAdLoaded::", adType.toString())
+                    logger("onAdLoaded::", adType.toString())
                 }
             },
         )

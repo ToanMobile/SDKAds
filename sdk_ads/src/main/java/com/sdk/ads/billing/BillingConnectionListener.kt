@@ -4,6 +4,6 @@ abstract class BillingConnectionListener {
 
     abstract fun onSuccess()
 
-    fun onDisconnected() {}
+    open fun onDisconnected() {}
     fun response(code: Int) {}
 }

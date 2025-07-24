@@ -2,7 +2,6 @@ package com.sdk.ads.consent
 
 import android.app.Activity
 import android.content.Context
-import android.util.Log
 import com.google.android.gms.ads.AdRequest
 import com.google.android.ump.ConsentDebugSettings
 import com.google.android.ump.ConsentForm
@@ -13,6 +12,7 @@ import com.google.android.ump.UserMessagingPlatform
 import com.sdk.ads.ads.AdsSDK
 import com.sdk.ads.ads.AppType
 import com.sdk.ads.utils.logEvent
+import com.sdk.ads.utils.logger
 
 class GdprConsent(val context: Context, private val language: String) {
     @Suppress("PrivatePropertyName")
@@ -102,7 +102,7 @@ class GdprConsent(val context: Context, private val language: String) {
             params,
             { // The consent information state was updated, ready to check if a form is available.
                 if (consentInformation.isConsentFormAvailable) {
-                    Log.d(TAG, "loadForm:::00000")
+                    logger("loadForm:::isConsentFormAvailable", TAG)
                     if (AdsSDK.appType == AppType.PDF) {
                         logEvent(eventName = "GDPR_formAvailable")
                     }
@@ -113,7 +113,7 @@ class GdprConsent(val context: Context, private val language: String) {
             },
             { formError ->
                 initAds()
-                Log.e(TAG, "requestConsentInfoUpdate:formError: ${formError.message}")
+                logger("requestConsentInfoUpdate:formError: ${formError.message}", TAG)
             }
         )
     }
@@ -127,30 +127,30 @@ class GdprConsent(val context: Context, private val language: String) {
         callBackFormError: (FormError?) -> Unit
     ) {
         if (hasShownConsentForm || !activity.hasWindowFocus()) {
-            Log.e(TAG, "Consent form has already been shown. Skipping.")
+            logger("Consent form has already been shown. Skipping.", TAG)
             consentPermit(isConsentObtained(consentTracker))
             initAds()
             return
         }
         // Nếu form đã được tải, show lại luôn (hoặc return tùy bạn)
         if (consentForm != null) {
-            Log.e(TAG, "consentForm already loaded")
+            logger("consentForm already loaded", TAG)
             consentPermit(isConsentObtained(consentTracker))
             initAds()
             return
         }
-        Log.d(TAG, "requestConsentInfoUpdate:loadConsentForm")
+        logger("requestConsentInfoUpdate:loadConsentForm", TAG)
         // Loads a consent form. Must be called on the main thread.
         UserMessagingPlatform.loadConsentForm(
             context,
             { consentFormShow ->
                 consentForm = consentFormShow
-                Log.e(TAG, "consentForm is required to show" + consentInformation.consentStatus.toString())
+                logger("consentForm is required to show" + consentInformation.consentStatus.toString(), TAG)
                 when (consentInformation.consentStatus) {
                     ConsentInformation.ConsentStatus.REQUIRED -> {
                         hasShownConsentForm = true
                         isShowGDPR = true
-                        Log.e(TAG, "consentForm is required to show:::${consentForm}")
+                        logger("consentForm is required to show:::${consentForm}", TAG)
                         if (AdsSDK.appType == AppType.PDF) {
                             logEvent(eventName = "GDPR_showFormGDPR_$language")
                             logEvent(eventName = "GDPR_showFormGDPR")
@@ -163,7 +163,7 @@ class GdprConsent(val context: Context, private val language: String) {
                         ) { formError ->
                             // Log error
                             if (formError != null) {
-                                Log.e(TAG, "consentForm show ${formError.message}")
+                                logger("consentForm show ${formError.message}", TAG)
                                 if (AdsSDK.appType == AppType.PDF) {
                                     logEvent(eventName = "GDPR_formError_${formError.errorCode}_${formError.message}")
                                     logEvent(eventName = "GDPR_formError_${formError.errorCode}_${formError.message}_$language")
@@ -174,17 +174,17 @@ class GdprConsent(val context: Context, private val language: String) {
                             }
                             // App can start requesting ads.
                             if (consentInformation.consentStatus == ConsentInformation.ConsentStatus.OBTAINED) {
-                                Log.d(TAG, "loadForm:::3333333")
+                                logger("loadForm:::OBTAINED", TAG)
                                 consentPermit(isConsentObtained(consentTracker, isTracking = true))
                                 initAds()
                             } else {
-                                Log.d(TAG, "loadForm:::4444444")
+                                logger("loadForm:::!!!OBTAINED", TAG)
                                 consentPermit(isConsentObtained(consentTracker))
                                 initAds()
                             }
                             // Chỉ reload nếu thật sự yêu cầu
                             if (isShowForceAgain) {
-                                Log.d(TAG, "loadForm:::11111111")
+                                logger("loadForm:::isShowForceAgain", TAG)
                                 loadForm(activity, consentTracker, true, consentPermit, initAds, callBackFormError)
                             }
                         }
@@ -196,7 +196,7 @@ class GdprConsent(val context: Context, private val language: String) {
                 }
             },
             { formError ->
-                Log.e(TAG, "loadForm Failure: ${formError.message}")
+                logger("loadForm Failure: ${formError.message}", TAG)
                 if (AdsSDK.appType == AppType.PDF) {
                     logEvent(eventName = "GDPR_formError_${formError.errorCode}_${formError.message}")
                     logEvent(eventName = "GDPR_formError_${formError.errorCode}_${formError.message}_$language")
@@ -218,7 +218,7 @@ class GdprConsent(val context: Context, private val language: String) {
         resetConsent()
         if (consentInformation.isConsentFormAvailable) {
             isShowGDPR = true
-            Log.e(TAG, "reUseExistingConsentForm$consentForm")
+            logger("reUseExistingConsentForm$consentForm", TAG)
             if (AdsSDK.appType == AppType.PDF) {
                 logEvent(eventName = "GDPR_showFormGDPR_$language")
                 logEvent(eventName = "GDPR_showFormGDPR")
@@ -232,20 +232,20 @@ class GdprConsent(val context: Context, private val language: String) {
             ) { formError ->
                 // Log error
                 if (formError != null) {
-                    Log.e(TAG, "consentForm formError ${formError.message}")
+                    logger("consentForm formError ${formError.message}", TAG)
                 }
                 // App can start requesting ads.
                 if (consentInformation.consentStatus == ConsentInformation.ConsentStatus.OBTAINED) {
-                    Log.d(TAG, "consentForm is Obtained")
+                    logger("consentForm is Obtained", TAG)
                     consentPermit(isConsentObtained(consentTracker))
                     initAds()
                 }
-                Log.d(TAG, "loadForm:::2222222222")
+                logger("loadForm:::2222222222", TAG)
                 // Handle dismissal by reloading form.
                 loadForm(activity, consentTracker, true, consentPermit, initAds, callBackFormError = callBackFormError)
             }
         } else {
-            Log.e(TAG, "Consent form not available, check internet connection.")
+            logger("Consent form not available, check internet connection.", TAG)
             consentPermit(isConsentObtained(consentTracker))
         }
     }
@@ -256,7 +256,7 @@ class GdprConsent(val context: Context, private val language: String) {
         val obtained = consentTracker.isUserConsentValid(isSendTracking) && consentInformation.consentStatus == ConsentInformation.ConsentStatus.OBTAINED
         val notRequired = consentInformation.consentStatus == ConsentInformation.ConsentStatus.NOT_REQUIRED
         val isObtained = obtained || notRequired
-        Log.e(TAG, "isConsentObtained or not required: $isObtained")
+        logger("isConsentObtained or not required: $isObtained", TAG)
         return isObtained
     }
 
