@@ -1,4 +1,9 @@
 <resources>
+    <style name="AdThemeAds" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:fitsSystemWindows">true</item>
+    </style>
     <!-- Base application theme. -->
     <style name="Base.Theme.SDK_Ads" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
