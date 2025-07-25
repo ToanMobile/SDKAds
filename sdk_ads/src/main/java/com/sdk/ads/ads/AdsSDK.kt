@@ -67,9 +67,7 @@ object AdsSDK {
     private var preventShowResumeAd = false
     private var purchaseSkuForRemovingAds: List<String>? = null
     private var listTestDeviceIDs: List<String>? = null
-    private var adsType = AdsType.NONE
     var appType = AppType.TODO
-    val getAdsType get() = adsType
     private val TAG = this::class.java.simpleName
     val adCallback: TAdCallback = object : TAdCallback {
         override fun onAdClicked(adUnit: String, adType: AdType) {
@@ -303,7 +301,6 @@ object AdsSDK {
                 val skus = purchaseSkuForRemovingAds ?: listOf()
                 logger("purchases:$purchases skus=$skus", TAG)
                 if (!purchases.containsAnySKU(skus)) {
-                    adsType = AdsType.NONE
                     callbackCheck()
                     logger("performQueryPurchases:ok", TAG)
                     listener.onPurchase(isPurchase = false)
@@ -312,7 +309,6 @@ object AdsSDK {
                     listener.onFail("There are some purchases for removing ads.")
                     listener.onPurchase(isPurchase = true)
                     listener.always()
-                    adsType = AdsType.PURCHASE
                 }
             }
 
@@ -362,8 +358,6 @@ object AdsSDK {
     private fun performConsent(activity: Activity, listener: AdsInitializeListener) {
         //performInitializeAds(activity, listener)
         //return
-        adsType = AdsType.SHOW_GDPR
-        logger("performConsent:adsType:$adsType", TAG)
         val language = Locale.getDefault().language
         val consentTracker = ConsentTracker(activity)
         val gdprConsent = GdprConsent(activity, language)
@@ -373,7 +367,7 @@ object AdsSDK {
             gdprConsent.updateConsentInfoWithDebugGeoGraphics(
                 activity = activity,
                 consentPermit = {
-                    adsType = if (it) AdsType.SHOW_ADS else AdsType.FAIL_ADS
+                    listener.onGDPRDone(isAccept = it)
                 },
                 isShowForceAgain = false,
                 consentTracker = consentTracker,
@@ -388,7 +382,7 @@ object AdsSDK {
         } else {
             gdprConsent.updateConsentInfo(
                 activity = activity, underAge = false, consentPermit = {
-                    adsType = if (it) AdsType.SHOW_ADS else AdsType.FAIL_ADS
+                    listener.onGDPRDone(isAccept = it)
                 }, consentTracker = consentTracker, isShowForceAgain = false, initAds = {
                     listener.onAcceptGDPR(consentTracker.getIsAcceptAll)
                     performInitializeAds(activity, listener)
@@ -410,7 +404,6 @@ object AdsSDK {
 
     private fun forceReShowGDPR(activity: Activity, gdprConsent: GdprConsent, consentTracker: ConsentTracker, language: String, listener: AdsInitializeListener) {
         try {
-            adsType = AdsType.SHOW_GDPR
             logger("isUserConsentValid:canRequestAds:${gdprConsent.canRequestAds()}", TAG)
             gdprConsent.resetConsent()
             consentTracker.updateState(isShowForceAgain = true, language = language)
@@ -418,7 +411,7 @@ object AdsSDK {
                 gdprConsent.updateConsentInfoWithDebugGeoGraphics(
                     activity = activity,
                     consentPermit = {
-                        adsType = if (it) AdsType.SHOW_ADS else AdsType.FAIL_ADS
+                        listener.onGDPRDone(isAccept = it)
                     },
                     consentTracker = consentTracker,
                     isShowForceAgain = true,
@@ -433,7 +426,7 @@ object AdsSDK {
             } else {
                 gdprConsent.updateConsentInfo(
                     activity = activity, underAge = false, consentPermit = {
-                        adsType = if (it) AdsType.SHOW_ADS else AdsType.FAIL_ADS
+                        listener.onGDPRDone(isAccept = it)
                     }, consentTracker = consentTracker, isShowForceAgain = true, initAds = {
                         listener.onAcceptGDPR(consentTracker.getIsAcceptAll)
                         performInitializeAds(activity, listener)
@@ -453,7 +446,7 @@ object AdsSDK {
             gdprConsent.reUseExistingConsentForm(
                 activity = activity,
                 consentPermit = {
-                    adsType = if (it) AdsType.SHOW_ADS else AdsType.FAIL_ADS
+                    listener.onGDPRDone(isAccept = it)
                 },
                 consentTracker = consentTracker,
                 initAds = {

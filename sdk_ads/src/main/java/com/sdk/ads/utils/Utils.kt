@@ -286,6 +286,6 @@ fun adLogger(
 }
 
 fun logger(message: String, tag: String? = "") {
-    return
+    //return
     Log.i("AdsSDK.ToanMobile:$tag=> ", message)
 }

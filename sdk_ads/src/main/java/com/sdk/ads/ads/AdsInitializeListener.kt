@@ -6,7 +6,10 @@ abstract class AdsInitializeListener {
 
     abstract fun onInitialize()
 
+    abstract fun onGDPRDone(isAccept: Boolean)
+
     open fun onFail(message: String) {}
+
     open fun always() {}
 
     open fun formError(formError: FormError?) {}
