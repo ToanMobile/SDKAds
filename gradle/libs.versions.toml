@@ -1,5 +1,5 @@
 [versions]
-agp = "8.11.1"
+agp = "8.11.1" 
 kotlin = "2.2.0"
 google_service = "4.4.3"
 crashlyticsVersion = "3.0.4"
