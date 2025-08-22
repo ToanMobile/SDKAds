@@ -1,16 +1,31 @@
 pluginManagement {
     repositories {
+        gradlePluginPortal()
         google()
         mavenCentral()
-        gradlePluginPortal()
+        maven("https://plugins.gradle.org/m2")
     }
 }
+plugins {
+    id("org.gradle.toolchains.foojay-resolver-convention") version "0.8.0"
+}
+
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
     repositories {
-        gradlePluginPortal()
         google()
         mavenCentral()
+        mavenLocal()
+        maven("https://jitpack.io")
+
+        // Ví dụ GitHub Packages (nếu bạn dùng)
+        // maven {
+        //     url = uri("https://maven.pkg.github.com/OWNER/REPO")
+        //     credentials {
+        //         username = providers.gradleProperty("gpr.user").orNull ?: System.getenv("GITHUB_ACTOR")
+        //         password = providers.gradleProperty("gpr.key").orNull ?: System.getenv("GITHUB_TOKEN")
+        //     }
+        // }
     }
 }
 

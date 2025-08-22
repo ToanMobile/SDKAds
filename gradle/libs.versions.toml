@@ -1,50 +1,55 @@
 [versions]
-agp = "8.11.1"
-kotlin = "2.2.0"
-google_service = "4.4.3"
-crashlyticsVersion = "3.0.4"
-preferenceVersion = "1.2.1"
-core-ktx = "1.16.0"
+androidGradlePlugin = "8.11.1"
+kotlin = "2.2.10"
+googleServices = "4.4.3"
+coreKtx = "1.17.0"
 appcompat = "1.7.1"
-lifecycleLivedataKtx = "2.9.1"
 material = "1.12.0"
 constraintlayout = "2.2.1"
-navigationFragmentKtx = "2.9.0"
+preference = "1.2.1"
+lifecycle = "2.9.2"
+navigation = "2.9.3"
+billing = "8.0.0"
+adsIdentifier = "18.2.0"
+playServicesAdsLite = "24.3.0"
+firebaseCrashlytics = "20.0.0"
+firebaseAnalytics = "23.0.0"
+userMessagingPlatform = "3.2.0"
+firebaseAds = "23.6.0"
 shimmer = "0.5.0"
-utilCore = "1.31.1"
-#Ads
-playServicesAds = "23.6.0"
-playServicesAdsIdentifier = "18.2.0"
-gdprVersion = "3.2.0"
-billingVersion = "7.1.1"
-firebaseAnylatics = "22.5.0"
-firebaseCrashlytics = "19.4.4"
 
 [libraries]
-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
+# Ads & Billing
+ads-billing = { group = "com.android.billingclient", name = "billing-ktx", version.ref = "billing" }
+ads-identifier = { group = "com.google.android.gms", name = "play-services-ads-identifier", version.ref = "adsIdentifier" }
+ads-services-lite = { group = "com.google.android.gms", name = "play-services-ads-lite", version.ref = "playServicesAdsLite" }
+ads-gdpr = { group = "com.google.android.ump", name = "user-messaging-platform", version.ref = "userMessagingPlatform" }
+ads-firebase-ads = { group = "com.google.firebase", name = "firebase-ads", version.ref = "firebaseAds" }
+
+# Firebase
+firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics", version.ref = "firebaseCrashlytics" }
+firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics", version.ref = "firebaseAnalytics" }
+
+# AndroidX Core
+core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
-lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycleLivedataKtx" }
-lifecycle-process = { module = "androidx.lifecycle:lifecycle-process", version.ref = "lifecycleLivedataKtx" }
-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleLivedataKtx" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
-preference = { group = "androidx.preference", name = "preference-ktx", version.ref = "preferenceVersion" }
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
-navigation-fragment-ktx = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }
-shimmer = { module = "com.facebook.shimmer:shimmer", version.ref = "shimmer" }
-utilCore = { module = "com.blankj:utilcodex", version.ref = "utilCore" }
-#Ads
-ads-identifier = { module = "com.google.android.gms:play-services-ads-identifier", version.ref = "playServicesAdsIdentifier" }
-ads-gdpr = { module = "com.google.android.ump:user-messaging-platform", version.ref = "gdprVersion" }
-ads-billing = { module = "com.android.billingclient:billing-ktx", version.ref = "billingVersion" }
-ads-firebase-ads = { module = "com.google.firebase:firebase-ads", version.ref = "playServicesAds" }
-ads-services-lite = { module = "com.google.android.gms:play-services-ads-lite", version.ref = "playServicesAds" }
-firebase-analytics = { module = "com.google.firebase:firebase-analytics-ktx", version.ref = "firebaseAnylatics" }
-firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics-ktx", version.ref = "firebaseCrashlytics" }
+preference = { group = "androidx.preference", name = "preference-ktx", version.ref = "preference" }
+
+# AndroidX Lifecycle
+lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycle" }
+lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
+lifecycle-process = { group = "androidx.lifecycle", name = "lifecycle-process", version.ref = "lifecycle" }
+
+# AndroidX Navigation
+navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigation" }
+
+# UI
+shimmer = { group = "com.facebook.shimmer", name = "shimmer", version.ref = "shimmer" }
 
 [plugins]
-androidApplication = { id = "com.android.application", version.ref = "agp" }
-androidLibrary = { id = "com.android.library", version.ref = "agp" }
+androidApplication = { id = "com.android.application", version.ref = "androidGradlePlugin" }
+androidLibrary = { id = "com.android.library", version.ref = "androidGradlePlugin" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-googleService = { id = "com.google.gms.google-services", version.ref = "google_service" }
-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "crashlyticsVersion" }
-
+googleService = { id = "com.google.gms.google-services", version.ref = "googleServices" }

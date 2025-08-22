@@ -9,6 +9,7 @@ import com.sdk.ads.ads.AdsSDK
 import com.sdk.ads.ads.interstitial.AdmobInterSplash
 import com.sdk.ads.utils.AdType
 import com.sdk.ads.utils.TAdCallback
+import com.sdk.ads.utils.logger
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,6 +18,9 @@ class MainActivity : AppCompatActivity() {
         AdsSDK.initialize(activity = this, listener = object : AdsInitializeListener() {
             override fun onInitialize() {
                 logger("AdsSDK:::", "onInitialize")
+            }
+
+            override fun onGDPRDone(isAccept: Boolean) {
             }
 
             override fun onFail(message: String) {

@@ -8,10 +8,9 @@ plugins {
 android {
     namespace = "com.sdk.ads"
     compileSdk = 36
-    //noinspection DataBindingWithoutKapt
     buildFeatures.dataBinding = true
     defaultConfig {
-        minSdk = 21
+        minSdk = 24
     }
 
     buildTypes {
@@ -21,27 +20,32 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11.toString()
+    kotlin {
+        jvmToolchain(17)
+    }
+
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+            withJavadocJar()
+        }
     }
 }
 
-afterEvaluate {
-    publishing {
-        repositories {
-            mavenLocal()
+publishing {
+    publications {
+        create<MavenPublication>("release") {
+            from(components.findByName("release"))
+            groupId = "com.magic.sdk"
+            artifactId = "AdsSdk"
+            version = "v2.5.0"
         }
-        publications {
-            create<MavenPublication>("release") {
-                from(components.findByName("release"))
-                groupId = "com.magic.sdk"
-                artifactId = "AdsSdk"
-                version = "v2.5.0"
-            }
-        }
+    }
+    repositories {
+        mavenLocal()
     }
 }
 
@@ -64,5 +68,4 @@ dependencies {
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.lifecycle.process)
     implementation(libs.shimmer)
-    //implementation(libs.utilCore)
 }

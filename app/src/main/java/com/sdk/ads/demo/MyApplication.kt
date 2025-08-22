@@ -5,6 +5,7 @@ import com.google.android.gms.ads.LoadAdError
 import com.sdk.ads.ads.AdsSDK
 import com.sdk.ads.utils.AdType
 import com.sdk.ads.utils.TAdCallback
+import com.sdk.ads.utils.logger
 
 class MyApplication : Application() {
 
