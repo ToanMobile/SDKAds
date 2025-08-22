@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="ad_text_loading">Anuncios cargando...</string>
-    <string name="ad_welcome_back">Bienvenido de nuevo...</string>
+    <string name="ad_text_loading">Anuncios cargando…</string>
+    <string name="ad_welcome_back">Bienvenido de nuevo…</string>
     <string name="full_screen_ad_will_appear">Anuncio a pantalla completa próximamente</string>
     <string name="thanks_for_nyou_feedback">¡Gracias por sus comentarios!</string>
 
@@ -20,7 +20,6 @@
     <string name="rate_description_s5">¡Tus comentarios son muy importantes para nosotros!\n¡También nos gustas!</string>
     <string name="how_can_we_do_it_better">¿Cómo podemos hacerlo mejor?</string>
     <string name="let_us_know_what_went_wrong_and_we_will_work_on_it">Háganos saber qué salió mal y\ntrabajaremos en ello</string>
-    <string name="enviar">Enviar</string>
     <string name="type_your_text_here">Escriba su texto aquí</string>
     <string name="thanks_for_purchase">Gracias por su compra.</string>
 </resources>

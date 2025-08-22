@@ -1,4 +1,4 @@
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.sdk.ads"
-    compileSdk = 36
+    compileSdk = 34
     buildFeatures.dataBinding = true
     defaultConfig {
         minSdk = 24
@@ -27,10 +27,13 @@ android {
         jvmToolchain(17)
     }
 
+    lint {
+        checkReleaseBuilds = false
+    }
+
     publishing {
         singleVariant("release") {
             withSourcesJar()
-            withJavadocJar()
         }
     }
 }
@@ -38,16 +41,16 @@ android {
 publishing {
     publications {
         create<MavenPublication>("release") {
-            from(components.findByName("release"))
             groupId = "com.magic.sdk"
             artifactId = "AdsSdk"
-            version = "v2.5.0"
+            version = "v2.5.1"
         }
     }
     repositories {
         mavenLocal()
     }
 }
+
 
 dependencies {
     //Ads
@@ -57,7 +60,7 @@ dependencies {
     api(libs.firebase.crashlytics)
     implementation(libs.firebase.analytics)
     implementation(libs.ads.gdpr)
-    implementation(libs.ads.firebase.ads)
+    implementation(libs.firebase.ads)
     //Core
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
@@ -69,3 +72,4 @@ dependencies {
     implementation(libs.lifecycle.process)
     implementation(libs.shimmer)
 }
+

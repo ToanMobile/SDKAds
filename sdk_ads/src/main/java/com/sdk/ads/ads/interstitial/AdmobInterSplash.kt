@@ -1,6 +1,8 @@
 package com.sdk.ads.ads.interstitial
 
+import android.Manifest
 import android.os.CountDownTimer
+import androidx.annotation.RequiresPermission
 import com.google.android.gms.ads.LoadAdError
 import com.sdk.ads.ads.AdsSDK
 import com.sdk.ads.ads.interstitial.AdmobInter.showLoadingBeforeInter
@@ -27,6 +29,7 @@ object AdmobInterSplash {
      * @param timeout: timeout to wait ad show
      * @param nextAction
      */
+    @RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
     fun show(
         adUnitId: String,
         isForceShowNow: Boolean = false, // Show liền ads
@@ -47,6 +50,7 @@ object AdmobInterSplash {
             dialogShowLoadingAds = showLoadingBeforeInter()
         }
         val callback = object : TAdCallback {
+            @RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
             override fun onAdLoaded(adUnit: String, adType: AdType) {
                 super.onAdLoaded(adUnit, adType)
                 adLoaded()
@@ -77,6 +81,7 @@ object AdmobInterSplash {
         if (!isForceShowNow) {
             timer?.cancel()
             timer = object : CountDownTimer(timeout, 1000) {
+                @RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
                 override fun onTick(millisUntilFinished: Long) {
                     showAds(adUnitId, isDelayNextAds, autoNextActionDuringInterShow, delayTimeToActionAfterShowInter, callback, nextAction)
                 }
@@ -89,6 +94,7 @@ object AdmobInterSplash {
         }
     }
 
+    @RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
     private fun showAds(
         adUnitId: String,
         isDelayNextAds: Boolean = true,

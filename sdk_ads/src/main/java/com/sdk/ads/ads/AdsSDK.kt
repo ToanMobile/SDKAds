@@ -1,8 +1,10 @@
 package com.sdk.ads.ads
 
+import android.Manifest
 import android.app.Activity
 import android.app.Application
 import android.os.Bundle
+import androidx.annotation.RequiresPermission
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
@@ -154,6 +156,7 @@ object AdsSDK {
 
     private val applicationStateObserver = object : DefaultLifecycleObserver {
 
+        @RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
         override fun onResume(owner: LifecycleOwner) {
             super.onResume(owner)
             if (preventShowResumeAd) {

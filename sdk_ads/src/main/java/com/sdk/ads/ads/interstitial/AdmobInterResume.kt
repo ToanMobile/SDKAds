@@ -1,5 +1,7 @@
 package com.sdk.ads.ads.interstitial
 
+import android.Manifest
+import androidx.annotation.RequiresPermission
 import com.google.android.gms.ads.AdActivity
 import com.sdk.ads.ads.AdsSDK
 import com.sdk.ads.ui.dialogs.DialogWelcomeBackAds
@@ -13,11 +15,13 @@ object AdmobInterResume {
 
     private lateinit var adUnitId: String
 
+    @RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
     fun load(id: String) {
         adUnitId = id
         AdmobInter.load(adUnitId, null)
     }
 
+    @RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
     internal fun onInterAppResume(nextAction: () -> Unit = {}) {
         if (!AdsSDK.isEnableInter) {
             nextAction.invoke()
@@ -43,7 +47,9 @@ object AdmobInterResume {
             return
         }
 
-        val dialog = DialogWelcomeBackAds(activity) {
+        val dialog = DialogWelcomeBackAds(activity) @RequiresPermission(
+            Manifest.permission.ACCESS_NETWORK_STATE
+        ) {
             if (AdmobInter.checkShowInterCondition(adUnitId, true)) {
                 AdmobInter.show(
                     adUnitId = adUnitId,

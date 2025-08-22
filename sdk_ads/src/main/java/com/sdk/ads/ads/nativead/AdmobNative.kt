@@ -1,5 +1,6 @@
 package com.sdk.ads.ads.nativead
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
 import androidx.annotation.LayoutRes
+import androidx.annotation.RequiresPermission
 import androidx.core.view.isVisible
 import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdListener
@@ -56,6 +58,7 @@ object AdmobNative {
      * @param forceRefresh always load new ad then fill to ViewGroup
      * @param callback callback
      */
+    @RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
     fun show(
         adContainer: ViewGroup,
         adUnitId: String,

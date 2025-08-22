@@ -11,7 +11,7 @@ lifecycle = "2.9.2"
 navigation = "2.9.3"
 billing = "8.0.0"
 adsIdentifier = "18.2.0"
-playServicesAdsLite = "24.3.0"
+playServicesAdsLite = "23.6.0"
 firebaseCrashlytics = "20.0.0"
 firebaseAnalytics = "23.0.0"
 userMessagingPlatform = "3.2.0"
@@ -24,11 +24,11 @@ ads-billing = { group = "com.android.billingclient", name = "billing-ktx", versi
 ads-identifier = { group = "com.google.android.gms", name = "play-services-ads-identifier", version.ref = "adsIdentifier" }
 ads-services-lite = { group = "com.google.android.gms", name = "play-services-ads-lite", version.ref = "playServicesAdsLite" }
 ads-gdpr = { group = "com.google.android.ump", name = "user-messaging-platform", version.ref = "userMessagingPlatform" }
-ads-firebase-ads = { group = "com.google.firebase", name = "firebase-ads", version.ref = "firebaseAds" }
 
 # Firebase
 firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics", version.ref = "firebaseCrashlytics" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics", version.ref = "firebaseAnalytics" }
+firebase-ads = { group = "com.google.firebase", name = "firebase-ads", version.ref = "firebaseAds" }
 
 # AndroidX Core
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }

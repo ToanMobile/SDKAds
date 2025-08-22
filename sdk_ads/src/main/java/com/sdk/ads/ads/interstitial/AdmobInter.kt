@@ -1,6 +1,8 @@
 package com.sdk.ads.ads.interstitial
 
+import android.Manifest
 import android.app.Activity
+import androidx.annotation.RequiresPermission
 import androidx.lifecycle.Lifecycle
 import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
@@ -54,6 +56,7 @@ object AdmobInter {
      * Step2: Có sẵn quảng cáo => Không load
      * Step3: Đang loading rồi => Không load
      */
+    @RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
     fun load(adUnitId: String, callback: TAdCallback? = null) {
         if (!AdsSDK.isEnableInter) {
             return
@@ -95,6 +98,7 @@ object AdmobInter {
         )
     }
 
+    @RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
     fun checkShowInterCondition(adUnitId: String, isForceShow: Boolean): Boolean {
         if (!AdsSDK.app.isNetworkAvailable()) {
             return false
@@ -126,6 +130,7 @@ object AdmobInter {
      * @param callback: callback
      * @param nextAction: callback for your work, always call whether the InterAd display is successful or not
      */
+    @RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
     fun show(
         adUnitId: String,
         forceShow: Boolean = false,
@@ -213,6 +218,7 @@ object AdmobInter {
                 callback?.onAdClicked(adUnitId, AdType.Inter)
             }
 
+            @RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
             override fun onAdDismissedFullScreenContent() {
                 AdsSDK.adCallback.onAdDismissedFullScreenContent(adUnitId, AdType.Inter)
                 callback?.onAdDismissedFullScreenContent(adUnitId, AdType.Inter)
@@ -225,6 +231,7 @@ object AdmobInter {
                 }
             }
 
+            @RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
             override fun onAdFailedToShowFullScreenContent(adError: AdError) {
                 AdsSDK.adCallback.onAdDismissedFullScreenContent(adUnitId, AdType.Inter)
                 callback?.onAdDismissedFullScreenContent(adUnitId, AdType.Inter)
