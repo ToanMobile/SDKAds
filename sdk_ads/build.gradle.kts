@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.sdk.ads"
-    compileSdk = 34
+    compileSdk = 36
     buildFeatures.dataBinding = true
     defaultConfig {
         minSdk = 24
@@ -34,23 +34,27 @@ android {
     publishing {
         singleVariant("release") {
             withSourcesJar()
+            withJavadocJar()
         }
     }
 }
 
-publishing {
-    publications {
-        create<MavenPublication>("release") {
-            groupId = "com.magic.sdk"
-            artifactId = "AdsSdk"
-            version = "v2.5.1"
+afterEvaluate {
+    publishing {
+        publications {
+            create<MavenPublication>("release") {
+                groupId = "com.magic.sdk"
+                artifactId = "AdsSdk"
+                version = "v2.5.1"
+
+                from(project.components.getByName("release"))
+            }
+        }
+        repositories {
+            mavenLocal()
         }
     }
-    repositories {
-        mavenLocal()
-    }
 }
-
 
 dependencies {
     //Ads
@@ -72,4 +76,3 @@ dependencies {
     implementation(libs.lifecycle.process)
     implementation(libs.shimmer)
 }
-
