@@ -136,4 +136,20 @@ class ConsentTracker(val context: Context) {
             }
         }
     }
+
+    fun hasUserAcceptedAll(): Boolean {
+        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+        if (!isGDPR(prefs)) {
+            return true
+        }
+        val purposeConsent = prefs.getString("IABTCF_PurposeConsents", null)
+        if (purposeConsent.isNullOrEmpty()) {
+            return false
+        }
+        val canShowPersonAds = canShowPersonalizedAds(prefs)
+        val canShowAds = canShowAds(prefs)
+        val acceptedAll = (canShowPersonAds && canShowAds) || purposeConsent.all { it == '1' }
+        logger("hasUserAcceptedAll: $acceptedAll", TAG)
+        return acceptedAll
+    }
 }

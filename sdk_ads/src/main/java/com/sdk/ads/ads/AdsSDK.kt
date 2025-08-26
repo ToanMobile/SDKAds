@@ -71,6 +71,8 @@ object AdsSDK {
     private var listTestDeviceIDs: List<String>? = null
     var appType = AppType.TODO
     private val TAG = this::class.java.simpleName
+    var forceRepromptIfNotAcceptedAll = true
+
     val adCallback: TAdCallback = object : TAdCallback {
         override fun onAdClicked(adUnit: String, adType: AdType) {
             super.onAdClicked(adUnit, adType)
@@ -359,20 +361,31 @@ object AdsSDK {
     }
 
     private fun performConsent(activity: Activity, listener: AdsInitializeListener) {
-        //performInitializeAds(activity, listener)
-        //return
         val language = Locale.getDefault().language
         val consentTracker = ConsentTracker(activity)
         val gdprConsent = GdprConsent(activity, language)
+
+        // 1. Kiểm tra lựa chọn của phiên trước.
+        val hasAcceptedAllPreviously = consentTracker.hasUserAcceptedAll()
+
+        // 2. Nếu người dùng chưa từng "Accept All", hãy reset sự đồng ý của họ.
+        // Việc này sẽ khiến SDK tự động nhận diện là cần hiển thị lại form.
+        if (!hasAcceptedAllPreviously) {
+            logger("Previous consent was not 'Accept All'. Resetting for the standard flow.", "AdsSDK")
+            gdprConsent.resetConsent()
+        }
+
+        // 3. Bây giờ, chạy luồng update tiêu chuẩn CHỈ MỘT LẦN.
+        // SDK sẽ tự xử lý việc hiển thị form nếu nó cần thiết (do người dùng mới hoặc do chúng ta vừa reset).
+        // Chúng ta không cần gọi forceReShowGDPR nữa.
         consentTracker.updateState(isShowForceAgain = false, language = language)
         if (isEnableDebugGDPR) {
-            //resetConsent(gdprConsent)
             gdprConsent.updateConsentInfoWithDebugGeoGraphics(
                 activity = activity,
                 consentPermit = {
                     listener.onGDPRDone(isAccept = it)
                 },
-                isShowForceAgain = false,
+                isShowForceAgain = false, // Luôn là false
                 consentTracker = consentTracker,
                 hashDeviceIdTest = listTestDeviceIDs,
                 initAds = {
@@ -386,22 +399,13 @@ object AdsSDK {
             gdprConsent.updateConsentInfo(
                 activity = activity, underAge = false, consentPermit = {
                     listener.onGDPRDone(isAccept = it)
-                }, consentTracker = consentTracker, isShowForceAgain = false, initAds = {
+                }, consentTracker = consentTracker, isShowForceAgain = false, initAds = { // Luôn là false
                     listener.onAcceptGDPR(consentTracker.getIsAcceptAll)
                     performInitializeAds(activity, listener)
                 },
                 callBackFormError = {
                     listener.formError(it)
                 })
-        }
-        logger("isUserConsentValid:${consentTracker.isUserConsentValid()}", TAG)
-        if (consentTracker.isUserConsentValid()) {
-            //performInitializeAds(activity, listener)
-        }
-        logger("isRequestAdsFail:${consentTracker.isRequestAdsFail()}", TAG)
-        if (consentTracker.isRequestAdsFail()) {
-            forceReShowGDPR(activity, gdprConsent, consentTracker, language, listener)
-            //reUseExistingConsentForm(activity, gdprConsent, consentTracker, listener)
         }
     }
 
