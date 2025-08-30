@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "324706142420",
+    "project_id": "smart-tasks-to-do-lists",
+    "storage_bucket": "smart-tasks-to-do-lists.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:324706142420:android:752b6f4bb9a9b8f86e1341",
+        "android_client_info": {
+          "package_name": "com.sdk.ads.demo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0CsVr68v5Ket2zTDKLa3hHq-ZLWfK8fw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -7,28 +7,26 @@ appcompat = "1.7.1"
 material = "1.12.0"
 constraintlayout = "2.2.1"
 preference = "1.2.1"
-lifecycle = "2.9.2"
+lifecycle = "2.9.3"
 navigation = "2.9.3"
 billing = "8.0.0"
 adsIdentifier = "18.2.0"
-playServicesAdsLite = "23.6.0"
-firebaseCrashlytics = "20.0.0"
+playServicesAds = "23.1.0"
+firebaseCrashlytics = "20.0.1"
 firebaseAnalytics = "23.0.0"
 userMessagingPlatform = "3.2.0"
-firebaseAds = "23.6.0"
 shimmer = "0.5.0"
 
 [libraries]
 # Ads & Billing
 ads-billing = { group = "com.android.billingclient", name = "billing-ktx", version.ref = "billing" }
 ads-identifier = { group = "com.google.android.gms", name = "play-services-ads-identifier", version.ref = "adsIdentifier" }
-ads-services-lite = { group = "com.google.android.gms", name = "play-services-ads-lite", version.ref = "playServicesAdsLite" }
+ads-google = { group = "com.google.android.gms", name = "play-services-ads", version.ref = "playServicesAds" }
 ads-gdpr = { group = "com.google.android.ump", name = "user-messaging-platform", version.ref = "userMessagingPlatform" }
 
 # Firebase
 firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics", version.ref = "firebaseCrashlytics" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics", version.ref = "firebaseAnalytics" }
-firebase-ads = { group = "com.google.firebase", name = "firebase-ads", version.ref = "firebaseAds" }
 
 # AndroidX Core
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }

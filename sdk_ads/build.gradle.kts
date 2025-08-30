@@ -60,11 +60,10 @@ dependencies {
     //Ads
     api(libs.ads.billing)
     api(libs.ads.identifier)
-    api(libs.ads.services.lite)
+    api(libs.ads.google)
     api(libs.firebase.crashlytics)
     implementation(libs.firebase.analytics)
     implementation(libs.ads.gdpr)
-    implementation(libs.firebase.ads)
     //Core
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
