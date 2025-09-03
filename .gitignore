@@ -21,10 +21,10 @@ out/
 .gradle/
 build/
 buildSrc/build/
-Module/CoreBase/build/
-Module/CoreUI/build/
-Module/Calendar/build/
-Diary/build/
+sdk_ads/.idea/
+sdk_ads/.gradle/
+sdk_ads/build/
+
 # Local configuration file (sdk path, etc)
 local.properties
 
