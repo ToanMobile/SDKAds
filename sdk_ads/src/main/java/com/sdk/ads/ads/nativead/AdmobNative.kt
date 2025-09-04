@@ -318,9 +318,12 @@ object AdmobNative {
             }
         }
 
-        (adView.iconView as? ImageView)?.apply {
-            setImageDrawable(nativeAd.icon?.drawable)
-            visibility = if (nativeAd.icon != null) View.VISIBLE else View.GONE
+        val iconView = adView.iconView as? ImageView
+        if (nativeAd.icon != null && iconView != null) {
+            iconView.visibility = View.VISIBLE
+            iconView.setImageDrawable(nativeAd.icon?.drawable)
+        } else if (iconView != null) {
+            iconView.visibility = View.GONE
         }
 
         (adView.priceView as? TextView)?.apply {
