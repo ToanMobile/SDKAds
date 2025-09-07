@@ -289,21 +289,9 @@ object AdmobNative {
         // Gán nội dung vào các view, kiểm tra null
         (adView.headlineView as? TextView)?.text = nativeAd.headline
 
-        val mediaContent = nativeAd.mediaContent
-        if (mediaContent?.hasVideoContent() == true) {
-            adView.mediaView = adView.findViewById(R.id.ad_media)
-            adView.mediaView?.mediaContent = mediaContent
-        } else {
-            try {
-                val image = nativeAd.images.firstOrNull()?.drawable
-                if (image != null) {
-                    val mediaView = adView.findViewById<ImageView>(R.id.ad_media)
-                    mediaView.setImageDrawable(image)
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
+        // Bất kể là ảnh hay video, MediaView sẽ tự xử lý
+        adView.mediaView = adView.findViewById(R.id.ad_media)
+        adView.mediaView?.mediaContent = nativeAd.mediaContent
 
         (adView.bodyView as? TextView)?.apply {
             text = nativeAd.body

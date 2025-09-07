@@ -15,18 +15,15 @@
         app:layout_constraintDimensionRatio="H,1.9 : 1">
 
         <!-- MediaView (video or image, full-width) -->
-        <ImageView
+        <com.google.android.gms.ads.nativead.MediaView
             android:id="@+id/ad_media"
             android:layout_width="@dimen/dp_80"
             android:layout_height="@dimen/dp_80"
-            android:adjustViewBounds="true"
-            android:contentDescription="@null"
             android:paddingStart="0dp"
             android:paddingEnd="@dimen/dp_5"
             android:paddingBottom="@dimen/dp_5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:visibility="visible" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <!-- Headline -->
         <TextView
