@@ -43,11 +43,10 @@ afterEvaluate {
     publishing {
         publications {
             create<MavenPublication>("release") {
+                from(components.getByName("release"))
                 groupId = "com.magic.sdk"
                 artifactId = "AdsSdk"
                 version = "v2.5.1"
-
-                from(project.components.getByName("release"))
             }
         }
         repositories {
